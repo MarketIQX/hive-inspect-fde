@@ -1,6 +1,6 @@
 # Hive Importer Canonical State
 
-Date: 21 Sep 2026
+Snapshot reviewed: 21 Sep 2026, 22:45 IST
 
 ## Purpose
 
@@ -8,14 +8,17 @@ This file is the project source of truth for evidence-backed claims. It separate
 
 ## Evidence classes
 
-- VERIFIED: directly established from the assignment, repository, machine state, actual source files, or a test that actually ran.
-- PROPOSED: an engineering choice awaiting evidence or an implementation check.
-- UNVERIFIED: a claim or requirement that still needs direct evidence.
-- FAILED: a check that ran and did not meet its acceptance condition.
+- ASSIGNMENT_REQUIREMENT: stated by the assignment itself.
+- OBSERVED_SOURCE_FACT: established directly from an inspected source file and bound to source coordinates/checksum where applicable.
+- OBSERVED_ENVIRONMENT_FACT: established from repository, filesystem, deployed application, database, or authenticated tool state at a stated observation time.
+- PROPOSED_DECISION: an engineering choice awaiting evidence or implementation verification.
+- VERIFIED_TEST_RESULT: a defined check actually ran and met its acceptance condition.
+- UNRESOLVED: evidence is missing, ambiguous, or insufficient to decide.
+- FAILED: a defined check actually ran and did not meet its acceptance condition.
 
 ## Canonical rule
 
-A claim advances only when its required evidence exists. The production importer must never generate the answer key used to judge itself. Unknown populated source content is never silently excluded.
+A claim advances only when its required evidence exists. Every dynamic environment claim is snapshot-scoped and must include or inherit an observation time; it must be rechecked before use if the environment may have changed. The production importer and any shared unverified extraction path must never generate the answer key used to judge the importer. Raw physical inventory precedes semantic classification. Unknown populated source content is never silently excluded.
 
 ## Current gate
 
@@ -23,7 +26,7 @@ G0 — Inputs and required product exploration
 
 Status: INCOMPLETE
 
-## VERIFIED
+## ASSIGNMENT_REQUIREMENT
 
 1. The assignment requires a web app that imports a Spectora HTML Text spreadsheet export and preserves text, hierarchy and ordering.
    Evidence: `docs/assignment/Hive_Inspect_Template_Importer_Assignment.pdf`, pages 1-2.
@@ -46,11 +49,15 @@ Status: INCOMPLETE
 7. Spectora is required and the source must be exported via Export to spreadsheet -> Export HTML Text.
    Evidence: assignment page 1.
 
+## OBSERVED_ENVIRONMENT_FACT
+
+Observation time for items below: 21 Sep 2026, 22:45 IST unless stated otherwise.
+
 8. Repository exists at `C:\Users\marke\hive-inspect-fde`.
    Evidence: direct filesystem inspection on 21 Sep 2026.
 
-9. Git baseline currently contains two commits and no implementation code.
-   Evidence: direct git inspection on 21 Sep 2026.
+9. Before this correction pass, repository HEAD was `700ecd8` with three commits and no implementation code; no Git remote was configured.
+   Evidence: direct `git log`, repository inspection and `git remote -v` at the observation time above.
 
 10. No Spectora- or InterNACHI-named export is currently present under `C:\Users\marke`, and the Downloads listing contains no non-temporary spreadsheet export matching the required source.
     Evidence: direct filesystem search and Downloads listing on 21 Sep 2026.
@@ -61,7 +68,7 @@ Status: INCOMPLETE
 12. No parser, final schema, editor, backend, deployment or AI-in-import decision has been verified.
     Evidence: repository inspection and `docs/DISCOVERY_STATUS.md`.
 
-## PROPOSED
+## PROPOSED_DECISION
 
 - Deterministic-first interpretation if the observed export contains sufficient explicit structure.
 - One small application with parsing, mapping, validation, persistence and rendering/editing modules.
@@ -72,9 +79,9 @@ Status: INCOMPLETE
 - Server-side transactional semantics for import and copy.
 - Provenance for successful mappings as well as exceptions.
 
-None of these becomes VERIFIED merely because it appears in this file.
+None of these becomes an OBSERVED_SOURCE_FACT or VERIFIED_TEST_RESULT merely because it appears in this file.
 
-## UNVERIFIED
+## UNRESOLVED
 
 - Actual Spectora export container type.
 - Worksheet/sheet structure, hidden sheets, dimensions and headers.
@@ -99,7 +106,7 @@ Status: NOT YET PERMITTED
 
 The first populated canonical import fixture may be created only after genuine Export A is present and directly inspected.
 
-Its expected result must be established independently from the production importer. The fixture must identify source coordinates for every expected semantic element it claims to cover.
+Its expected result must be established independently from the production importer and independently from any shared unverified extraction helper. Establish expectations by direct inspection of the original source plus raw physical inventory, and bind every expected semantic element to source coordinates and the source checksum.
 
 Minimum truth dimensions:
 
@@ -119,13 +126,15 @@ The evaluator must pass the known-good fixture and reject deliberate loss, dupli
 G0 exits only when:
 - Hive required journey is completed with evidence.
 - Export A exists with recorded provenance and checksum.
-- Export B is obtained or its genuine blocker is recorded.
+
+Export B is an early validation control, not an assignment-mandated input and not a blocker to beginning work on A. Obtain B as early as practical; if unavailable, record the blocker and continue with A.
 
 G1 exits only when:
 - actual file/container type is established from bytes;
-- all meaningful sheets/fields/regions are inventoried;
-- unknown populated content is explicitly classified or left unresolved;
-- source hierarchy/order evidence is documented.
+- raw physical inventory enumerates every sheet/stream/table or equivalent container unit, including hidden units where the format supports them;
+- dimensions, populated regions, structural markers, formulas, hyperlinks, merges and other present structures are recorded before semantic exclusion;
+- every populated field/region is then classified as meaningful content, structural metadata, confirmed irrelevant content, unsupported content, or UNRESOLVED;
+- source hierarchy/order evidence is documented without inferring semantics from names alone.
 
 G2 exits only when:
 - a source contract maps every observed meaningful convention to a disposition;
