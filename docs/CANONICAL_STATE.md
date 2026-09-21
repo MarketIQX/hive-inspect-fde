@@ -372,3 +372,17 @@ Evidence: user-provided screenshot in the active conversation at 23:34 IST.
 Scope: screenshot-visible browser state only.
 
 Consequence: G0-B has begun at the correct external product, but Export A remains UNRESOLVED until an actual Spectora HTML Text spreadsheet file is downloaded and inspected.
+
+
+### Canonical observation record CS-0015
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 21 Sep 2026, 23:36 IST
+
+Claim: the Spectora free-trial onboarding page reached by the operator shows a required Business Phone field rendered with a fixed +1 US-style mask, together with required Number of Inspectors, Years of Experience, and How did you hear about us fields. The operator does not have a US phone number.
+
+Evidence: user-provided screenshot of `next.spectora.com/trial-boarding/v2/additional-details` in the active conversation.
+Scope: visible onboarding UI state only. This does not prove Spectora categorically rejects international users or that support cannot enable an alternate signup path.
+
+Consequence: G0-B is temporarily blocked at account onboarding. Do not fabricate a US phone number. Resolve the supported international signup path with Spectora or use another legitimate path provided by Spectora before continuing.
