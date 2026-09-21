@@ -358,3 +358,17 @@ Claim: the root Claude Code execution contract satisfies the acceptance criterio
 
 Evidence: deterministic content checks against `CLAUDE.md`; canonical append-only verifier also passed after this change.
 Acceptance criterion from CS-0011: MET.
+
+
+### Canonical observation record CS-0014
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 21 Sep 2026, 23:34 IST
+
+Claim: a user-provided screenshot shows the Spectora public landing page open in Chrome. The visible page presents Login and Free Trial controls; no authenticated Spectora workspace, template, or exported source file is yet evidenced by that screenshot.
+
+Evidence: user-provided screenshot in the active conversation at 23:34 IST.
+Scope: screenshot-visible browser state only.
+
+Consequence: G0-B has begun at the correct external product, but Export A remains UNRESOLVED until an actual Spectora HTML Text spreadsheet file is downloaded and inspected.
