@@ -271,3 +271,53 @@ Claim: repository HEAD was 3e94402 on branch master; working tree was clean; no 
 
 Evidence: direct git and filesystem inspection through the authenticated desktop connection.
 Scope: local repository at C:\Users\marke\hive-inspect-fde only.
+
+
+### Canonical engineering record CS-0007
+
+kind: ENGINEERING_DECISION
+status: VERIFIED
+effective_at: 21 Sep 2026, 23:28 IST
+
+Decision: append-only canonical history will be protected by a minimal deterministic repository guard, not policy wording alone. The guard compares the working canonical file with the committed canonical file and permits only an unchanged file or content appended strictly after the prior end of file. Line-ending differences are normalized; existing words and ordering are not.
+
+Reason: the operator explicitly requires every previously added canonical word to remain as written, while corrections and changed decisions must be appended with reasoning. A written convention without an executable check can silently fail.
+
+Scope: docs/CANONICAL_STATE.md only. This control does not make factual claims true; it protects historical immutability.
+
+Acceptance criterion: exact/no-change and append cases pass; edit, deletion, and middle-insertion cases fail; the real repository check passes before commit.
+
+### Canonical observation record CS-0008
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 21 Sep 2026, 23:28 IST
+
+Claim: no new .xlsx, .xls, .xlsm, .csv, .html, .htm or .zip file modified after 22:30 IST was found under the user's Downloads, Desktop, or Documents directories. Genuine Spectora Export A therefore remains unavailable to this repository at this observation time.
+
+Evidence: targeted filesystem scan of those three user directories.
+Scope: those directories and that time-bounded file-type scan only; it is not a claim that no source file exists anywhere on the machine.
+
+
+### Canonical verification record CS-0009
+
+kind: TEST_RESULT
+status: VERIFIED
+observed_at: 21 Sep 2026, 23:28 IST
+
+Claim: the append-only verifier passed its defined self-tests. Exact content and strict append were accepted. Edit, deletion, and middle-insertion corruptions were rejected as intended. The verifier also accepted the current real canonical change as strict append-only.
+
+Evidence: execution of `node scripts/verify-canonical-append-only.mjs --self-test` and `node scripts/verify-canonical-append-only.mjs`.
+Acceptance criterion from CS-0007: MET.
+
+### Canonical environment record CS-0010
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 21 Sep 2026, 23:28 IST
+
+Claim: the local repository is configured with `core.hooksPath=.githooks`, and the committed pre-commit hook invokes the append-only verifier before a commit can proceed.
+
+Reason for control: make accidental canonical rewrites fail before local commit rather than relying on memory or manual review.
+
+Scope limitation: Git configuration is local environment state. A fresh clone does not inherit `core.hooksPath` automatically; the committed verifier and hook remain available, but enabling that hook in another clone is a separate environment action.
