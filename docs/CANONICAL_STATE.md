@@ -321,3 +321,40 @@ Claim: the local repository is configured with `core.hooksPath=.githooks`, and t
 Reason for control: make accidental canonical rewrites fail before local commit rather than relying on memory or manual review.
 
 Scope limitation: Git configuration is local environment state. A fresh clone does not inherit `core.hooksPath` automatically; the committed verifier and hook remain available, but enabling that hook in another clone is a separate environment action.
+
+
+### Canonical control record CS-0011
+
+kind: ENGINEERING_DECISION
+status: VERIFIED
+effective_at: 21 Sep 2026, 23:31 IST
+
+Decision: add a small root `CLAUDE.md` as the durable execution contract for Claude Code and later engineering sessions. It will point to the assignment, execution playbook, full append-only canonical record, current gate, and required verification command. It will not duplicate source facts or become a second source of truth.
+
+Reason: long-running or multi-session coding work can begin with incomplete conversational context. A concise repository-level contract reduces stale-context execution while keeping canonical truth in one place.
+
+Acceptance criterion: the file names the canonical record as authoritative, requires reading later supersession records before acting, forbids parser/schema implementation while G0 is incomplete, and requires the canonical append-only verifier before commit.
+
+### Canonical limitation record CS-0012
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 21 Sep 2026, 23:31 IST
+
+Claim: the local pre-commit guard protects normal local commits from accidental canonical rewrites, but it is not tamper-proof immutability. Git hooks can be bypassed or disabled, and Git history can be rewritten by an authorized operator.
+
+Consequence: the project rule remains behavioral as well as technical: no `--no-verify`, no history rewrite, no canonical deletion/reordering. Git history plus the append-only verifier are evidence controls, not a cryptographic write-once store.
+
+Reason for recording: describing the hook as absolute immutability would look stronger than the evidence supports.
+
+
+### Canonical verification record CS-0013
+
+kind: TEST_RESULT
+status: VERIFIED
+observed_at: 21 Sep 2026, 23:32 IST
+
+Claim: the root Claude Code execution contract satisfies the acceptance criterion in CS-0011. It points to the canonical record, states append-only behavior, requires later supersession records to control interpretation, records G0 as incomplete, names genuine Spectora Export A as required evidence, requires the verifier command, and forbids bypassing the guard.
+
+Evidence: deterministic content checks against `CLAUDE.md`; canonical append-only verifier also passed after this change.
+Acceptance criterion from CS-0011: MET.
