@@ -1,6 +1,6 @@
 # Hive Importer Canonical State
 
-Snapshot reviewed: 21 Sep 2026, 22:45 IST
+Snapshot reviewed: 21 Sep 2026, 22:48 IST
 
 ## Purpose
 
@@ -51,13 +51,13 @@ Status: INCOMPLETE
 
 ## OBSERVED_ENVIRONMENT_FACT
 
-Observation time for items below: 21 Sep 2026, 22:45 IST unless stated otherwise.
+Observation time for items below: 21 Sep 2026, 22:48 IST unless stated otherwise.
 
 8. Repository exists at `C:\Users\marke\hive-inspect-fde`.
    Evidence: direct filesystem inspection on 21 Sep 2026.
 
-9. Before this correction pass, repository HEAD was `700ecd8` with three commits and no implementation code; no Git remote was configured.
-   Evidence: direct `git log`, repository inspection and `git remote -v` at the observation time above.
+9. The repository has meaningful staged documentation history, no implementation code yet, and no Git remote configured at the observation time.
+   Evidence: direct `git log`, repository inspection and `git remote -v`.
 
 10. No Spectora- or InterNACHI-named export is currently present under `C:\Users\marke`, and the Downloads listing contains no non-temporary spreadsheet export matching the required source.
     Evidence: direct filesystem search and Downloads listing on 21 Sep 2026.
@@ -67,6 +67,11 @@ Observation time for items below: 21 Sep 2026, 22:45 IST unless stated otherwise
 
 12. No parser, final schema, editor, backend, deployment or AI-in-import decision has been verified.
     Evidence: repository inspection and `docs/DISCOVERY_STATUS.md`.
+
+## VERIFIED_TEST_RESULT
+
+1. Repository hygiene correction: a pairing code was discovered in the original local Git history during red-team review. Before any remote was configured, the current file was corrected and all local branch history was rewritten to remove the sensitive literal. Backup refs were deleted, reflogs expired, and garbage collection pruned unreachable objects.
+   Evidence at 21 Sep 2026, 22:48 IST: working-tree search returned no occurrence; reachable-history search returned no occurrence; `git show-ref` exposed only `refs/heads/master`; `git fsck --full --no-reflogs --unreachable` returned no unreachable objects; `git count-objects -v` reported zero loose/garbage objects; `git remote -v` returned no remote.
 
 ## PROPOSED_DECISION
 
