@@ -65,3 +65,12 @@ The genuine Spectora Export HTML Text file is not present. Source mapping and sc
 ## MCP code boundary
 
 The pairing code supplied in chat is not evidence of an authenticated MCP session by itself. Do not commit it. Do not use it until the issuing system/server and intended scope are identified.
+
+
+## Discovery supersession addendum — 21 Sep 2026, 23:23 IST
+
+The earlier three-label guidance is historical and is superseded by the append-only canonical kind/status model in `docs/CANONICAL_STATE.md`.
+
+The earlier statement selecting source-linked Migration Review is also superseded: Migration Review is a candidate improvement until required Hive use plus the working baseline establish the customer problem worth improving.
+
+G0 now has two parallel mandatory evidence tracks: required Hive hands-on exploration and genuine Spectora Export A acquisition/provenance. Neither substitutes for the other.

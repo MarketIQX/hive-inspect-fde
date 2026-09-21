@@ -308,3 +308,13 @@ credentials in chat. Keep connection codes and secrets out of the report.
 ```
 
 After reviewing this discovery result, assign the next implementation slice with its accepted mapping and checks. Keep the routine compact: inspect evidence, implement the bounded change, verify, review and commit. Advance when the agreed evidence passes.
+
+
+## Append-only execution addendum — 21 Sep 2026, 23:23 IST
+
+This addendum does not delete or rewrite earlier playbook text.
+
+1. Where Step 3 says every observed meaningful field must have a disposition, interpret completion through the later canonical rule: first inventory every populated physical unit, then classify it. Semantic importance is never a precondition for inventory.
+2. Where Step 7's completion wording requires a recorded Export B result, that wording is superseded. Export B is an early adversarial validation control, not a Hive-mandated input. If unavailable, record the limitation and continue without making unsupported compatibility claims.
+3. Where the playbook names Migration Review as the single improvement, treat it as a candidate until required Hive exploration and the working baseline establish that it addresses the strongest observed customer problem.
+4. Canonical state is append-only. Changed facts or decisions are added with evidence, reasoning, time and supersession linkage; earlier wording remains intact.

@@ -74,3 +74,12 @@ These are not Hive requirements. They are controls chosen to make the mandatory 
 ## Advancement rule
 
 A mandatory requirement is not complete because code exists. It becomes complete only when its listed evidence target has been observed on the actual implementation or source. Optional items cannot displace unresolved mandatory requirements.
+
+
+## Trace supersession addendum — 21 Sep 2026, 23:23 IST
+
+C7 above is preserved but its selection status is superseded. Source-linked Migration Review is a candidate project-specific improvement, not an approved build decision. Selection occurs only after the mandatory baseline and Hive product exploration provide evidence.
+
+C1 remains a project-specific adversarial control. A missing Export B does not invent a new Hive requirement or block honestly evidenced work on Export A. Any compatibility claim must remain limited to the variations actually tested.
+
+All status changes from this point are append-only; prior rows remain historical evidence and are superseded by later dated records rather than rewritten.

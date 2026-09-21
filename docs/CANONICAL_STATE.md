@@ -156,3 +156,118 @@ No later gate may retroactively convert an unverified source claim into a verifi
 ## Immediate next evidence
 
 Obtain genuine Spectora Export A. Until then, source-specific canonical data, final schema and production parser work remain blocked.
+
+
+## CANONICAL APPEND-ONLY GOVERNANCE — effective 21 Sep 2026, 23:23 IST
+
+This section is additive. Nothing above it is deleted, rewritten, or silently corrected.
+
+From this point forward, once text is entered into this canonical record it is immutable historical evidence. A later discovery, correction, decision change, failed test, or changed environment state must be appended as a new record. Earlier wording remains visible.
+
+Required change discipline:
+- never delete a prior canonical claim;
+- never edit a prior canonical claim to make history look cleaner;
+- never silently replace a decision;
+- append the new evidence, reasoning, scope, and effective time;
+- identify the earlier claim or decision being superseded;
+- preserve why the earlier position was reasonable at the time;
+- distinguish correction of fact from change of engineering judgment.
+
+Canonical records must use two independent dimensions:
+
+kind:
+- REQUIREMENT
+- SOURCE_FACT
+- ENVIRONMENT_FACT
+- ENGINEERING_DECISION
+- TEST_RESULT
+
+status:
+- VERIFIED
+- PROPOSED
+- UNRESOLVED
+- FAILED
+- SUPERSEDED
+
+
+Every new material canonical record should include, where applicable:
+- record ID;
+- kind;
+- status;
+- claim or decision;
+- evidence;
+- scope;
+- observed_at / effective_at;
+- acceptance criterion;
+- supersedes / superseded_by;
+- reasoning for any changed decision.
+
+### Canonical supersession record CS-0001
+
+kind: ENGINEERING_DECISION
+status: VERIFIED
+effective_at: 21 Sep 2026, 23:23 IST
+supersedes: the earlier use of evidence classes as a combined fact/status taxonomy.
+
+Decision: claim type and claim status are separate dimensions. The earlier evidence-class list remains preserved above as historical project state, but new records use the orthogonal kind/status model defined here.
+
+Reason: REQUIREMENT, SOURCE_FACT, ENVIRONMENT_FACT, ENGINEERING_DECISION and TEST_RESULT describe what a claim is. VERIFIED, PROPOSED, UNRESOLVED, FAILED and SUPERSEDED describe its state. Mixing these dimensions prevents precise lifecycle tracking.
+
+### Canonical supersession record CS-0002
+
+kind: ENGINEERING_DECISION
+status: VERIFIED
+effective_at: 21 Sep 2026, 23:23 IST
+supersedes: any reading of source-linked Migration Review as the already-selected post-baseline improvement.
+
+Decision: source-linked Migration Review is a CANDIDATE improvement only. The final improvement will be selected after required Hive product exploration and the baseline expose a concrete customer problem worth solving.
+
+Reason: the assignment requires the baseline first and then one improvement that matters to this customer. Choosing the improvement before product evidence would violate the project's evidence-before-decision rule.
+
+
+### Canonical supersession record CS-0003
+
+kind: ENGINEERING_DECISION
+status: VERIFIED
+effective_at: 21 Sep 2026, 23:23 IST
+supersedes: any gate wording that makes genuine Export B mandatory for completing Hive's required baseline.
+
+Decision: Export B remains an early adversarial validation control, not an assignment-mandated input and not a blocker to beginning or completing work that can be honestly established from Export A. If B is obtained, exercise it before polish. If B cannot be obtained, record that limitation and do not claim broad same-format compatibility beyond demonstrated evidence.
+
+Reason: Hive states that another same-format export may be tried; it does not require us to possess a second export. Our control must strengthen the assignment rather than create an invented requirement.
+
+### Canonical supersession record CS-0004
+
+kind: ENGINEERING_DECISION
+status: VERIFIED
+effective_at: 21 Sep 2026, 23:23 IST
+supersedes: the earlier singular wording under Immediate next evidence that named only Export A.
+
+Decision: G0 has two mandatory evidence tracks that can proceed in parallel:
+A. required Hive hands-on journey: sample inspection, publish report, try template-import workflow, capture dated observations;
+B. genuine Spectora Export A: preserve original, record provenance, checksum, and inspect actual bytes.
+
+Reason: both are explicit assignment requirements. Possessing Export A does not prove Hive exploration, and Hive exploration does not establish the source contract.
+
+### Canonical supersession record CS-0005
+
+kind: ENGINEERING_DECISION
+status: VERIFIED
+effective_at: 21 Sep 2026, 23:23 IST
+
+Decision: fidelity evaluation has two independent layers:
+1. full-file physical coverage ledger, proving every populated physical source unit received an explicit disposition;
+2. small manually established semantic reference fixture, proving expected hierarchy, order, content, rich-content semantics and corruption detection for the checked subset.
+
+Reason: a small gold fixture can prove semantic correctness for its tested subset but cannot by itself prove that an entire source sheet, field, region or populated unit was not omitted before fixture construction.
+
+### Canonical observation record CS-0006
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 21 Sep 2026, 23:23 IST
+
+Claim: repository HEAD was 3e94402 on branch master; working tree was clean; no Git remote was configured. Six reachable local commits existed. Repository contents remained documentation/discovery only, with no importer implementation and no Spectora export present in the repository.
+
+Evidence: direct git and filesystem inspection through the authenticated desktop connection.
+Scope: local repository at C:\Users\marke\hive-inspect-fde only.
