@@ -386,3 +386,17 @@ Evidence: user-provided screenshot of `next.spectora.com/trial-boarding/v2/addit
 Scope: visible onboarding UI state only. This does not prove Spectora categorically rejects international users or that support cannot enable an alternate signup path.
 
 Consequence: G0-B is temporarily blocked at account onboarding. Do not fabricate a US phone number. Resolve the supported international signup path with Spectora or use another legitimate path provided by Spectora before continuing.
+
+
+### Canonical observation record CS-0016
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 21 Sep 2026, 23:44 IST
+
+Claim: Spectora's in-product support AI agent responded that the documented free-trial path is the standard website signup flow requiring a phone number and that its documentation does not list an alternative international signup path or special trial enablement process. The agent then asked for more detail about what happens when the operator enters a +91 number.
+
+Evidence: user-provided support transcript in the active conversation.
+Scope: this records what Spectora's AI support agent stated. It is not treated as a verified human support determination that international signup is unsupported.
+
+Consequence: G0-B remains blocked. The next evidence-seeking action is to state the concrete UI failure (fixed +1 mask / inability to enter +91) and request either a supported international-number method or escalation to a human support agent.
