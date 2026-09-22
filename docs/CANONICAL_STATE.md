@@ -1772,3 +1772,16 @@ First execution exposed a real pre-commit script compatibility defect: top-level
 Post-correction verification: `npm test` 28/28 GREEN, `npm run lint` GREEN, `npm run build` GREEN, canonical append-only verification GREEN, and `git diff --check` GREEN.
 
 Decision consequence: hosted B9 can now use one database credential (`DATABASE_URL`), apply the committed migration, run `npm run seed:review` once, then deploy. Production Supabase/Vercel authorization and the public-URL acceptance test remain OPEN.
+### Canonical hosted-security record CS-0096
+
+kind: SECURITY_GATE_RESULT
+status: VERIFIED
+observed_at: 22 Sep 2026, 15:48 IST
+
+Operator explicitly approved enabling Row Level Security on all six hosted public tables. The hosted Supabase migration was applied to project `xulnytlnryatzwczzcxd`.
+
+Post-change verification: `public.templates`, `public.sections`, `public.items`, `public.comments`, `public.import_runs`, and `public.import_warnings` all report `rls_enabled=true`. The prior critical `rls_disabled_in_public` advisor finding is gone. Supabase now reports only INFO-level `rls_enabled_no_policy` findings for those six tables.
+
+Interpretation: no anon/authenticated Data API policy has been granted, so the public API surface is deny-by-default. This matches the application architecture because the deployed app uses only a server-side Postgres `DATABASE_URL`; no browser-side Supabase key is required.
+
+Decision consequence: hosted schema security is GREEN for the current architecture. B9 remains blocked only on provisioning the hosted Postgres connection string into Vercel and seeding the hosted database, followed by production deployment and fresh-browser acceptance.
