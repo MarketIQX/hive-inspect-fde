@@ -165,3 +165,17 @@ export async function listTemplates(): Promise<{ id: string; name: string; creat
   );
   return res.rows.map((r) => ({ id: r.id, name: r.name, createdAt: r.created_at }));
 }
+
+/** Returns the most recently imported (not merely duplicated) template. */
+export async function getLatestImportedTemplateId(): Promise<string | null> {
+  const pool = getPool();
+  const res = await pool.query<{ template_id: string }>(
+    `select ir.template_id
+     from import_runs ir
+     where ir.template_id is not null
+       and ir.outcome in ('SUCCESS', 'COMPLETED_WITH_ISSUES')
+     order by ir.created_at desc
+     limit 1`
+  );
+  return res.rows[0]?.template_id ?? null;
+}

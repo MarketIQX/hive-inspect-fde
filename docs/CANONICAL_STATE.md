@@ -1744,3 +1744,16 @@ Post-action verification: GitHub reports repository visibility `PRIVATE`, defaul
 Security context: this push followed CS-0092's pre-push tracked-file, Git-history secret-pattern, large-file, .gitignore, and fixture-PII heuristic checks. Reviewer access has not yet been granted because no Hive reviewer GitHub identity has been provided; that remains an explicit submission step for this private repository.
 
 Decision consequence: the assignment's repository delivery surface now exists and preserves the meaningful development history. B9 remains OPEN until hosted Supabase and Vercel deployment are verified and the live app is seeded/opened on an imported template.
+### Canonical live-entrypoint preparation record CS-0094
+
+kind: IMPLEMENTATION_GATE
+status: VERIFIED_LOCAL
+observed_at: 22 Sep 2026, 15:19 IST
+
+Assignment re-check requires the live URL to open on an imported template. The existing root page only offered links to Import and View templates, so a deployed reviewer would not satisfy that requirement by default.
+
+Change: root `/` is now dynamic. It queries the latest successful/completed import_run and redirects directly to that imported template. On an empty database it falls back to `/import`. Duplicated templates are not chosen as the landing record because the lookup is anchored on import_runs, not template creation time.
+
+Verification: after the change `npm test` passed 28/28, `npm run lint` passed, `npm run build` passed, canonical append-only verification remained GREEN, and `git diff --check` passed. This is only local verification; the production/public URL landing behavior remains UNVERIFIED until B9 deployment and seeding are complete.
+
+Decision consequence: keep this small requirement-shaped change; do not add a separate seed-at-startup mechanism that could overwrite reviewer edits. Production seeding should occur once through the real importer against the hosted database, after which `/` opens that persisted import.
