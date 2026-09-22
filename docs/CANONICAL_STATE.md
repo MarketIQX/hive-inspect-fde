@@ -1673,3 +1673,19 @@ Full suite: 28/28 tests passing, lint clean, `tsc --noEmit` clean, `next build` 
 Scope not yet covered: B7 is materially covered already (malformed-workbook → visible `FAILED` with zero content, CS-0080/CS-0086; DB-constraint failure → whole-transaction rollback with zero partial templates, CS-0087) but has not been re-stated as its own closed gate. B9 (public deployment) and B10 (README/NOTES finalization, walkthrough video) remain and require the operator: a hosted Supabase project and Vercel account/authorization for B9, and the operator's own voice/camera for the video — both are explicit CS-0078/CS-0081 stop-for-credentials conditions.
 
 Decision consequence: B5/B6/B8 are GREEN. B7 is treated as satisfied by existing evidence; the next gate requiring operator input is B9 (deployment credentials).
+
+### Canonical CTO review record CS-0089
+
+kind: GATE_REVIEW
+status: VERIFIED
+observed_at: 22 Sep 2026, 14:40 IST
+
+Independent review of HEAD `4b3f919` confirms: working tree clean before this record; `npm test` passes 28/28 across seven test files; `npm run lint` passes; `npm run build` passes; local Supabase development stack is running; B4 persistence, B5 edit/save/re-read, B6 independent deep copy, and B8 persistent Preservation Report all have automated DB tests and corresponding implementation routes/pages.
+
+Submission blocker found: README.md is stale. Its Current state still says `Edit and copy UI, and deployment, are not wired up yet`, even though B5/B6 are implemented and verified. This must be corrected before submission. The Stack line also says `deployed on Vercel` even though no public deployment exists yet; wording must distinguish intended/target deployment from completed deployment until B9 is actually GREEN.
+
+Hard gates still OPEN and required by the assignment: B9 hosted Supabase + public deployed URL, migration applied remotely, live app seeded with an already-imported template and opening into an explorable imported template; B10 walkthrough video in AK's own voice showing import, saved edit, independent copy, repo, data model, preservation checks, decisions/cuts, hard case, failure case, and Hive feedback. Final README must include accurate hosted setup/access instructions and NOTES must be updated so its status is not stale after deployment/video.
+
+Scope decision: the known presentation-only `&amp;` label decode gap may remain documented as a limitation if time is critical; it does not invalidate storage fidelity or the assignment baseline. Do not delay deployment for cosmetic polish unless it harms reviewer usability.
+
+Decision consequence: do not submit directly from commit 4b3f919. First make a small documentation-consistency commit locally, then complete B9 and B10, run the full final verification matrix from a fresh browser against the public URL, update README/NOTES to final-state truth, and only then prepare the submission message.
