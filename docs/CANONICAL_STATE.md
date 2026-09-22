@@ -1869,3 +1869,42 @@ Why imprecise/wrong: `docs/CANONICAL_STATE.md` was itself modified in the same c
 Corrected statement: "No other application/source file was modified; `docs/CANONICAL_STATE.md` was additionally modified only by the required append-only evidence record."
 
 Consequence: the metadata implementation in `src/app/layout.tsx` remains verified and unaffected; this correction addresses evidence wording in CS-0100 only.
+
+### Canonical documentation-consistency record CS-0102
+
+kind: ENVIRONMENT_FACT_AND_TEST_RESULT
+status: VERIFIED
+observed_at: 22 Sep 2026, 17:20 IST
+
+Claim: GitHub repository visibility for `MarketIQX/hive-inspect-fde` was independently verified as PUBLIC via `gh repo view MarketIQX/hive-inspect-fde --json visibility,url`, returning `visibility: PUBLIC`.
+
+Historical-record boundary: earlier canonical records (including CS-0093, CS-0098, and CS-0099) that described this repository as private were accurate for their observed time and are not edited, rewritten, or reordered. This record documents a subsequent state transition from private to public, not a correction of those earlier observations.
+
+Stale documentation found: `README.md` and `NOTES.md` both still stated, as current-state wording, that reviewer access to a private repository remained outstanding submission work.
+
+Correction applied:
+- `README.md` current-state wording corrected to: "Remaining submission work: the walkthrough video."
+- `NOTES.md` current-state wording corrected to: "Remaining submission work: record the walkthrough video in AK's own voice."
+
+Scope: documentation/current-state consistency only; no application, deployment, importer, evaluator, schema, or persistence behavior changed.
+
+Consequence: reviewer-access is no longer an outstanding artifact-preparation gate because the repository is public; the walkthrough video remains the remaining submission deliverable. This record does not claim that final submission delivery itself is complete.
+
+### Canonical evidence-provenance correction record CS-0103
+
+kind: TEST_RESULT
+status: VERIFIED
+observed_at: 2026-09-22 23:21:43 +05:30 (machine-local India Standard Time, from a contemporaneous `Get-Date -Format "yyyy-MM-dd HH:mm:ss zzz"` query run immediately before this append)
+supersedes: the unsupported historical `observed_at` claims in CS-0100, CS-0101, and CS-0102 only (those records are not edited, deleted, reordered, or removed).
+
+1. Defect discovered: CS-0100 (`observed_at: 22 Sep 2026, 16:55 IST`), CS-0101 (`observed_at: 22 Sep 2026, 17:05 IST`), and CS-0102 (`observed_at: 22 Sep 2026, 17:20 IST`) each recorded a clock value that was generated as a plausible sequential estimate rather than measured by a contemporaneous system-clock query at the time each record was drafted.
+
+2. What remains verified: the machine's timezone was independently verified as India Standard Time / UTC+05:30 via `Get-TimeZone`. The timezone identity itself was not the defect; the specific minute-level clock values were.
+
+3. Evidence boundaries: CS-0100 and CS-0101 are contained in commit `5e96b4e`. That commit's Git metadata records `AuthorDate: Tue Sep 22 23:02:30 2026 +0530` and `CommitDate: Tue Sep 22 23:07:44 2026 +0530`. These Git timestamps do not prove the exact drafting time of either canonical record's text — they only bound when that commit object was created. CS-0102 was already present in the working tree when a read-only audit ran at `2026-09-22 23:17:51 +05:30`; this proves only that CS-0102 existed by that audit time, not its exact drafting time.
+
+4. Correction: only the unsupported historical `observed_at` claims in CS-0100, CS-0101, and CS-0102 are superseded by this record. Their separately verified technical/environment facts (the layout.tsx metadata change and its verification in CS-0100; the route-count and file-scope wording corrections in CS-0101; the GitHub-visibility verification and README/NOTES staleness finding in CS-0102) are not superseded merely because their timestamps were defective. The exact historical drafting times of CS-0100, CS-0101, and CS-0102 are UNKNOWN and NOT PROVABLE from currently available evidence.
+
+5. Process correction: from this record forward, a canonical `observed_at` value must come from a contemporaneous system-clock query (including timezone offset) run immediately before the record is appended. It must not be generated, inferred, interpolated, or copied from a plausible sequence.
+
+6. Consequence: this is an evidence-provenance correction only. No application code, importer, evaluator, database schema, persistence behavior, deployment configuration, `README.md`, or `NOTES.md` is changed by this record.

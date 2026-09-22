@@ -12,9 +12,9 @@ Production acceptance verified the real Spectora import (392/392), persistence,
 the Preservation Report, independent duplication, an edit surviving a fresh
 public read while the original remained unchanged, and a malformed-upload
 failure that created no partial template/import run. **Remaining submission
-work:** record the walkthrough video in AK's own voice and grant Hive reviewer
-access to the private GitHub repository. See `docs/CANONICAL_STATE.md` for
-the full evidence trail; this file is the submission-facing summary.
+work:** record the walkthrough video in AK's own voice. See
+`docs/CANONICAL_STATE.md` for the full evidence trail; this file is the
+submission-facing summary.
 
 ## Supported input
 

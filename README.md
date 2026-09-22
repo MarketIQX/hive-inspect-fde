@@ -10,9 +10,8 @@ editing section/item names and comment text with a proven save/reload path,
 independent template duplication, and a persistent Preservation Report (the
 chosen customer improvement). The production deployment is live and seeded
 with the real Spectora fixture. Remaining submission work: the walkthrough
-video and granting reviewer access to the private GitHub repository. See
-`docs/CANONICAL_STATE.md` for the full evidence trail and `NOTES.md` for
-cuts/limitations.
+video. See `docs/CANONICAL_STATE.md` for the full evidence trail and
+`NOTES.md` for cuts/limitations.
 
 ## Stack
 
