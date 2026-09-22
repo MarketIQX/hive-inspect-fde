@@ -1217,3 +1217,36 @@ Additional observation: the `You have unsaved changes` banner remains present de
 Next evidence target: source rows under `Exterior > Siding, Flashing & Trim` total 12. Their first observed source comments in order are `Siding Material` (info), `Cracking - Major` (defect), `Cracking - Minor` (defect), `Evidence of Water Intrusion` (defect), and `Flashing/Trim Improperly Installed` (defect).
 
 Decision consequence: open `Siding, Flashing & Trim` only and inspect Hive's imported field/comment list before any mutation or save.
+
+
+### Canonical verification record CS-0066
+
+kind: TEST_RESULT
+status: VERIFIED
+observed_at: 22 Sep 2026, 11:33 IST
+
+Claim: Hive's imported `Exterior > Siding, Flashing & Trim` subsection contains exactly `1` Information field, `0` Limitation fields, and `11` Defect/Deficiency fields, for a total of `12` fields.
+
+Independent source check: the preserved Spectora export contains exactly 12 rows for `Exterior > Siding, Flashing & Trim`, with type distribution `1 info`, `0 limit`, `11 defect`.
+
+Observed Hive names/order match the source sequence:
+1 `Siding Material` (Information)
+2 `Cracking - Major`
+3 `Cracking - Minor`
+4 `Evidence of Water Intrusion`
+5 `Flashing/Trim Improperly Installed`
+6 `Hail Damage - Major`
+7 `Hail Damage - Minor`
+8 `Improper Construction Practices`
+9 `Loose Boards`
+10 `Paint Needed`
+11 `Splitting`
+12 `Warping/Buckling`
+
+Normalization observed: the source value `Flashing/Trim Improperly Installed ` contains a trailing space; Hive displays it without the trailing space. This is a normalization/transformation and is recorded explicitly rather than treated as byte-for-byte textual preservation.
+
+Additional source facts for the next semantic check: `Siding Material` is source type `info`, answer type `checkbox`, with 16 comma-separated options: `Stucco, Brick Veneer, Asphalt, Fiber Cement, Wood, Shingles, Masonry, Brick, Logs, Vinyl, Stone Veneer, Plastic, Metal, Engineered Wood, Concrete, Stone`.
+
+The unexplained `You have unsaved changes` banner remains present without an intentional operator edit. Do not save it.
+
+Decision consequence: inspect `Siding Material` next by opening the field itself, not an edit/delete/duplicate action, and verify whether Hive preserved the checkbox answer type and all 16 options.
