@@ -570,3 +570,17 @@ Evidence: user-provided screenshot in the active conversation.
 Scope: screenshot-visible onboarding state only. This does not yet prove successful account creation, dashboard access, sample inspection completion, report publication, or template-import behavior.
 
 Consequence: selecting Spectora in the Current Software field is the evidence-aligned onboarding choice for this assignment because the required migration source is Spectora. The next step is to complete signup legitimately, then perform the assignment-mandated Hive hands-on journey before production parser/schema work.
+
+
+### Canonical clarification record CS-0031
+
+kind: ENGINEERING_DECISION
+status: VERIFIED
+effective_at: 22 Sep 2026, 09:22 IST
+supersedes: the earlier vague instruction to "continue/finish signup".
+
+Decision: on the currently observed Hive signup step 2 screen, after selecting `Spectora` in Current Software and accepting the Terms/Privacy checkbox if the operator agrees, the correct form-submission action is the blue `Get my 5 free reports` button at the bottom of the form.
+
+Reason: the prior wording was insufficiently precise for the visible UI. The operator asked for exact next-click guidance. This clarification records the concrete control visible on the observed signup page rather than paraphrasing it.
+
+Scope: the signup screen already observed in the active conversation. If the button label or page changes, that changed UI state must be observed before giving different click instructions.
