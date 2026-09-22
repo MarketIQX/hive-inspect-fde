@@ -1650,3 +1650,26 @@ Full suite: 24/24 tests passing, lint clean, `tsc --noEmit` clean, `next build` 
 Scope not yet covered: edit (section/item/comment name and comment-text save with persisted-after-reload proof), independent deep copy, and any cloud/production Supabase project. Cloud credentials remain deferred to the deployment gate (CS-0081/CS-0082).
 
 Decision consequence: B4 is GREEN. Proceed to B5 (edit) and B6 (independent copy), both achievable against the local database without new credentials, per CS-0079/CS-0085's build order.
+
+
+### Canonical verification record CS-0088
+
+kind: TEST_RESULT
+status: VERIFIED
+observed_at: 22 Sep 2026, 14:35 IST
+
+Claim: B5 (edit), B6 (independent copy), and B8 (the one customer improvement) are implemented and verified, both by automated tests against local Postgres and live against a production build (`next build` + `next start`, not `next dev`, to avoid dev-mode HMR timing noise in browser automation).
+
+B5 — edit: `PATCH /api/sections/[id]`, `/api/items/[id]`, `/api/comments/[id]` update `sections.name`, `items.name`, `comments.raw_text` respectively (the assignment's three editable fields — not comment name). `EditableField` (client) distinguishes idle/dirty/saving/saved/error states and keeps the draft on failure rather than discarding it. `tests/db.edit.test.ts` edits all three field types then re-reads via a fresh `getTemplate` query and confirms the new values, with the rest of the template unchanged. Live: edited `Cracking - Major`'s text in a real browser, watched Unsaved → Saving → Saved, then confirmed via a separate `curl` request that the new text is served from the database.
+
+B6 — independent copy: `POST /api/templates/[id]/duplicate` (`src/lib/db/duplicate-template.ts`) deep-copies the full section/item/comment graph into new rows with new ids in one transaction, recording lineage via `templates.copied_from_template_id`. `tests/db.copy.test.ts` asserts new ids throughout with identical content/counts, then edits only the copy (a section name and a comment's text) and re-reads both templates fresh: original unchanged, copy changed. Live: duplicated the real persisted template, edited the copy's `Cracking - Major` text, saved, and confirmed via independent `curl` requests that the copy shows the new text while the original (already carrying its own earlier B5 edit) shows zero trace of it.
+
+Incidental fix found while doing the live B6 check: `EditableTemplateView` was mounting every section's editable fields at once (474+ controlled inputs for this fixture), which made the page heavy enough that browser-automation clicks intermittently landed on stale elements. This is a genuine usability concern, not just an automation artifact — a real user would face the same weight. Fixed by only rendering a section's fields while it is expanded (tracked via React state on `<details>`'s `onToggle`), verified by rerunning the full suite/build and repeating the live B6 check cleanly afterward.
+
+B8 — preservation report (chosen improvement): reads `import_runs`/`import_warnings` (persisted since B4) via `getLatestImportRun` and renders outcome, source-vs-imported counts, and the full warning list grouped by code, on the template's own page — available any time the template is viewed, not only in the upload response. Reasoning recorded in the commit: the customer's core switching fear is losing years of template tuning, so making preservation evidence durable and revisitable is the concrete value, directly following the assignment's explicit "make skipped/unsupported content visible" and "distinguish information missing from the export from information your importer does not support" requirements (the warning codes already carry that distinction: e.g. blank-source-field silence vs. `UNKNOWN_COMMENT_TYPE`/`UNCERTAIN_OPTION_SPLIT`). Duplicated templates correctly show no report section, since a copy has no `import_runs` row of its own. `tests/db.preservation-report.test.ts` confirms the read-back matches the real import and that a nonexistent template id returns null. Live: renders `SUCCESS` / "No exceptions" for the original template against a production build.
+
+Full suite: 28/28 tests passing, lint clean, `tsc --noEmit` clean, `next build` clean.
+
+Scope not yet covered: B7 is materially covered already (malformed-workbook → visible `FAILED` with zero content, CS-0080/CS-0086; DB-constraint failure → whole-transaction rollback with zero partial templates, CS-0087) but has not been re-stated as its own closed gate. B9 (public deployment) and B10 (README/NOTES finalization, walkthrough video) remain and require the operator: a hosted Supabase project and Vercel account/authorization for B9, and the operator's own voice/camera for the video — both are explicit CS-0078/CS-0081 stop-for-credentials conditions.
+
+Decision consequence: B5/B6/B8 are GREEN. B7 is treated as satisfied by existing evidence; the next gate requiring operator input is B9 (deployment credentials).
