@@ -1198,3 +1198,22 @@ Order check: the visible Hive sidebar order begins `Inspection Details`, `Exteri
 Critical observation: Hive displays `You have unsaved changes` immediately after opening the newly imported template, even though the operator has made no intentional edit. Do not click `Save Changes` until the cause/scope of this dirty state is understood.
 
 Decision consequence: continue structural inspection without mutation. Expand `Exterior` in the left sidebar and inspect its imported subsections/items; do not save, rename, reorder, duplicate, or edit anything yet.
+
+
+### Canonical verification record CS-0065
+
+kind: TEST_RESULT
+status: VERIFIED
+observed_at: 22 Sep 2026, 11:28 IST
+
+Claim: expanding Hive's imported `Exterior` section reveals seven subsections in this order: `General`, `Siding, Flashing & Trim`, `Exterior Doors`, `Decks, Balconies, Porches & Steps`, `Eaves, Soffits & Fascia`, `Walkways, Patios & Driveways`, and `Vegetation, Grading, Drainage & R...`.
+
+Independent source check: the preserved Spectora export contains the same seven ordered (Section Name, Item Name) pairs under `Exterior`, with the final full source value `Vegetation, Grading, Drainage & Retaining Walls`.
+
+Acceptance result: Exterior subsection parent mapping and visible order match the source for all seven entries. The final label is truncated visually in Hive, so full-string equality for that one entry is not yet claimed from the screenshot alone.
+
+Additional observation: the `You have unsaved changes` banner remains present despite no intentional user edit. This dirty-state remains unexplained and must not be persisted blindly.
+
+Next evidence target: source rows under `Exterior > Siding, Flashing & Trim` total 12. Their first observed source comments in order are `Siding Material` (info), `Cracking - Major` (defect), `Cracking - Minor` (defect), `Evidence of Water Intrusion` (defect), and `Flashing/Trim Improperly Installed` (defect).
+
+Decision consequence: open `Siding, Flashing & Trim` only and inspect Hive's imported field/comment list before any mutation or save.
