@@ -3,13 +3,18 @@
 ## Status at this snapshot
 
 Baseline import → persist → edit → independent copy, plus one customer
-improvement (the preservation report), are built, tested, and verified live
-against a running app on local Supabase/Postgres. **Not yet done:** a
-deployed public URL, hosted Supabase, and the walkthrough video — all three
-need things only the operator (AK) can provide (a Vercel account, a hosted
-Supabase project, and AK's own voice/camera). See `docs/CANONICAL_STATE.md`
-CS-0079 through CS-0088 for the full evidence trail; this file is the
-submission-facing summary.
+improvement (the Preservation Report), are built, tested, and deployed against
+hosted Supabase/Postgres on Vercel.
+
+Production URL: https://hive-inspect-fde.vercel.app
+
+Production acceptance verified the real Spectora import (392/392), persistence,
+the Preservation Report, independent duplication, an edit surviving a fresh
+public read while the original remained unchanged, and a malformed-upload
+failure that created no partial template/import run. **Remaining submission
+work:** record the walkthrough video in AK's own voice and grant Hive reviewer
+access to the private GitHub repository. See `docs/CANONICAL_STATE.md` for
+the full evidence trail; this file is the submission-facing summary.
 
 ## Supported input
 
@@ -54,9 +59,13 @@ stripping any parenthetical suffix, so column order doesn't matter):
   generalization tests, but there's no real-world example to confirm
   against. Documented as `UNRESOLVED` in `docs/SOURCE_CONTRACT.md`, not
   silently assumed safe.
-- **Deployment and video are not done.** Both need the operator: a
-  Vercel project and a hosted Supabase project (this repo intentionally
-  contains zero cloud credentials), and AK's own recorded walkthrough.
+- **Authentication was deliberately not added to the reviewer demo.** The
+  brief asks for a public URL reviewers can explore; adding an auth layer would
+  add setup friction without improving the scored import/edit/copy workflow.
+  Supabase's browser-facing Data API is deny-by-default through RLS with no
+  public policies; application writes go only through the server-side Postgres
+  connection. The walkthrough video remains the only unfinished product
+  deliverable.
 
 ## How the work was checked
 

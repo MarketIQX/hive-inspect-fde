@@ -8,15 +8,17 @@ Current state: the full baseline is implemented and verified — deterministic
 import with an independent evaluator, real Supabase Postgres persistence,
 editing section/item names and comment text with a proven save/reload path,
 independent template duplication, and a persistent Preservation Report (the
-chosen customer improvement). Not yet done: a public deployment and the
-walkthrough video. See `docs/CANONICAL_STATE.md` for the full evidence trail
-and `NOTES.md` for cuts/limitations.
+chosen customer improvement). The production deployment is live and seeded
+with the real Spectora fixture. Remaining submission work: the walkthrough
+video and granting reviewer access to the private GitHub repository. See
+`docs/CANONICAL_STATE.md` for the full evidence trail and `NOTES.md` for
+cuts/limitations.
 
 ## Stack
 
-Next.js + TypeScript + Supabase Postgres. Target deployment: Vercel (per the
-assignment's stated defaults) — not yet deployed; this section will be
-updated with the live URL once it is.
+Next.js + TypeScript + Supabase Postgres, deployed on Vercel.
+
+Live app: https://hive-inspect-fde.vercel.app
 
 ## Source of truth documents
 
@@ -95,10 +97,11 @@ does not require browser-side Supabase keys. For local development, use the
 `DB_URL` shown by `npx supabase status`. To reset the local database to a
 clean schema: `npx supabase db reset`.
 
-For a hosted Supabase project, apply
-`supabase/migrations/20260922080000_initial_schema.sql` to the hosted
-database and set that project's Postgres connection string as
-`DATABASE_URL` in Vercel. No credentials are committed to this repo.
+For a hosted Supabase project, apply the migrations in
+`supabase/migrations/` in order and set the project's Transaction-pooler
+Postgres connection string as `DATABASE_URL` in Vercel. The hosted reviewer
+deployment uses Supabase RLS with no public Data API policies; the app connects
+server-side through Postgres. No credentials are committed to this repo.
 
 To seed the reviewer environment once through the same deterministic importer
 used by the UI:

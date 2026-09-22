@@ -1794,3 +1794,24 @@ observed_at: 22 Sep 2026, 15:50 IST
 Vercel project linking created local `.vercel/` metadata and refreshed `.env.local` with project-scoped local values. `.gitignore` was updated to ignore `.vercel` and `.env*`, preventing deployment metadata and local environment secrets from being newly committed. Existing tracked `.env.example` remains tracked because Git ignore rules do not untrack an already tracked file.
 
 Decision consequence: commit the ignore-rule change as deployment hygiene. No credentials or Vercel metadata are added to Git.
+### Canonical production-deployment and acceptance record CS-0098
+
+kind: DEPLOYMENT_AND_ACCEPTANCE_RESULT
+status: VERIFIED
+observed_at: 22 Sep 2026, 16:24 IST
+
+Production deployment completed on Vercel at `https://hive-inspect-fde.vercel.app` using the linked `ak-sharma/hive-inspect-fde` project in `iad1`. The hosted Supabase project `xulnytlnryatzwczzcxd` is in `us-east-1`; Vercel `DATABASE_URL` is stored as a Production Secret and was not printed or committed.
+
+Important correction: an initial attempt to use `vercel env run -e production` appeared to execute `npm run seed:review`, but Vercel Secret values cannot be pulled into a local command. Because the local `.env.local` was present, that apparent seed hit the local database, not hosted Supabase. This was detected by querying hosted Supabase directly, which still showed zero rows. The misleading local result is explicitly rejected as production evidence.
+
+Hosted seeding was then performed through the deployed application's actual production import endpoint using the committed Spectora fixture. The public POST returned `SUCCESS`, `sourceRowCount=392`, `importedRowCount=392`, zero warnings, and persisted template id `685c0a3f-0a68-40fe-83ef-76dd96333184`. Independent hosted-Supabase SQL immediately verified exactly 1 template / 13 sections / 69 items / 392 comments / 1 import_run / 0 warnings.
+
+Reviewer landing proof: before hosted data existed, public `/` returned 307 to `/import`; after the real production import it returned 307 to `/templates/685c0a3f-0a68-40fe-83ef-76dd96333184`. A fresh public GET of that template contained the expected `Residential Template-2026-09-21` name and `Preservation Report`.
+
+Independent-copy production proof: POSTing the public duplicate endpoint produced template `7f2e5b85-c4b0-4719-8a2a-44bc667c3cc8` with independent section/item/comment rows and `copied_from_template_id` pointing at the original. The copy's first section was PATCHed to `Inspection Details (acceptance copy)`. A fresh public GET of the copy showed that persisted edit; a fresh public GET of the original did not contain the edited name. Hosted SQL independently confirmed the original first section remained `Inspection Details` while the copy held `Inspection Details (acceptance copy)`.
+
+Failure-case production proof: uploading a plain-text non-workbook to the public import endpoint returned `FAILED` with warning code `NOT_A_WORKBOOK`. Hosted SQL counts before and after remained 2 templates / 1 import_run, proving no partial template or failed import_run was persisted.
+
+Security/reproducibility consequence: the hosted RLS change is now represented by committed migration `20260922101823_enable_rls_public_tables.sql`, matching the migration already applied remotely. README and NOTES were updated to state the actual live URL and hosted status rather than the earlier pre-deployment state.
+
+Gate consequence: B9 is GREEN. Remaining submission gates are B10 walkthrough video in AK's own voice and granting Hive reviewer access to the private GitHub repository. Do not call the assignment fully submitted until those two actions are complete.
