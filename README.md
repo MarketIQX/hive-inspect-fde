@@ -4,10 +4,11 @@ Imports a Spectora "Export HTML Text" template spreadsheet into a structured,
 editable schema, preserving text, hierarchy, and ordering — the take-home
 assignment in `docs/assignment/`.
 
-Current state: baseline import engine (deterministic parser + independent
-evaluator) is built and tested locally. Persistence (Supabase), the edit/copy
-UI, and deployment are not wired up yet. See `docs/CANONICAL_STATE.md` for
-the full evidence trail and `NOTES.md` for cuts/limitations.
+Current state: import engine (deterministic parser + independent evaluator)
+and real Supabase Postgres persistence are built and tested, including a
+proven close/reopen path. Edit and copy UI, and deployment, are not wired up
+yet. See `docs/CANONICAL_STATE.md` for the full evidence trail and
+`NOTES.md` for cuts/limitations.
 
 ## Stack
 
@@ -33,7 +34,11 @@ src/lib/evaluator/            Independent evaluator: compares an import against 
 scripts/build-reference-manifest.ts  Builds evaluator ground truth via SheetJS — a
                                deliberately different library from the importer's own
                                reader, so the evaluator can't share the importer's bugs
-tests/                        vitest suite: known-good fixture + deliberate corruptions
+src/lib/db/                   Postgres persistence (pg pool, transactional import writer, reads)
+src/app/api/import/           Upload -> import -> persist route
+src/app/templates/            Template list + read-only detail pages (server components)
+supabase/migrations/          Schema (templates/sections/items/comments/import_runs/import_warnings)
+tests/                        vitest suite: known-good fixture, corruptions, generalization, persistence
 fixtures/source/              Committed Spectora export(s) used as input
 fixtures/reference/           Generated reference manifests (evaluator ground truth)
 ```
@@ -51,16 +56,27 @@ attachment, and changed comment text — not just that it passes on good data.
 
 ## Setup
 
+Requires Docker (for local Supabase) and Node 20+.
+
 ```bash
 npm install
-npm run test              # importer + evaluator test suite
-npm run reference:build   # regenerate fixtures/reference/*.manifest.json from a source file
-npm run dev                # http://localhost:3000
+npx supabase start        # starts local Postgres/Studio, applies supabase/migrations/*.sql, prints local keys/URL
+cp .env.example .env.local  # then paste in the values `supabase start` printed
+npm run test                # importer + evaluator + persistence test suite
+npm run dev                 # http://localhost:3000
 ```
 
-No environment variables or database are required yet for the import/evaluate
-path above. Supabase setup instructions will be added here once persistence
-(slice B4) lands — see `docs/CANONICAL_STATE.md` CS-0079 for the build order.
+`npx supabase start` prints fixed, publicly-documented local-dev demo keys
+(safe — they only work against `127.0.0.1`); paste `API_URL`/`ANON_KEY` into
+`NEXT_PUBLIC_SUPABASE_URL`/`NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SERVICE_ROLE_KEY`
+into `SUPABASE_SERVICE_ROLE_KEY`, and `DB_URL` into `DATABASE_URL`. To reset
+the local database to a clean schema: `npx supabase db reset`.
+
+For a hosted Supabase project (used for the deployed app), create a project
+at supabase.com, run the same migration against it (`npx supabase db push`
+or paste `supabase/migrations/*.sql` into its SQL editor), and use that
+project's own dashboard values in `.env.local` / your Vercel project's
+environment variables instead. No credentials are committed to this repo.
 
 ## Source material
 

@@ -2,14 +2,16 @@ import { NextRequest, NextResponse } from "next/server";
 import { createHash } from "crypto";
 import { importWorkbook } from "@/lib/importer/map-to-schema";
 import { NotAWorkbookError, WorkbookStructureError } from "@/lib/importer/read-workbook";
+import { persistImport } from "@/lib/db/persist-import";
 
 export const runtime = "nodejs";
 
 /**
- * Slice B3 scope: accept an upload, run the deterministic importer, and
- * return the full result (including warnings) for display. Nothing is
- * persisted yet — that lands with B4 (Supabase), which will extend this
- * same route rather than replace it.
+ * Accepts an upload, runs the deterministic importer, persists a
+ * SUCCESS/COMPLETED_WITH_ISSUES result as a new template (real backend,
+ * not browser storage), and returns the full result plus the new
+ * template's id. A FAILED import has no content to persist — nothing is
+ * written, matching "no misleading partial template."
  */
 export async function POST(request: NextRequest) {
   const formData = await request.formData();
@@ -31,7 +33,13 @@ export async function POST(request: NextRequest) {
       sourceFileName: file.name,
       sourceFileSha256: sha256,
     });
-    return NextResponse.json(result);
+
+    if (result.outcome === "FAILED") {
+      return NextResponse.json(result);
+    }
+
+    const { templateId } = await persistImport(result, file.name.replace(/\.(xlsx?|XLSX?)$/, ""));
+    return NextResponse.json({ ...result, templateId });
   } catch (err) {
     if (err instanceof NotAWorkbookError || err instanceof WorkbookStructureError) {
       return NextResponse.json(

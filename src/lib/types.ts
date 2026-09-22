@@ -84,6 +84,8 @@ export type ImportOutcome = "SUCCESS" | "COMPLETED_WITH_ISSUES" | "FAILED";
 
 export interface ImportResult {
   outcome: ImportOutcome;
+  /** Set only when a new template was actually persisted (not on FAILED). */
+  templateId?: string;
   sections: SourceSection[];
   warnings: ImportWarning[];
   sourceRowCount: number;

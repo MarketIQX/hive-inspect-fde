@@ -8,12 +8,20 @@ export default function Home() {
         Imports a Spectora &quot;Export HTML Text&quot; template spreadsheet into a
         structured, editable schema, preserving text, hierarchy, and ordering.
       </p>
-      <Link
-        href="/import"
-        className="inline-block bg-slate-900 text-white px-4 py-2 rounded"
-      >
-        Import a template
-      </Link>
+      <div className="flex gap-3">
+        <Link
+          href="/import"
+          className="inline-block bg-slate-900 text-white px-4 py-2 rounded"
+        >
+          Import a template
+        </Link>
+        <Link
+          href="/templates"
+          className="inline-block border px-4 py-2 rounded"
+        >
+          View templates
+        </Link>
+      </div>
     </main>
   );
 }

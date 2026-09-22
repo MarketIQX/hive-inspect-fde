@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import type { ImportResult, ImportWarning } from "@/lib/types";
 
 const OUTCOME_STYLE: Record<ImportResult["outcome"], string> = {
@@ -85,10 +86,17 @@ export default function ImportPage() {
 
       {result && (
         <section className="space-y-6">
-          <div
-            className={`border rounded px-4 py-3 inline-block font-medium ${OUTCOME_STYLE[result.outcome]}`}
-          >
-            {result.outcome}
+          <div className="flex items-center gap-4">
+            <div
+              className={`border rounded px-4 py-3 inline-block font-medium ${OUTCOME_STYLE[result.outcome]}`}
+            >
+              {result.outcome}
+            </div>
+            {result.templateId && (
+              <Link href={`/templates/${result.templateId}`} className="underline text-sm">
+                View saved template &rarr;
+              </Link>
+            )}
           </div>
 
           <dl className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
