@@ -702,3 +702,17 @@ What was missed: the page had already exposed a dedicated `Select Service` contr
 What this test did prove: Hive's server/client validation explicitly requires at least one service before saving. The failed submission is now valid negative evidence, but it should have been framed as a deliberate validation probe rather than an expected minimum-success path.
 
 Next action: choose an inspection service from the dropdown, observe the resulting service/pricing/template state, and only then proceed.
+
+
+### Canonical observation record CS-0040
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 09:40 IST
+
+Claim: the Hive `Choose an inspection service` dropdown currently exposes one visible option: `Demo Home Inspection` priced at `$450.00`.
+
+Evidence: user-provided screenshot in the active conversation.
+Scope: screenshot-visible dropdown state only. The displayed $450 amount is service pricing; this screenshot does not prove that selecting the service will charge the operator or that payment is required at this step.
+
+Decision consequence: select `Demo Home Inspection` because it is the only observed service option and is explicitly a demo service. After selection, inspect the Pricing Summary and any newly revealed controls before clicking `Confirm Inspection`. Do not assume the displayed price causes a charge.
