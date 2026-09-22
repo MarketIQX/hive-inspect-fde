@@ -1176,3 +1176,25 @@ Acceptance result: Hive accepted the Spectora workbook and created a template re
 Critical scope limitation: import acceptance is NOT equivalent to faithful preservation. The current screen does not prove section/item/comment counts, hierarchy, ordering, rich text, links, unsupported/skipped content, or copy/edit persistence. No import summary or loss report is visible in the supplied post-import state.
 
 Decision consequence: click the newly imported `Residential Template-2026-09-21` entry only. Do not edit, rename, duplicate, or delete anything yet. The next gate is structural inspection of Hive's imported result before any mutation.
+
+
+### Canonical verification record CS-0064
+
+kind: TEST_RESULT
+status: VERIFIED
+observed_at: 22 Sep 2026, 11:26 IST
+
+Claim: Hive's imported template overview reports `13 Sections`, `69 Subsections`, and `392 Fields`.
+
+Independent source check of the preserved Spectora export:
+- data rows: `392`
+- ordered unique Section Name values: `13`
+- ordered unique (Section Name, Item Name) pairs: `69`
+
+Interpretation: at the coarse structural-count level, Hive's imported result exactly matches the source export: 13 section groups, 69 section-scoped item/subsection groups, and 392 row/field records. The source has only 61 unique Item Name strings globally because names such as `General` recur under multiple sections; therefore 69 section-item pairs, not 61 global strings, is the correct comparator to Hive's subsection count.
+
+Order check: the visible Hive sidebar order begins `Inspection Details`, `Exterior`, `Roof`, `Basement, Foundation, Cr...`, `Heating`, `Cooling`, `Plumbing`, `Electrical`, `Fireplace`, `Attic, Insulation & Ventilation`; this matches the first ten ordered source sections. The source uses HTML entities such as `&amp;`; Hive visibly renders them as `&`, which is decoding/presentation, not evidence of structural loss.
+
+Critical observation: Hive displays `You have unsaved changes` immediately after opening the newly imported template, even though the operator has made no intentional edit. Do not click `Save Changes` until the cause/scope of this dirty state is understood.
+
+Decision consequence: continue structural inspection without mutation. Expand `Exterior` in the left sidebar and inspect its imported subsections/items; do not save, rename, reorder, duplicate, or edit anything yet.
