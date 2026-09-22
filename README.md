@@ -4,16 +4,19 @@ Imports a Spectora "Export HTML Text" template spreadsheet into a structured,
 editable schema, preserving text, hierarchy, and ordering — the take-home
 assignment in `docs/assignment/`.
 
-Current state: import engine (deterministic parser + independent evaluator)
-and real Supabase Postgres persistence are built and tested, including a
-proven close/reopen path. Edit and copy UI, and deployment, are not wired up
-yet. See `docs/CANONICAL_STATE.md` for the full evidence trail and
-`NOTES.md` for cuts/limitations.
+Current state: the full baseline is implemented and verified — deterministic
+import with an independent evaluator, real Supabase Postgres persistence,
+editing section/item names and comment text with a proven save/reload path,
+independent template duplication, and a persistent Preservation Report (the
+chosen customer improvement). Not yet done: a public deployment and the
+walkthrough video. See `docs/CANONICAL_STATE.md` for the full evidence trail
+and `NOTES.md` for cuts/limitations.
 
 ## Stack
 
-Next.js + TypeScript + Supabase Postgres, deployed on Vercel (per the
-assignment's stated defaults).
+Next.js + TypeScript + Supabase Postgres. Target deployment: Vercel (per the
+assignment's stated defaults) — not yet deployed; this section will be
+updated with the live URL once it is.
 
 ## Source of truth documents
 
@@ -34,14 +37,35 @@ src/lib/evaluator/            Independent evaluator: compares an import against 
 scripts/build-reference-manifest.ts  Builds evaluator ground truth via SheetJS — a
                                deliberately different library from the importer's own
                                reader, so the evaluator can't share the importer's bugs
-src/lib/db/                   Postgres persistence (pg pool, transactional import writer, reads)
+src/lib/db/                   Postgres persistence: transactional import writer, deep-copy
+                               duplicator, section/item/comment updates, template + import-run reads
 src/app/api/import/           Upload -> import -> persist route
-src/app/templates/            Template list + read-only detail pages (server components)
+src/app/api/sections|items|comments/[id]/  Edit endpoints (PATCH name / comment text)
+src/app/api/templates/[id]/duplicate/      Independent deep-copy endpoint
+src/app/templates/            Template list, editable detail page, and Preservation Report
 supabase/migrations/          Schema (templates/sections/items/comments/import_runs/import_warnings)
 tests/                        vitest suite: known-good fixture, corruptions, generalization, persistence
 fixtures/source/              Committed Spectora export(s) used as input
 fixtures/reference/           Generated reference manifests (evaluator ground truth)
 ```
+
+## What's built
+
+- **Import**: upload a Spectora export; deterministic parsing preserves
+  hierarchy/ordering and makes every skipped/unsupported value visible as
+  a warning (`/import`).
+- **Persist**: every successful import is written to Postgres in one
+  transaction; a controlled failure rolls back the whole graph rather
+  than leaving a partial template.
+- **Edit**: section names, item names, and comment text are editable in
+  place, with explicit unsaved/saving/saved/failed states; saved values
+  are provable from a fresh database read, not client state.
+- **Independent copy**: duplicate a template into new rows with new
+  identities; editing the copy is proven not to affect the original.
+- **Preservation Report**: each template's page shows its import outcome,
+  row counts, and every warning — available any time the template is
+  viewed, not only right after upload (the chosen post-baseline
+  improvement).
 
 ## Why an independent evaluator
 

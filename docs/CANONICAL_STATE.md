@@ -1689,3 +1689,16 @@ Hard gates still OPEN and required by the assignment: B9 hosted Supabase + publi
 Scope decision: the known presentation-only `&amp;` label decode gap may remain documented as a limitation if time is critical; it does not invalidate storage fidelity or the assignment baseline. Do not delay deployment for cosmetic polish unless it harms reviewer usability.
 
 Decision consequence: do not submit directly from commit 4b3f919. First make a small documentation-consistency commit locally, then complete B9 and B10, run the full final verification matrix from a fresh browser against the public URL, update README/NOTES to final-state truth, and only then prepare the submission message.
+
+
+### Canonical documentation-consistency record CS-0090
+
+kind: TEST_RESULT
+status: VERIFIED
+observed_at: 22 Sep 2026, 14:50 IST
+
+Claim: the CS-0089 README staleness finding is fixed. README.md's Current state now states B4/B5/B6/B8 are implemented and verified (not "not wired up yet"). The Stack line no longer claims the app is "deployed on Vercel"; it now says target deployment: Vercel, not yet deployed. Repo layout and a new "What's built" section now explicitly list the edit endpoints, the duplicate endpoint, and the Preservation Report, none of which existed in the README before this commit. No application behavior changed — only `README.md` was touched.
+
+Verification performed exactly as specified: `npm test` (28/28 passing, 7 test files), `npm run lint` (clean), `npm run build` (clean, same six routes as CS-0088), `node scripts/verify-canonical-append-only.mjs` (PASS, canonical file unchanged from HEAD before this record), `git diff --check` (no whitespace errors).
+
+Decision consequence: the CS-0089 blocker is cleared. Still STOPPED at B9 (hosted Supabase + Vercel authorization requires the operator) and B10 (walkthrough video requires the operator's own voice/camera), per CS-0078/CS-0081/CS-0089.
