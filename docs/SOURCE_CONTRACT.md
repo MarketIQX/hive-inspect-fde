@@ -50,7 +50,7 @@ hierarchy, identity, or ordering rule is inferred from names alone (playbook Ste
 | --- | --- | --- | --- |
 | Section Name | `sections.name` | text | Verbatim. User-editable post-import. |
 | Item Name | `items.name` | text | Verbatim. User-editable post-import. |
-| Comment Name | `comments.name` | text | Verbatim. User-editable post-import. Duplicates allowed. |
+| Comment Name | `comments.name` | text | Verbatim. Preserved and duplicated safely; the baseline editor does not expose Comment Name editing because the assignment requires section-name, item-name, and comment-text editing only. Duplicates allowed. |
 | Comment Text | `comments.raw_text` | text, nullable | Stored as the exact decoded source-cell string (not a raw-XML-byte comparison; see CS-0084), including HTML markup and characters such as U+00A0 (verified present, CS-0074/source row 21). Never mutated. Sanitized render is derived separately (see Rich content). User-editable post-import; editing replaces `raw_text` with the new plain/HTML value the editor produces — the pre-edit value is not retroactively treated as import damage (playbook rule). |
 | Comment Type (info, limit, defect) | `comments.comment_type` | enum('info','limit','defect') | Verbatim; unknown value → import warning, row still imported with raw value preserved in `unmapped_source_fields`. |
 | Category (-1: Low, 0: Med, 1: High) | `comments.category` | enum(-1,0,1), nullable | Verbatim including blank (90 of 392 rows blank). Not remapped to Hive's own category vocabulary — that mapping is UNRESOLVED per CS-0074 and out of scope for our own schema. |
@@ -72,16 +72,18 @@ hierarchy, identity, or ordering rule is inferred from names alone (playbook Ste
 
 ## Rich content and links
 
-- `comments.raw_text` is the single source of truth and is treated as **untrusted HTML**.
-- Render path: sanitize on render only, from an explicit tag allowlist grounded in what was
-  actually observed in Export A — `p`, `a[href,target]`, `strong`, `div` (CS-0023) — plus
-  common equivalents (`b`, `i`, `em`, `ul`, `ol`, `li`, `br`) that a representative editor
-  round-trip may introduce. Everything outside the allowlist is stripped, not rewritten, and
-  the stripped-vs-kept diff is recorded per import as an issue if it changes rendered meaning.
-- Links: `href` is preserved verbatim; on render, `rel="noopener noreferrer"` is force-added
-  and any non-`http(s)` scheme (e.g. `javascript:`) is dropped as unsafe. This is a security
-  decision, not a source-fidelity claim — the source's own `target="_blank"` is honored where
-  present.
+- `comments.raw_text` is the single source of truth and is treated as **untrusted HTML text**.
+- The baseline editor does **not** render imported comment HTML as executable DOM. It exposes
+  the preserved HTML source in a textarea so edits round-trip without a WYSIWYG editor
+  rewriting markup. This is a deliberate fidelity-first limitation documented in NOTES.md.
+- Formatting and links therefore survive as source data rather than as a rich preview. The
+  independently extracted reference comparison checks the full decoded `Comment Text` string
+  for every row, so observed tags such as `p`, `a[href,target]`, `strong`, and `div` and the
+  actual hyperlink strings are covered by preservation evidence.
+- Because the baseline UI does not execute that HTML, unsafe source links such as
+  `javascript:` are not made clickable. If a future rendered preview is added, it must sanitize
+  at render time rather than mutate `raw_text`; `src/lib/importer/sanitize-html.ts` is a
+  utility for that future/optional path, not evidence that the current baseline renders HTML.
 - Non-breaking spaces and other literal Unicode content are preserved as-is; they are not
   collapsed or stripped by the importer.
 
@@ -89,10 +91,10 @@ hierarchy, identity, or ordering rule is inferred from names alone (playbook Ste
 
 Storage fidelity and display readability are separate concerns. Section/item/comment names
 containing Export A's double-escaped ampersand artifact (`&amp;amp;` on disk, decoding once to
-the literal text `&amp;`; CS-0080) are stored and evaluated exactly as sourced. User-facing
-labels apply a safe presentation-only decode (matching how Hive's own UI renders this, CS-0064)
-without mutating the stored field. The exact source value remains available for audit/evaluation
-regardless of how it is displayed.
+the literal text `&amp;`; CS-0080) are stored and evaluated exactly as sourced. The current
+baseline UI intentionally does not perform a second presentation-only entity decode, so those
+labels can display the literal `&amp;` text. That is a documented presentation limitation,
+not storage loss; the exact source value remains available for audit/evaluation.
 
 ## Non-exclusion rule
 

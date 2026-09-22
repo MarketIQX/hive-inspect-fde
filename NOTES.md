@@ -33,17 +33,18 @@ stripping any parenthetical suffix, so column order doesn't matter):
   round-trip fidelity as a real risk before committing to one; a textarea
   can't corrupt markup, and wiring/validating a rich editor's HTML
   round-trip was judged lower value than finishing persistence, edit,
-  copy, and the preservation report within the time available. Rendered
-  output is still sanitized (`src/lib/importer/sanitize-html.ts`) from an
-  explicit allowlist.
+  copy, and the preservation report within the time available. The baseline
+  does not execute imported HTML as a rich preview; it preserves the raw HTML
+  text in the editable comment field. A sanitizer utility exists for any
+  future rendered-preview path, but it is not part of the current UI.
 - **Presentation decode for the double-escaped ampersand.** Export A
   stores `&` in names as literal double-escaped text (decodes once to
   `&amp;`, e.g. `Siding, Flashing &amp; Trim` — confirmed independently
   by three separate parsers, not a bug in any one of them). It's stored
-  and compared exactly as sourced; a render-only decode to a clean `&`
-  (matching how Hive's own UI displays it) is documented as intended in
-  `docs/SOURCE_CONTRACT.md` but not yet implemented in the UI. Storage
-  correctness was prioritized over this cosmetic gap.
+  and compared exactly as sourced. A render-only decode to a clean `&`
+  (matching how Hive's own UI displays it) is not implemented in the baseline.
+  Storage correctness was prioritized over this cosmetic gap; both this file
+  and `docs/SOURCE_CONTRACT.md` state it as a current limitation.
 - **Binsr was not explored.** Hive and Spectora are both required by the
   brief; Binsr is optional. Given the time budget, deepening Hive product
   exploration (which surfaced the multi-choice-vs-checkbox mapping, the

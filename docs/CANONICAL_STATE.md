@@ -1815,3 +1815,22 @@ Failure-case production proof: uploading a plain-text non-workbook to the public
 Security/reproducibility consequence: the hosted RLS change is now represented by committed migration `20260922101823_enable_rls_public_tables.sql`, matching the migration already applied remotely. README and NOTES were updated to state the actual live URL and hosted status rather than the earlier pre-deployment state.
 
 Gate consequence: B9 is GREEN. Remaining submission gates are B10 walkthrough video in AK's own voice and granting Hive reviewer access to the private GitHub repository. Do not call the assignment fully submitted until those two actions are complete.
+### Canonical final-assignment re-audit record CS-0099
+
+kind: ASSIGNMENT_COMPLIANCE_REVIEW
+status: VERIFIED_WITH_OPEN_SUBMISSION_GATES
+observed_at: 22 Sep 2026, 16:40 IST
+
+The uploaded three-page assignment PDF was re-read line-by-line against the current repository, hosted Supabase state, and production Vercel behavior before final submission.
+
+Hard-baseline conclusion: the implemented system satisfies the assignment's required product baseline within the documented scope: real Hive/Spectora exploration; committed shareable Spectora HTML-text spreadsheet fixture; deterministic import preserving text/hierarchy/order; skipped/unsupported values surfaced; section/item/comment-text editing with persistence; independent deep copy; real Postgres backend; structured template/section/item/comment model; same-format generalization checks; at least one visible failure case; one customer-relevant improvement (persistent Preservation Report); public Vercel URL; and seeded imported template landing.
+
+Two documentation overclaims were found and corrected before submission: SOURCE_CONTRACT had said Comment Name was user-editable although the baseline intentionally edits only section names, item names, and comment text as required by the brief; and it had implied a presentation-only ampersand decode/rich HTML render path was active although the baseline UI actually preserves/edits raw HTML text in a textarea and does not execute a rich preview. NOTES and SOURCE_CONTRACT now state the actual behavior and limitation consistently.
+
+Rich-content clarification: exact decoded Comment Text comparison across the real fixture preserves observed HTML tags and hyperlink strings as data. The baseline does not execute imported HTML, so links are preserved but not made clickable. This is a documented limitation, not silent loss, and remains within the brief's instruction to explain formatting/link handling and limits.
+
+Repository-access correction: making the GitHub repository public is NOT an assignment requirement. The PDF says a private repo is acceptable if reviewer access is provided. Therefore the remaining repo gate is reviewer access, with public visibility only an optional shortcut.
+
+Schedule exception: the PDF deadline is 21 Sep 2026. Current date is 22 Sep 2026, and no evidence in the repo/canonical record shows a granted extension. Therefore formal deadline compliance is NOT GREEN. The planned submission note may explain the 20 Sep childbirth circumstance, but that context does not retroactively create an extension. Do not claim 100% procedural compliance unless an extension was granted outside this evidence set.
+
+Submission consequence: product/technical requirements are GREEN within documented limitations; final submission is still blocked by (1) walkthrough video in AK's own voice, (2) reviewer access to the private repo or optional public visibility, and (3) honest handling of the missed deadline/extension status in the submission communication.
