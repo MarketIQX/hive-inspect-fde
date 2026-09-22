@@ -414,3 +414,145 @@ Evidence: user-provided screenshot in the active conversation.
 Scope: screenshot-visible authenticated onboarding state only. This does not yet prove access to Templates, availability of a shareable sample template, or successful export capability.
 
 Consequence: the previous signup blocker is no longer active for this session. The next evidence-seeking action is to enter the dashboard and locate the Templates area needed for Export A.
+
+
+### Canonical source record CS-0018
+
+kind: SOURCE_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 08:46 IST
+
+Claim: genuine Spectora Export A is now available as `Residential Template-2026-09-21.xls`, downloaded from the visible Spectora Residential Template export flow. The downloaded file is 55,439 bytes and has SHA-256 `93AE536E100DA2DB0F41E81467CF4889220DE8D0673DDFCC56954FB77FF39C83`.
+
+Evidence: direct filesystem inspection and SHA-256 calculation of `C:\Users\marke\Downloads\Residential Template-2026-09-21.xls`, correlated with the user-provided Spectora download screenshot.
+Scope: this exact file only.
+
+### Canonical source record CS-0019
+
+kind: SOURCE_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 08:46 IST
+
+Claim: despite the `.xls` filename suffix, Export A is not a legacy OLE/BIFF workbook. Its first bytes are ZIP magic `50 4B 03 04`, and its package content types identify an Open XML spreadsheet workbook with `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml`.
+
+Evidence: direct byte inspection plus read-only inspection of `[Content_Types].xml` inside the downloaded package.
+
+Consequence: production input detection must eventually be based on actual container evidence rather than trusting the filename extension alone. This is an observed source constraint, not yet a parser implementation decision.
+
+### Canonical preservation record CS-0020
+
+kind: TEST_RESULT
+status: VERIFIED
+observed_at: 22 Sep 2026, 08:47 IST
+
+Claim: the original downloaded Export A was copied unchanged into `fixtures/source/Residential Template-2026-09-21.xls`. Source and repository copy both have SHA-256 `93AE536E100DA2DB0F41E81467CF4889220DE8D0673DDFCC56954FB77FF39C83` and length 55,439 bytes.
+
+Reason: the assignment requires committing the shareable Spectora export used, while preservation evidence requires that the committed fixture not be silently rewritten during intake.
+
+Acceptance criterion: source hash equals repository-copy hash. MET.
+
+
+### Canonical source record CS-0021
+
+kind: SOURCE_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 08:55 IST
+
+Claim: Export A contains one visible worksheet named `Sheet1` with physical dimension `A1:AP393`: 393 serialized rows, 42 columns, 7,480 serialized cells and 4,653 populated cells including the header row. The workbook contains no hidden rows, hidden columns, merged regions, formula cells, worksheet-native hyperlinks, or data validations.
+
+Evidence: read-only OOXML package/XML inventory from the preserved repository copy. A secondary spreadsheet-reader path independently reported `Sheet1`, 393 rows and 42 columns and returned matching first and last source ranges.
+
+Scope: Export A only. Absence in A does not establish absence from all same-format Spectora exports.
+
+### Canonical source record CS-0022
+
+kind: SOURCE_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 08:55 IST
+
+Claim: Export A has 42 named columns from `Section Name` through `Last Modified`. Every one of the 392 data rows populates Section Name, Item Name, Comment Name, Comment Type, Order, Answer Type, Default Estimate Min, Default Estimate Max, Uses, and Last Modified. Comment Text is populated on 309 rows; 198 of those values contain HTML-like markup.
+
+Evidence: full-column physical inventory over all 392 data rows.
+
+Important non-exclusion rule: columns with zero populated data cells in Export A remain observed format fields. Their lack of values in A does not justify deleting them from the source contract or claiming they never occur.
+
+### Canonical source record CS-0023
+
+kind: SOURCE_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 08:55 IST
+
+Claim: rich content in Export A is carried inside cell strings rather than worksheet-native hyperlink objects. HTML-like source values contain observed tags `p`, `a`, `strong`, and `div`; 43 anchor tags were observed, while worksheet-native hyperlink count is zero. No HTML `src` value was observed in A.
+
+Consequence: a parser that reads only Excel hyperlink relationships would silently miss supported link-bearing source content. Rich-content handling must be evaluated against the cell string itself.
+
+Scope limitation: this does not establish which HTML subset the destination editor can safely preserve; that remains an editor-round-trip evidence gate.
+
+
+### Canonical source record CS-0024
+
+kind: SOURCE_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 08:57 IST
+
+Claim: Export A contains 13 distinct Section Name values, 61 distinct Item Name values, and 69 distinct (Section Name, Item Name) pairs across 392 data rows. Each Section Name occupies one contiguous run of source rows, and each distinct section/item pair occupies one contiguous run.
+
+Evidence: exhaustive grouping over all 392 source rows.
+
+Interpretation boundary: contiguity and first-occurrence row order are observed physical facts. They do not by themselves prove destination identity rules or that names are stable identifiers.
+
+### Canonical source record CS-0025
+
+kind: SOURCE_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 08:57 IST
+
+Claim: names are not safe unique identities in Export A. Only 334 distinct Comment Name values exist across 392 rows, with 27 comment names repeated. More strongly, the exact tuple (Section Name, Item Name, Comment Name) is duplicated for `Fireplace / Damper Doors / Damper Inoperable` on source rows 263 and 264; those two rows have different Comment Text and different Order values.
+
+Consequence: any importer that merges records solely by section/item/comment names would lose source content in this real export.
+
+### Canonical source record CS-0026
+
+kind: SOURCE_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 08:57 IST
+
+Claim: the source field `Order (w/i item)` cannot be treated as a globally unique row identity or as a complete linear row sequence. Within some section/item groups, order values repeat; 41 groups also contain gaps relative to a simple contiguous integer sequence. Source row order therefore carries physical ordering information not recoverable from the Order field alone.
+
+Evidence: exhaustive order analysis across all 69 section/item groups.
+
+Interpretation boundary: the eventual destination ordering rule remains a proposed engineering decision until product behavior and the source contract are reconciled.
+
+
+### Canonical verification record CS-0027
+
+kind: TEST_RESULT
+status: VERIFIED
+observed_at: 22 Sep 2026, 09:02 IST
+
+Claim: the committed-style physical inventory is reproducible from the preserved Export A using `scripts/inventory-spectora-source.py`; a fresh run produced an identical evidence-file hash. The field-classification evidence covers exactly all 42 observed source columns, with no missing columns, no extra columns, and no header mismatches.
+
+Evidence: deterministic rerun plus source-vs-classification coverage check.
+Acceptance result: MET.
+
+### Canonical source record CS-0028
+
+kind: SOURCE_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 09:02 IST
+
+Claim: a targeted scan of all Export A cell values found zero email-address-like values and zero US-style phone-number-like values.
+
+Scope limitation: this is a narrow automated scan, not proof that no personally identifying information of any kind could exist. The source is still treated as shareable sample material only within the evidence actually observed.
+
+### Canonical gate record CS-0029
+
+kind: TEST_RESULT
+status: VERIFIED
+observed_at: 22 Sep 2026, 09:02 IST
+
+Claim: the Export A source-characterization slice now satisfies the defined G1 evidence criteria for this file: actual container established from bytes; all package/sheet units inventoried; dimensions and populated regions recorded; formulas, hyperlinks, merges, hidden rows/columns and validations checked; all observed columns classified after inventory; hierarchy/identity/order evidence documented without treating names as identifiers.
+
+Scope: Export A only.
+
+Important gate boundary: the project does NOT advance past G0 yet because the assignment-mandated Hive hands-on journey remains unresolved. G1 evidence may be prepared in parallel, but production parser implementation and final destination schema remain blocked until G0 is completed.
