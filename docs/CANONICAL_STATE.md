@@ -1345,3 +1345,20 @@ Independent source check for next field:
 - Comment Text: `Moderate to major cracking was observed at one or more points on the exterior. This can be the result of poor original compaction of soil at the time of construction or excess moisture in the underlying soil. Recommend consulting with a structural engineer and/or soil expert.`
 
 Decision consequence: inspect Hive's `Cracking - Major` component through its pencil/edit control only. Do not change or save anything. Compare Hive's native component type, defect classification, narrative text, and any recommendation/severity mapping against the source facts above.
+
+
+### Canonical decision record CS-0072
+
+kind: ENGINEERING_DECISION
+status: VERIFIED
+observed_at: 22 Sep 2026, 12:08 IST
+
+Claim: the active execution environment is Claude Code, not Codex. Claude Code has already read the repository state and reports Chrome browser automation (`claude-in-chrome`) is available in the current environment.
+
+Evidence: user-provided screenshot showing Claude Code's own status message and available next-step choices.
+
+Correction: the prior recommendation to switch to Codex as browser operator is no longer the preferred path because the operator is already inside Claude Code with repository context and browser-automation capability available.
+
+Decision: keep Claude Code as the browser/operator and preserve the existing canonical/evidence discipline. Do not introduce a second coding agent unless Claude Code cannot complete a required browser action or evidence gate.
+
+Operator boundary: Claude Code may inspect the authenticated Hive session, read source fixtures, run deterministic comparisons, capture evidence, and append canonical verification/correction records. It must not click Save Changes, send reports, publish/unpublish, alter billing, delete/move/duplicate content, or take any destructive/irreversible action without an explicit gate.
