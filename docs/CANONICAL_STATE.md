@@ -1421,3 +1421,18 @@ One final exploration gate is authorized: verify one HTML-bearing source comment
 After that single gate, stop product exploration and begin implementation of the assignment baseline: import, edit/save, independent copy, real persistence, structured schema, visible unsupported/skipped content, preservation verification, one failure case, and deployment. Binsr remains optional and is deliberately deferred unless baseline completion leaves time.
 
 No claim of 100% assignment completion is permitted until the live deployed app, persistence/reopen proof, independent-copy proof, failure-case proof, README/NOTES, and walkthrough evidence all exist.
+
+
+### Canonical precision correction record CS-0076
+
+kind: CORRECTION
+status: VERIFIED
+observed_at: 22 Sep 2026, 12:22 IST
+
+Previous wording in CS-0074 described the gray Estimated Cost/Timeline text as confirmed UNPOPULATED placeholder fields based on zoomed visual color comparison.
+
+Precision correction: the screenshots provide strong UI-level evidence that the gray strings are placeholders, but color/appearance alone does not prove the underlying persisted field values are null/empty. No backend/network/state inspection was performed. Therefore the defensible claim is limited to: Hive visually presents those strings as placeholder-style text in this modal; persisted-value state remains UNVERIFIED.
+
+Reason: every claim must match the evaluator actually used. Visual inspection can establish rendered presentation, not hidden persistence state.
+
+Consequence: no implementation decision should depend on inferred Hive backend state from those placeholder strings. Our importer must determine source estimate presence from the source workbook and our own stored data, not from Hive UI appearance.
