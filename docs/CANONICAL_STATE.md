@@ -855,3 +855,19 @@ What this proves: the report editor supports inline selection for this option an
 What this does NOT yet prove: that the selection has persisted to backend storage, survives navigation or reload, or will appear in the published report.
 
 Decision consequence: do not add more synthetic inspection data yet. Verify persistence first by navigating to `Gutters & Downspouts` and then back to `Roof Covering`. If `Asphalt Shingles` remains selected, that establishes intra-editor navigation persistence; a later reload or backend-visible check can establish stronger persistence.
+
+
+### Canonical verification record CS-0047
+
+kind: TEST_RESULT
+status: VERIFIED
+observed_at: 22 Sep 2026, 10:05 IST
+
+Claim: after selecting `Asphalt Shingles`, navigating from `Roof Covering` to `Gutters & Downspouts`, and then returning to `Roof Covering`, the `Asphalt Shingles` option remained visibly selected in blue.
+
+Evidence: user-performed navigation sequence plus user-provided screenshot in the active conversation.
+Acceptance result: intra-editor navigation persistence is VERIFIED.
+
+Scope limitation: this proves persistence across subsection navigation within the same report-editor session. It does not yet prove persistence across a full browser reload, a new session, or backend storage independent of the current client state.
+
+Decision consequence: perform one stronger persistence test next: reload the current report-editor page once and verify whether `Asphalt Shingles` remains selected. Do not change any other report values before that reload test.
