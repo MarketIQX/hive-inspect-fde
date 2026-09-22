@@ -746,3 +746,38 @@ Evidence: user-provided screenshot in the active conversation.
 Scope: screenshot-visible inspection-list state only. The reduced report counter proves a trial report entitlement was consumed/reserved by this flow; it does not by itself prove the report has been written or published.
 
 Decision consequence: the next goal is to enter the newly created inspection record and run the report-writing workflow. Because the Progress icons are unlabeled in the screenshot and the bottom-row Actions control is partially obscured by the chat widget, do not guess an icon meaning. First click the `1000 Test Property Lane` row/address to attempt to open its inspection detail. If that does not navigate, stop and observe rather than selecting an ambiguous progress icon.
+
+
+### Canonical observation record CS-0042
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 09:48 IST
+
+Claim: Hive's Inspections page currently shows `TOTAL 2` and two distinct confirmed inspection rows.
+
+Row 1 is a pre-existing/demo inspection:
+- Client: `Demo Client`
+- Realtor: `Demo Agent`
+- Address: `123 Sample Street, Demo City, ST 12345`
+- Price: `$450`
+- Status: `Confirmed`
+- Schedule: `Sep 23, 2026 11:00 AM`
+
+Row 2 is the operator-created test inspection:
+- Client: `No client`
+- Realtor: none shown
+- Address: `1000 Test Property Lane`
+- Price: `$450`
+- Status: `Confirmed`
+- Schedule: `Sep 22, 2026 10:00 AM`
+- OID: `#1`
+
+The Free Trial banner now shows `4 reports remaining`, whereas the earlier authenticated dashboard showed five reports remaining.
+
+Evidence: user-provided screenshot in the active conversation.
+Scope: screenshot-visible inspection-list state only.
+
+Interpretation: the page was already seeded with one demo inspection before the operator-created inspection. The newly created inspection is the second row, not the demo row. The reduction from five to four reports is consistent with the new confirmed inspection consuming one trial report, but the screenshot alone does not prove Hive's exact trial-accounting rule.
+
+Correction note: any prior wording implying that the inspection list would contain only the newly created test inspection was incomplete. The seeded demo inspection must be treated as pre-existing product state, not evidence created by our test.
