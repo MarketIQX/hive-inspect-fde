@@ -1785,3 +1785,12 @@ Post-change verification: `public.templates`, `public.sections`, `public.items`,
 Interpretation: no anon/authenticated Data API policy has been granted, so the public API surface is deny-by-default. This matches the application architecture because the deployed app uses only a server-side Postgres `DATABASE_URL`; no browser-side Supabase key is required.
 
 Decision consequence: hosted schema security is GREEN for the current architecture. B9 remains blocked only on provisioning the hosted Postgres connection string into Vercel and seeding the hosted database, followed by production deployment and fresh-browser acceptance.
+### Canonical deployment-hygiene record CS-0097
+
+kind: ENVIRONMENT_AND_REPO_HYGIENE
+status: VERIFIED
+observed_at: 22 Sep 2026, 15:50 IST
+
+Vercel project linking created local `.vercel/` metadata and refreshed `.env.local` with project-scoped local values. `.gitignore` was updated to ignore `.vercel` and `.env*`, preventing deployment metadata and local environment secrets from being newly committed. Existing tracked `.env.example` remains tracked because Git ignore rules do not untrack an already tracked file.
+
+Decision consequence: commit the ignore-rule change as deployment hygiene. No credentials or Vercel metadata are added to Git.
