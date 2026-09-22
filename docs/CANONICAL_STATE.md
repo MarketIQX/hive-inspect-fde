@@ -1484,3 +1484,33 @@ Decision: begin implementation now. Before the importer is written, a source con
 Stack: Next.js, TypeScript, Supabase Postgres, Vercel, per the existing PROPOSED_DECISION and CS-0078. Build order follows the accepted slice sequence: B1 (independent reference manifest and evaluator, with deliberate corruption tests) before B2 (deterministic importer), keeping evaluator and importer implementations independent per the CS-0005 two-layer fidelity rule so the importer cannot grade itself.
 
 Immediate next evidence: B1 evaluator self-tests (known-good passes; dropped/duplicated/reordered/wrong-parent/changed-text/missing-header corruptions fail), committed together with the source fixture hash and reference manifest hash.
+
+
+### Canonical verification record CS-0080
+
+kind: TEST_RESULT
+status: VERIFIED
+observed_at: 22 Sep 2026, 13:08 IST
+
+Claim: B1 (independent reference manifest + evaluator) and B2 (deterministic importer) are both implemented and pass their tests against the real, committed Export A fixture.
+
+Reference manifest: `fixtures/reference/residential-template-2026-09-21.manifest.json`, built by `scripts/build-reference-manifest.ts` using the SheetJS `xlsx` package — a different library from the production importer's own reader (`src/lib/importer/read-workbook.ts`, built on `jszip` + `fast-xml-parser`), per the CS-0005 independence rule. Source SHA-256 `93AE536E100DA2DB0F41E81467CF4889220DE8D0673DDFCC56954FB77FF39C83` (matches CS-0018/CS-0020); manifest SHA-256 `B26AF32B83D6F18DF3287C10BE4A823F66DE2A537CEF95EBCC2DFAC19D485F22`; sections=13, items=69, comments=392 (matches CS-0021/CS-0024/CS-0064).
+
+Test results (`npm test`, 14/14 passing):
+- Known-good import against the real fixture matches the reference manifest with zero evaluator issues across all 392 rows, byte-for-byte on raw Comment Text.
+- Deliberate corruption tests confirm the evaluator actually rejects: a dropped row, a duplicated row, two reordered siblings, a comment reattached to the wrong parent item, and changed comment text after import — each as its own assertion, not inferred.
+- A hand-built malformed workbook missing a required header (`Answer Type`) produces `FAILED` with zero sections and an explicit `MISSING_REQUIRED_HEADER` warning — no partial/silent import.
+- `Cracking - Major` (CS-0074) and `Door Does Not Close or Latch` (the field the Hive freeze decision, CS-0078, deferred) both verified to preserve their raw source content exactly in OUR importer, including the U+00A0 in the door row and the anchor tag/href.
+- `Siding Material`'s 16 multiple-choice options preserved in exact order (CS-0070 parity).
+- The duplicate `(Fireplace, Damper Doors, Damper Inoperable)` rows (CS-0025, source rows 263–264) both import as distinct comments with distinct generated ids.
+
+Three genuine bugs were found and fixed while building this, each confirmed against the evaluator/reference disagreement (not assumed):
+1. Header constant inconsistency: `Order (w/i item)` was left un-normalized in `REQUIRED_HEADERS`/`KNOWN_HEADERS` while every other parenthetical-suffixed header was normalized to its base name; caused a false `MISSING_REQUIRED_HEADER` failure on the real fixture. Fixed by using `Order` consistently, matching the same strip-from-first-`(` rule applied everywhere else.
+2. `fast-xml-parser` trims text-node whitespace by default (`trimValues`), which silently dropped a trailing `\n` that source row 384's Comment Text genuinely contains after its closing `</p>`. Fixed with `trimValues: false`.
+3. `fast-xml-parser` does not decode numeric character references (e.g. `&#13;`) unless `htmlEntities: true` is set; left literal `&#13;` text instead of resolving it to an actual CR. Source row 373 uses `&#13;` specifically (a standards-compliant character reference) to force a literal carriage return past XML's line-ending normalization. Fixed with `htmlEntities: true`; output then matched SheetJS exactly (`\r\n`).
+
+New source observation (not previously in canonical state): item/section names containing `&` are stored in Export A as double-escaped XML (`&amp;amp;` in the raw bytes, e.g. "Basement, Foundation, Crawlspace &amp; Structure" as the true decoded string, confirmed independently by three parsers: the hand-rolled importer, SheetJS, and the original Python `xml.etree` inventory script). This is a genuine source-data characteristic, not a parsing artifact. It is stored verbatim per SOURCE_CONTRACT.md's preservation rule; CS-0064's earlier note that Hive's UI renders it as a clean `&` is a presentation-layer decode on Hive's side, not evidence that the underlying stored value is already clean.
+
+Known accepted risk: `xlsx` (SheetJS, npm registry release) carries two unpatched advisories (prototype pollution, ReDoS; no fix available upstream). It is used only as a devDependency, only in `scripts/build-reference-manifest.ts` against our own already-checksummed trusted fixture, and is never imported by the production importer or app code. Recorded here rather than left for a later audit to surface unexplained.
+
+Decision consequence: B1 and B2 are GREEN. Proceed to B3 (import trust UI) and B4 (Supabase persistence), per CS-0079's build order.

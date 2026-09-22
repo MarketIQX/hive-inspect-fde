@@ -15,8 +15,10 @@ visible FAILED import outcome, not a partial or silent one.
    `[Content_Types].xml` identifying a spreadsheet workbook). A non-ZIP file, or a ZIP that
    is not a spreadsheet package, fails immediately.
 2. There is at least one worksheet, and its first row is a header row.
-3. The header row contains, at minimum, these required headers (100%-populated in Export A):
-   `Section Name`, `Item Name`, `Comment Name`, `Comment Type`, `Order (w/i item)`,
+3. The header row contains, at minimum, these required headers (100%-populated in Export A),
+   matched after stripping any parenthetical hint suffix (`Order (w/i item)` -> `Order`,
+   `Comment Type (info, limit, defect)` -> `Comment Type`, same rule for every header):
+   `Section Name`, `Item Name`, `Comment Name`, `Comment Type`, `Order`,
    `Answer Type`, `Uses`, `Last Modified`. Missing any required header fails the import
    before any row is processed.
 4. At least one data row exists below the header row.
