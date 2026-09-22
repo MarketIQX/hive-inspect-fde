@@ -1107,3 +1107,19 @@ Scope: screenshot-visible template-management state only.
 Interpretation: `Upload` is the only visible control that directly corresponds to importing an external template file. `Template Hub` appears to be a library/discovery path, and `Create` is a new-template path; neither is the assignment's required external-file import path.
 
 Decision consequence: click `Upload` once and inspect the resulting modal/file requirements before selecting the preserved Spectora export. Do not choose a file yet.
+
+
+### Canonical observation record CS-0060
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 11:01 IST
+
+Claim: Hive's `Import Template` modal explicitly supports external template sources `Spectora`, `HIP (Home Inspector Pro)`, `HomeGauge`, and `Horizon (Carson Dunlop)`. The modal also states that special PDF templates cannot be imported and should instead be found in Template Hub. For other platforms, Hive directs the user to contact support through chat for possible assisted import.
+
+Evidence: user-provided screenshot in the active conversation.
+Scope: screenshot-visible import-source selector only.
+
+Interpretation: Spectora is a first-class supported import source in Hive's current product UI. This is stronger evidence than merely seeing a generic Upload button.
+
+Decision consequence: select the `Spectora` radio option only. Do not click `Import Template` yet. Observe whether source-specific instructions, file requirements, or warnings appear before choosing any file.
