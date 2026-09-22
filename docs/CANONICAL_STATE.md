@@ -1250,3 +1250,19 @@ Additional source facts for the next semantic check: `Siding Material` is source
 The unexplained `You have unsaved changes` banner remains present without an intentional operator edit. Do not save it.
 
 Decision consequence: inspect `Siding Material` next by opening the field itself, not an edit/delete/duplicate action, and verify whether Hive preserved the checkbox answer type and all 16 options.
+
+
+### Canonical correction record CS-0067
+
+kind: ENGINEERING_DECISION
+status: VERIFIED
+observed_at: 22 Sep 2026, 11:40 IST
+
+Claim: the latest screenshot does NOT show the `Siding Material` field configuration. The currently selected left-nav row is `Inspection Details`, and the main pane shows section-level controls `Section Description`, `Private Notes`, and `Section Visible`.
+
+Correction: no conclusion may be drawn yet about Hive preserving `Siding Material` checkbox semantics or its 16 options. The requested field-level inspection did not occur on the supplied screen.
+
+What was assumed previously: that clicking the field body would expose field configuration without changing context.
+What actually happened in the observed state: the UI is on a section-level editor for `Inspection Details`; the reason for that navigation/state change is not established from the screenshot and must not be guessed.
+
+Decision consequence: return deliberately to `Exterior > Siding, Flashing & Trim`, verify that subsection row is selected, scroll to its Information group, and then open `Siding Material` using only the field row/body. Do not use any action icon or Save Changes.
