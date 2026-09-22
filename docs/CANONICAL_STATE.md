@@ -654,3 +654,17 @@ Evidence: user-provided screenshot in the active conversation.
 Scope: screenshot-visible inspection-creation state only.
 
 Decision consequence: do not enter a real private residence. Click the manual-address path `Click here` first so we can observe what address components Hive actually requires before choosing a synthetic test address. Do not confirm the inspection yet.
+
+
+### Canonical observation record CS-0037
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 09:34 IST
+
+Claim: after opening Hive's manual-address path, the inspection form exposes separate fields for `Street Address *`, `Unit / Apt`, `City`, `State`, `ZIP`, and `Country`. In the observed UI, only Street Address carries an explicit required-field asterisk. Property Type, Occupancy, Foundation, Square Footage, Year Built, Bedrooms, Bathrooms, Client, Buyer Agent, and property image controls are also visible without required-field markers in the screenshot.
+
+Evidence: user-provided screenshot in the active conversation.
+Scope: screenshot-visible form labels/required markers only. Visible example/default-looking values such as Pittsburgh / PA / 15217 / US are not treated as submitted facts because the screenshot alone does not establish whether they are placeholders, defaults, or current field values.
+
+Decision consequence: enter only a clearly synthetic Street Address first and leave all other optional-looking fields untouched. This tests Hive's true minimum requirement without fabricating unnecessary data.
