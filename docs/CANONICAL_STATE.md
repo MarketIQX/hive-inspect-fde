@@ -626,3 +626,17 @@ Evidence: user-provided screenshot in the active conversation.
 Scope: screenshot-visible inspection-creation state only.
 
 Decision consequence: the next smallest evidence-seeking action is to select a calendar date first, then inspect the time-slot choices produced by Hive. Do not confirm the inspection before the date and time state is observed.
+
+
+### Canonical observation record CS-0035
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 09:31 IST
+
+Claim: after selecting Tue, Sep 22 on Hive's Create New Inspection screen, the Available Times panel populated with 15-minute slots. The page displays an explicit warning: `Select time to confirm. You've selected Tue, Sep 22 — please choose a time slot above to proceed with the schedule change.` The lower form shows `Street Address *` as required, while property details are visible without required-field markers in the observed state. A `Select Service` dropdown is also present above the bottom `Confirm Inspection` action.
+
+Evidence: three user-provided screenshots in the active conversation.
+Scope: screenshot-visible inspection-creation state only.
+
+Decision consequence: choose one future available time slot first. At 09:31 IST, select 10:00 AM rather than a near-immediate 09:30/09:45 slot. Then observe the next form state before entering address/service data. Do not confirm the inspection yet.
