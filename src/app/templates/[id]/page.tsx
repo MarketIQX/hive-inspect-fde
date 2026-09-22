@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getTemplate } from "@/lib/db/get-template";
+import { getLatestImportRun } from "@/lib/db/get-import-run";
 import { EditableTemplateView } from "./EditableTemplateView";
 import { DuplicateButton } from "./DuplicateButton";
+import { PreservationReport } from "./PreservationReport";
 
 export const dynamic = "force-dynamic";
 
@@ -14,6 +16,7 @@ export default async function TemplateDetailPage({
   const { id } = await params;
   const template = await getTemplate(id);
   if (!template) notFound();
+  const importRun = await getLatestImportRun(id);
 
   const itemCount = template.sections.reduce((n, s) => n + s.items.length, 0);
   const commentCount = template.sections.reduce(
@@ -37,6 +40,8 @@ export default async function TemplateDetailPage({
         </div>
         <DuplicateButton templateId={template.id} />
       </div>
+
+      {importRun && <PreservationReport run={importRun} />}
 
       <EditableTemplateView template={template} />
     </main>
