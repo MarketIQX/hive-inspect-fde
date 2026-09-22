@@ -1453,3 +1453,17 @@ Safety check performed immediately after: Template Overview was reopened and rea
 What this does NOT prove: whether the pre-existing, long-unexplained dirty state (first observed CS-0064) contained a real uncommitted difference from the original import that is now silently persisted, or was itself a UI artifact with no real diff. That question is now UNRESOLVED and likely UNRECOVERABLE by this comparison method, because the state that could have answered it has been saved over.
 
 Decision: stop further Hive interaction. Do not attempt the `Door Does Not Close or Latch` inspection again in this session without explicit operator (AK) direction. Disclose this event before taking any further action, per this project's own evidence-honesty discipline and the standing rule that Save Changes requires an explicit gate.
+
+### Canonical CTO decision record CS-0078
+
+kind: ENGINEERING_DECISION
+status: VERIFIED
+observed_at: 22 Sep 2026, 12:43 IST
+
+Review of incident commit 8e7daf6: accepted as an honest boundary-event record, with one precision correction. CS-0077 states observed_at 12:35 IST, but commit 8e7daf6 was created at 12:29:57 +05:30 and the operator screenshot/report was already visible at approximately 12:30. Therefore the 12:35 timestamp is chronologically impossible and must be treated as a record-timestamp error, not as evidence of when the incident occurred. Existing text remains unchanged; this record corrects the chronology append-only.
+
+Decision: do NOT retry the Hive Door Does Not Close or Latch inspection. The explicit no-save boundary was likely crossed, the pre-existing dirty state is no longer available for comparison, and further UI interaction adds risk without being required to satisfy the assignment baseline.
+
+Assignment reasoning: Hive product exploration is already sufficient to satisfy the required real-product-use gate. Rich-content/link handling can and must now be proven in OUR importer against the committed Spectora source fixture, including a real HTML-bearing row with a hyperlink. The assignment requires us to explain how OUR importer handles formatting, links, and rich content; it does not require reverse-engineering Hive's internal mapping for every field type.
+
+Next consequence: freeze Hive interaction and move immediately to implementation. Before coding, Claude Code must read the assignment plus canonical state and produce a minimal baseline POA with explicit exit criteria. Build order: deterministic import + independent evaluator, structured relational persistence, edit/save/reopen, deep-copy independence, visible unsupported/skipped content, rich-content preservation/render sanitization, one failure case, then deployment and deliverables. No optional Binsr exploration until the baseline and live deployment are GREEN.
