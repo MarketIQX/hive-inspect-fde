@@ -871,3 +871,23 @@ Acceptance result: intra-editor navigation persistence is VERIFIED.
 Scope limitation: this proves persistence across subsection navigation within the same report-editor session. It does not yet prove persistence across a full browser reload, a new session, or backend storage independent of the current client state.
 
 Decision consequence: perform one stronger persistence test next: reload the current report-editor page once and verify whether `Asphalt Shingles` remains selected. Do not change any other report values before that reload test.
+
+
+### Canonical verification record CS-0048
+
+kind: TEST_RESULT
+status: VERIFIED
+observed_at: 22 Sep 2026, 10:07 IST
+
+Claim: after a full browser reload (Ctrl+R) of the Hive report-editor page, `Asphalt Shingles` remained visibly selected in blue under `Covering Material`.
+
+Evidence: user-performed full page reload plus user-provided screenshot in the active conversation.
+Acceptance result: reload persistence is VERIFIED for this selected report value.
+
+Scope limitation: this proves the selected value is restored after a full page reload in the same browser/account. It does not independently establish the exact persistence layer, cross-device persistence, or backend implementation details.
+
+What was assumed earlier: that intra-editor navigation persistence might represent only client/session state.
+What was missed until tested: whether a full document reload would restore the selection.
+What looks right but was not yet proven before this test: a blue selected state after navigation was not sufficient evidence of reload persistence.
+
+Decision consequence: the sample inspection now has one verified persisted information value. To exercise a second semantic path before publication, select the checkbox/state control for the existing limitation `Viewed from ground with binoculars`, then observe its state before making any further changes.
