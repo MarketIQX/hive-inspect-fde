@@ -837,3 +837,21 @@ Scope: screenshot-visible report-editor state only.
 Interpretation: Hive's editable report model visibly distinguishes section, subsection, and typed comment/category groupings, and supports selectable answer/options plus limitation/defect items. This product evidence is materially relevant to the later destination model for the Spectora importer.
 
 Decision consequence: make one minimal synthetic observation first rather than bulk-editing the report. Select `Asphalt Shingles` under `Covering Material`, then observe the resulting save/selection state before changing anything else.
+
+
+### Canonical observation record CS-0046
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 10:02 IST
+
+Claim: after selecting `Asphalt Shingles` under `Covering Material`, Hive did not navigate to a new screen. The selected option is visibly highlighted blue in-place within the report editor.
+
+Evidence: user-provided screenshot in the active conversation.
+Scope: screenshot-visible client/UI state only.
+
+What this proves: the report editor supports inline selection for this option and reflects the chosen state visually.
+
+What this does NOT yet prove: that the selection has persisted to backend storage, survives navigation or reload, or will appear in the published report.
+
+Decision consequence: do not add more synthetic inspection data yet. Verify persistence first by navigating to `Gutters & Downspouts` and then back to `Roof Covering`. If `Asphalt Shingles` remains selected, that establishes intra-editor navigation persistence; a later reload or backend-visible check can establish stronger persistence.
