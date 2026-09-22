@@ -584,3 +584,17 @@ Decision: on the currently observed Hive signup step 2 screen, after selecting `
 Reason: the prior wording was insufficiently precise for the visible UI. The operator asked for exact next-click guidance. This clarification records the concrete control visible on the observed signup page rather than paraphrasing it.
 
 Scope: the signup screen already observed in the active conversation. If the button label or page changes, that changed UI state must be observed before giving different click instructions.
+
+
+### Canonical observation record CS-0032
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 09:23 IST
+
+Claim: Hive signup submission succeeded to the point of email verification. The visible confirmation page states that a verification link has been sent and instructs the operator to open the Hive email, click the verification link, and then land in the dashboard with five free reports.
+
+Evidence: user-provided screenshot in the active conversation.
+Scope: screenshot-visible post-signup verification state only. This does not yet prove that the verification email was received, the verification link was successfully consumed, or dashboard access was granted.
+
+Consequence: the next action is to open the Hive verification email and click its verification link. Do not use `Back to sign in` unless verification fails, and use resend only if the email is genuinely missing.
