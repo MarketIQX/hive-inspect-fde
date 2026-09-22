@@ -1626,3 +1626,27 @@ Generalization matrix added (CS-0085 missed gate): `tests/importer.generalizatio
 Full suite: 22/22 tests passing (`npm test`), lint clean, `tsc --noEmit` clean, `next build` clean.
 
 Decision consequence: the CS-0085 gate is closed. Proceed to B4 (local Supabase/Postgres persistence via Docker + Supabase CLI), per CS-0082/CS-0083. Cloud credentials remain deferred to the deployment gate only.
+
+
+### Canonical verification record CS-0087
+
+kind: TEST_RESULT
+status: VERIFIED
+observed_at: 22 Sep 2026, 14:05 IST
+
+Claim: B4 (real backend persistence) is implemented and verified against local Supabase/Postgres, with no cloud credentials involved.
+
+Schema: `supabase/migrations/20260922080000_initial_schema.sql` — `templates`, `sections`, `items`, `comments`, `import_runs`, `import_warnings`, plus a nullable `templates.copied_from_template_id` self-reference for future copy lineage. Deliberately no per-field audit-history columns (CS-0085 Correction 1): `sections.name`/`items.name`/`comments.raw_text` are each the single editable value. `comments.category` has a DB check constraint restricting it to `-1/0/1`, matching the source contract enum.
+
+`src/lib/db/persist-import.ts` writes the full template graph inside one Postgres transaction (`BEGIN`/`COMMIT`/`ROLLBACK`). `src/lib/db/get-template.ts` is the app's only read path — no client cache stands in for a real query. `/api/import` now persists `SUCCESS`/`COMPLETED_WITH_ISSUES` results and returns the new `templateId`; `FAILED` results persist nothing.
+
+Verification performed:
+1. `tests/db.persist-reopen.test.ts` (2 tests, run against local Supabase): a real import of the committed fixture is persisted, then read back through a **separate** `getTemplate` query (not the in-memory `ImportResult`) — 13/69/392 structure, `Cracking - Major`'s full text, and the row-126 `Homeowner's Responsibility` → `Default Value = "true"` regression all match exactly. A second test deliberately corrupts one comment's category to `99` (violating the new check constraint) mid-graph and asserts `persistImport` throws and the `templates` row count is unchanged afterward — proving the transaction actually rolls back rather than leaving a partial template.
+2. Live verification: `curl -X POST` with the real fixture against a running `next dev` server returned `outcome=SUCCESS` and a real `templateId`; `/templates/[id]` (a server component reading straight from Postgres) rendered the persisted 13/69/392 structure in a real browser on a fresh page load.
+3. Environment facts independently re-checked live in this session (not merely carried over from CS-0082/CS-0083): `docker info` reports `ServerVersion 29.4.3`; `npx supabase --version` reports `2.117.0`; `npx supabase start` applied the migration cleanly; `npx supabase db reset` was used once to pick up the added check constraint.
+
+Full suite: 24/24 tests passing, lint clean, `tsc --noEmit` clean, `next build` clean (including with `.env.local` present, confirming Next.js picks up local Supabase config).
+
+Scope not yet covered: edit (section/item/comment name and comment-text save with persisted-after-reload proof), independent deep copy, and any cloud/production Supabase project. Cloud credentials remain deferred to the deployment gate (CS-0081/CS-0082).
+
+Decision consequence: B4 is GREEN. Proceed to B5 (edit) and B6 (independent copy), both achievable against the local database without new credentials, per CS-0079/CS-0085's build order.
