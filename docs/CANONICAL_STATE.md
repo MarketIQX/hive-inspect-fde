@@ -1059,3 +1059,21 @@ Safety/evidence check before publication:
 Decision: proceed with `Publish Report` in this modal, then stop and inspect the resulting state. Do not use any separate send/report-distribution action.
 
 Reason: publication is an explicit assignment requirement, and the current synthetic/no-client state minimizes external impact while preserving real-product evidence. The exact post-publish notification/distribution behavior remains unclaimed until observed.
+
+
+### Canonical verification record CS-0057
+
+kind: TEST_RESULT
+status: VERIFIED
+observed_at: 22 Sep 2026, 10:54 IST
+
+Claim: the Hive sample report publication succeeded. After the operator confirmed publication, the report editor's top action changed from `Publish` to `Unpublish`.
+
+Evidence: user-provided screenshot in the active conversation.
+Acceptance result: publication state is VERIFIED.
+
+Scope limitation: this proves Hive now considers the report published in the authenticated editor. It does not prove that any email, message, or external client distribution occurred. No `Send Reports` action was used.
+
+Assignment consequence: the mandatory Hive product-exploration sequence has now completed the `run a sample inspection through and publish a report` portion. The next required step is to try Hive's template-import workflow.
+
+Decision consequence: leave the report editor without using `Unpublish`. Return to the authenticated Hive dashboard using the previously verified dashboard route, then enter `Templates` and inspect the available import workflow before uploading anything.
