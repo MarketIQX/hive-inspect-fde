@@ -1140,3 +1140,23 @@ Interpretation: the estimate range in this source has no row-level variation and
 Decision: leave `Import cost estimates` UNCHECKED for this Hive product-exploration import. This is a deliberate semantic-preservation decision, not silent data loss: the source values remain preserved in our committed fixture/evidence, but we will not project a uniform default range into Hive recommendations as if it were defect-specific cost evidence.
 
 Next action: use `Select File` and choose the exact preserved/downloaded Spectora export `Residential Template-2026-09-21.xls`. Do not click `Import Template` until Hive shows the selected-file state and any additional validation.
+
+
+### Canonical verification record CS-0062
+
+kind: TEST_RESULT
+status: VERIFIED
+observed_at: 22 Sep 2026, 11:19 IST
+
+Claim: Hive's Spectora import modal now shows selected file `Residential Template-2026-09-21.xls` with displayed size `54.14 KB`; `Import cost estimates` remains unchecked; and `Import Template` is enabled.
+
+Independent local fixture check:
+- name: `Residential Template-2026-09-21.xls`
+- byte size: `55439`
+- SHA-256: `93AE536E100DA2DB0F41E81467CF4889220DE8D0673DDFCC56954FB77FF39C83`
+
+Evidence: user-provided screenshot plus local read-only fixture inspection.
+
+Scope limitation: matching filename and displayed size strongly align the selected browser file with the preserved fixture, but the browser UI does not expose a cryptographic hash, so byte-for-byte identity of the browser-selected upload is not independently proven from the screenshot alone.
+
+Decision consequence: the source selection gate is sufficiently evidenced for the product-exploration task. Click `Import Template` once, with cost-estimate import still unchecked, then stop and inspect Hive's resulting import status before taking any further action.
