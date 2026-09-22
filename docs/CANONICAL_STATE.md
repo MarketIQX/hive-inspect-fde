@@ -556,3 +556,17 @@ Claim: the Export A source-characterization slice now satisfies the defined G1 e
 Scope: Export A only.
 
 Important gate boundary: the project does NOT advance past G0 yet because the assignment-mandated Hive hands-on journey remains unresolved. G1 evidence may be prepared in parallel, but production parser implementation and final destination schema remain blocked until G0 is completed.
+
+
+### Canonical observation record CS-0030
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 09:15 IST
+
+Claim: the operator has reached Hive Inspect free-trial signup step 2 of 2 at `dashboard.hiveinspect.com/signup?step=2`. The visible form includes Inspection Company Name, Phone Number with India (+91) country selection, State / Province, and an optional `Current Software` field explicitly labeled `helps us set up your import`.
+
+Evidence: user-provided screenshot in the active conversation.
+Scope: screenshot-visible onboarding state only. This does not yet prove successful account creation, dashboard access, sample inspection completion, report publication, or template-import behavior.
+
+Consequence: selecting Spectora in the Current Software field is the evidence-aligned onboarding choice for this assignment because the required migration source is Spectora. The next step is to complete signup legitimately, then perform the assignment-mandated Hive hands-on journey before production parser/schema work.
