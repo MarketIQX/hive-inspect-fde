@@ -1514,3 +1514,24 @@ New source observation (not previously in canonical state): item/section names c
 Known accepted risk: `xlsx` (SheetJS, npm registry release) carries two unpatched advisories (prototype pollution, ReDoS; no fix available upstream). It is used only as a devDependency, only in `scripts/build-reference-manifest.ts` against our own already-checksummed trusted fixture, and is never imported by the production importer or app code. Recorded here rather than left for a later audit to surface unexplained.
 
 Decision consequence: B1 and B2 are GREEN. Proceed to B3 (import trust UI) and B4 (Supabase persistence), per CS-0079's build order.
+
+
+### Canonical verification record CS-0081
+
+kind: TEST_RESULT
+status: VERIFIED
+observed_at: 22 Sep 2026, 13:20 IST
+
+Claim: B3 (import trust UI) is implemented and verified end to end in a real running app, not only by unit tests.
+
+Built: `POST /api/import` (Next.js route handler, Node runtime) accepts a multipart file upload, runs the B2 importer, and returns the full `ImportResult` including every warning. `/import` (client page) uploads a file to that route and renders outcome, source/imported row counts, section/item/comment counts, the full warnings list (nothing hidden), and an expandable section/item/comment tree.
+
+Verification performed:
+1. `npm run build` — production build succeeds, `/import` and `/api/import` both compile.
+2. `npm run dev` (local, port 3311) plus a direct `curl -F file=@...` POST to `/api/import` with the real committed fixture: `outcome=SUCCESS`, `sourceRowCount=392`, `importedRowCount=392`, `sections=13`, `warnings=0` — confirms the HTTP path, not just the library function.
+3. Live browser check (Claude in Chrome) against the running dev server: uploaded the real fixture through the actual file input and clicked Import. Rendered result matched step 2 exactly (13 sections / 69 items / 392 comments / 0 warnings), and expanding "Exterior" showed "Siding, Flashing &amp; Trim (12 comments)" with "Cracking - Major" listed, consistent with CS-0066.
+4. Live browser failure-case check: uploaded a non-workbook file (plain text renamed `.xls`). UI rendered `FAILED`, zero imported rows, and the visible error `File is not a ZIP-based package (missing PK magic bytes).` — no silent or partial import, satisfying the assignment's required failure-case demonstration (R13) at the UI level, not only in a unit test.
+
+Observed, deliberately not fixed in this slice: the "Imported structure" tree renders raw stored text as-is, so names containing the double-escaped ampersand (CS-0080) display literally as `&amp;` rather than a clean `&`. This matches the decision to store and round-trip the exact source value; a presentation-layer decode (matching how Hive's own UI renders it, CS-0064) is a legitimate later polish item, not a correctness bug, and is left for NOTES.md as a deliberate cut for now.
+
+Decision consequence: B3 is GREEN. Proceed to B4 (Supabase persistence). B4 requires a real Supabase project (URL + keys), which the operator (AK) must provide — this is the first point in the build where the CS-0078 "stop for credentials" condition is expected to apply.
