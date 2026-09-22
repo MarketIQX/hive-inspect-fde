@@ -732,3 +732,17 @@ Scope: screenshot-visible inspection configuration state only.
 Interpretation: service selection in Hive is not only pricing metadata; in this demo configuration it also binds at least one inspection template and one agreement to the inspection.
 
 Decision consequence: do not edit the demo price/duration because that would alter observed default product behavior without a requirement. Proceed with `Confirm Inspection` once. No payment method, charge authorization control, or client recipient is visible in the observed state, so this action is treated as creating the demo inspection record, not as evidence of payment capture. If Hive presents any payment/charge confirmation, stop before authorizing it.
+
+
+### Canonical observation record CS-0042
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 09:45 IST
+
+Claim: Hive accepted the sample inspection creation. The Inspections page now shows the operator's `1000 Test Property Lane` inspection with status `Confirmed`, scheduled for Sep 22, 2026 at 10:00 AM, OID `#1`, and price `$450`. The Free Trial counter decreased from five reports remaining to four reports remaining after confirmation. The page total shows two inspections because a separate pre-existing demo inspection is also listed.
+
+Evidence: user-provided screenshot in the active conversation.
+Scope: screenshot-visible inspection-list state only. The reduced report counter proves a trial report entitlement was consumed/reserved by this flow; it does not by itself prove the report has been written or published.
+
+Decision consequence: the next goal is to enter the newly created inspection record and run the report-writing workflow. Because the Progress icons are unlabeled in the screenshot and the bottom-row Actions control is partially obscured by the chat widget, do not guess an icon meaning. First click the `1000 Test Property Lane` row/address to attempt to open its inspection detail. If that does not navigate, stop and observe rather than selecting an ambiguous progress icon.
