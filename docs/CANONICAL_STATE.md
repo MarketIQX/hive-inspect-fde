@@ -682,3 +682,23 @@ Evidence: user-provided screenshot in the active conversation.
 Scope: screenshot-visible form state only.
 
 Decision consequence: the next evidence-seeking action is to submit the form with the minimum observed required data rather than fabricating optional fields. Click `Confirm Inspection` once. If Hive rejects the submission, record the resulting validation errors and satisfy only the fields it proves are mandatory. If it accepts, that proves the minimum creation path for this trial state.
+
+
+### Canonical correction record CS-0039
+
+kind: ENGINEERING_DECISION
+status: VERIFIED
+effective_at: 22 Sep 2026, 09:37 IST
+supersedes: CS-0038 decision consequence that recommended clicking `Confirm Inspection` before selecting a service.
+
+Correction: selecting at least one inspection service is required before Hive will save/confirm the inspection. The observed validation message states: `Please select at least one service before saving`.
+
+Reason for correction: the earlier reasoning over-weighted explicit asterisk markers and under-weighted the visible `Select Service` section and pricing dependency already present on the page. That was a decision-quality error. The correct evidence hierarchy is not "asterisk = only requirement"; UI structure, validation behavior, and domain semantics must all be considered.
+
+What looked right but was not: treating the absence of an asterisk on `Select Service` as evidence that service selection was optional.
+
+What was missed: the page had already exposed a dedicated `Select Service` control and a pricing panel dependent on service selection. Those signals should have triggered a validation check before recommending submission.
+
+What this test did prove: Hive's server/client validation explicitly requires at least one service before saving. The failed submission is now valid negative evidence, but it should have been framed as a deliberate validation probe rather than an expected minimum-success path.
+
+Next action: choose an inspection service from the dropdown, observe the resulting service/pricing/template state, and only then proceed.
