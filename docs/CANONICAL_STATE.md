@@ -801,3 +801,19 @@ Scope: screenshot-visible product state only.
 Important observation: Hive displays the scheduled time on this order page as `10:00 AM EDT`. This is recorded exactly as observed; no assumption is made yet about account timezone configuration or intended timezone semantics.
 
 Decision consequence: the assignment requires running a sample inspection before publishing its report. The next action is therefore `Edit Reports`, not `Publish All`, `Send Reports`, `Record Payment`, or agreement actions. Enter the report editor first and observe its structure before changing report content.
+
+
+### Canonical observation record CS-0044
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 09:56 IST
+
+Claim: after invoking `Edit Reports` on the confirmed inspection, Hive opens a `Select Report` modal showing `1 total report`. The only report card is `Demo Residential Template` with status `Template - Not Generated` and a green `Generate Report` button. The modal also exposes `Add Report` and `Publish All` controls.
+
+Evidence: user-provided screenshot in the active conversation.
+Scope: screenshot-visible report-selection state only.
+
+Interpretation: the attached template is not yet an editable/generated inspection report. Therefore `Edit Reports` does not directly open report contents until Hive first materializes a report from the template.
+
+Decision consequence: click `Generate Report` for `Demo Residential Template`. Do not use `Publish All` or `Add Report` before generation, because the assignment requires running the sample inspection/report before publication and there is already one attached template.
