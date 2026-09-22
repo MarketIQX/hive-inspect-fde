@@ -106,6 +106,21 @@ describe("importer against the real Export A fixture", () => {
     ]);
   });
 
+  it("preserves the one populated Default Value field exactly (CS-0022/CS-0085 regression)", async () => {
+    const result = await importWorkbook(bytes, {
+      sourceFileName: "Residential Template-2026-09-21.xls",
+      sourceFileSha256: sha256(bytes),
+    });
+    const heating = result.sections.find((s) => s.name === "Heating")!;
+    const general = heating.items.find((i) => i.name === "General")!;
+    const homeowner = general.comments.find((c) => c.name === "Homeowner's Responsibility")!;
+    // Source row 126, cell type t="str" value "true". fast-xml-parser's
+    // parseTagValue default previously coerced this to the JS boolean
+    // `true`, which fell through unstringified and silently became "".
+    expect(homeowner.defaultValue).toBe("true");
+    expect(homeowner.sourceRowNumber).toBe(126);
+  });
+
   it("keeps the duplicate Damper Inoperable rows as two distinct comments (CS-0025)", async () => {
     const result = await importWorkbook(bytes, {
       sourceFileName: "Residential Template-2026-09-21.xls",

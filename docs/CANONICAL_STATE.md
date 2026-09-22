@@ -1603,3 +1603,26 @@ Concrete losslessness risks found in current code for future-format variation: `
 Hard submission gates from the PDF remain open after B1-B3: real backend persistence; edit/save/reopen; independent deep copy; public deployed URL on Vercel (or explained alternative); live app seeded with an already-imported template and opening into something reviewers can explore; README database/env instructions; NOTES.md cuts/limitations/checking/time/credits; walkthrough video showing import, saved edit, independent copy, data model, preservation checks, hard case, failure case, and direct Hive feedback. If Binsr is skipped, explain the time/prioritization choice because the PDF explicitly asks for that when only Hive is explored.
 
 Decision consequence: B4 local persistence remains the right next build slice, but first reconcile the source contract and add/fix the small generalization/losslessness tests above. Keep implementation minimal and assignment-shaped. Do not add speculative enterprise architecture that does not buy a scored requirement.
+
+
+### Canonical verification record CS-0086
+
+kind: TEST_RESULT
+status: VERIFIED
+observed_at: 22 Sep 2026, 13:50 IST
+
+Claim: CS-0085's reconciliation items are complete. `docker info` (`ServerVersion 29.4.3`) and `npx supabase --version` (`2.117.0`) were independently re-checked live in this session before relying on them, per the canonical rule that dynamic environment facts must be rechecked before use.
+
+SOURCE_CONTRACT.md reconciled: Comment Text wording changed from "byte-for-byte" to "exact decoded source-cell string" (CS-0084); Locked/Simple Format/Disable Photos changed from "boolean" to "text, raw, not coerced"; added a Presentation vs. storage section documenting that the double-escaped-ampersand display decode is a render-layer concern, deferred to before final submission, not a storage change.
+
+Two real losslessness bugs (CS-0085 Correction C) fixed in `src/lib/importer/map-to-schema.ts`: `parseDefaultPhotos` now keeps a photo slot when either the URL or the caption is populated, instead of requiring a URL; `Uses`/`Default Estimate Min`/`Default Estimate Max` now go through a new `parseNumericWithWarning` that always retains the raw string (`usesCountRaw`, `defaultEstimateMinRaw`, `defaultEstimateMaxRaw`, added to `SourceComment`) and emits an `UNPARSEABLE_NUMERIC_VALUE` warning instead of silently returning null for a non-empty unparseable value.
+
+A third, previously-undiscovered bug was found while fixing the above: `fast-xml-parser`'s `parseTagValue` default auto-coerces tag text that looks boolean/numeric into native JS types. Source row 126 ("Homeowner's Responsibility", Heating > General) has a genuinely populated `Default Value` cell containing the literal string `true` (`t="str"><v>true</v>`, confirmed by direct XML byte inspection); this was silently becoming the JS boolean `true` and then vanishing (no string-typed branch handled it), producing an empty value with no warning. Fixed with `parseTagValue: false` — every cell value now stays a string; type interpretation is this codebase's decision per SOURCE_CONTRACT.md, not an XML library default. A regression test locks in the exact source row/value.
+
+Evaluator scope genuinely broadened (CS-0085 Correction A): `evaluate.ts` now also compares `commentType`, `category`, `options`, `answerType`, `defaultValue`, `defaultEstimateMin`, and `defaultEstimateMax` — raw-to-raw against the reference manifest's already-captured raw strings — in addition to the prior five structural/text fields. This immediately caught the row-126 `parseTagValue` bug the first time it ran, which the narrower evaluator would not have caught. The defensible claim is now: every source row's structural placement, ordering, name, Comment Text, and these seven additional mapped fields are independently verified across all 392 real rows; the ten `UNRESOLVED_VARIATION_FIELD` columns (zero-populated in Export A) and a few metadata-only fields (`Order`, `Last Modified`, photo slots) remain unevaluated against real data because Export A has nothing in them to check.
+
+Generalization matrix added (CS-0085 missed gate): `tests/importer.generalization.test.ts`, seven synthetic same-HTML-text-format cases built with a hand-rolled minimal-workbook helper (not derived from Export A), each clearly labeled synthetic: header-order independence (headers shuffled, importer still maps by name), an unknown extra populated column (surfaced via `unmappedSourceFields` + `UNMAPPED_COLUMN_VALUE`, not dropped), an unrecognized Comment Type and an unrecognized Answer Type (both preserved raw + warned, not guessed), a previously-empty-in-A column (`Locked`) populated with `"true"` (doubles as a regression guard for the `parseTagValue` bug), a caption-only default photo (regression guard for the photo-drop fix), and an unparseable numeric estimate value (regression guard for the numeric-raw-preservation fix).
+
+Full suite: 22/22 tests passing (`npm test`), lint clean, `tsc --noEmit` clean, `next build` clean.
+
+Decision consequence: the CS-0085 gate is closed. Proceed to B4 (local Supabase/Postgres persistence via Docker + Supabase CLI), per CS-0082/CS-0083. Cloud credentials remain deferred to the deployment gate only.

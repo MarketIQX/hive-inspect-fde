@@ -37,6 +37,14 @@ const parser = new XMLParser({
   // normalization (a legitimate, spec-required use of a char reference);
   // decoding it is required for byte-exact preservation, not optional.
   htmlEntities: true,
+  // fast-xml-parser auto-coerces tag text that looks numeric or boolean
+  // (e.g. "true"/"false"/"10") into native JS types by default. Source
+  // row 126's Default Value cell is the literal string "true", which
+  // silently became the JS boolean `true` and then vanished (no string
+  // branch handled it) before this was disabled. Every cell value must
+  // stay a string; type interpretation is this codebase's decision, per
+  // SOURCE_CONTRACT.md, not an XML library's heuristic.
+  parseTagValue: false,
 });
 
 export interface RawRow {

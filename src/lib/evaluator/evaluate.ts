@@ -44,6 +44,7 @@ export type IssueCode =
   | "WRONG_PARENT"
   | "CHANGED_COMMENT_NAME"
   | "CHANGED_TEXT"
+  | "FIELD_MISMATCH"
   | "SIBLING_REORDERED"
   | "SECTION_SEQUENCE_MISMATCH"
   | "ITEM_SEQUENCE_MISMATCH";
@@ -63,12 +64,27 @@ export interface EvaluationReport {
   };
 }
 
+// Additional mapped fields compared as raw source-cell strings on both
+// sides (the importer's own *Raw counterparts vs. the reference's raw
+// strings), so a parsing/coercion difference can't hide a real mismatch.
+const COMPARED_RAW_FIELDS = [
+  "commentType",
+  "category",
+  "options",
+  "answerType",
+  "defaultValue",
+  "defaultEstimateMin",
+  "defaultEstimateMax",
+] as const;
+type ComparedRawField = (typeof COMPARED_RAW_FIELDS)[number];
+
 interface FlatRow {
   sourceRowNumber: number;
   sectionName: string;
   itemName: string;
   commentName: string;
   rawText: string;
+  raw: Record<ComparedRawField, string>;
 }
 
 function flattenReference(manifest: ReferenceManifest): FlatRow[] {
@@ -82,6 +98,15 @@ function flattenReference(manifest: ReferenceManifest): FlatRow[] {
           itemName: item.name,
           commentName: comment.name,
           rawText: comment.rawText ?? "",
+          raw: {
+            commentType: comment.commentType ?? "",
+            category: comment.category ?? "",
+            options: comment.options ?? "",
+            answerType: comment.answerType ?? "",
+            defaultValue: comment.defaultValue ?? "",
+            defaultEstimateMin: comment.defaultEstimateMin ?? "",
+            defaultEstimateMax: comment.defaultEstimateMax ?? "",
+          },
         });
       }
     }
@@ -100,6 +125,15 @@ function flattenImported(sections: SourceSection[]): FlatRow[] {
           itemName: item.name,
           commentName: comment.name,
           rawText: comment.rawText ?? "",
+          raw: {
+            commentType: comment.commentTypeRaw ?? "",
+            category: comment.categoryRaw ?? "",
+            options: comment.optionsRaw ?? "",
+            answerType: comment.answerTypeRaw ?? "",
+            defaultValue: comment.defaultValue ?? "",
+            defaultEstimateMin: comment.defaultEstimateMinRaw ?? "",
+            defaultEstimateMax: comment.defaultEstimateMaxRaw ?? "",
+          },
         });
       }
     }
@@ -173,9 +207,18 @@ export function evaluateImport(
     if (refRow.rawText !== impRow.rawText) {
       issues.push({
         code: "CHANGED_TEXT",
-        message: `Source row ${impRow.sourceRowNumber} ("${refRow.commentName}") raw text does not match the source byte-for-byte.`,
+        message: `Source row ${impRow.sourceRowNumber} ("${refRow.commentName}") raw text does not match the source exactly.`,
         sourceRowNumber: impRow.sourceRowNumber,
       });
+    }
+    for (const field of COMPARED_RAW_FIELDS) {
+      if (refRow.raw[field] !== impRow.raw[field]) {
+        issues.push({
+          code: "FIELD_MISMATCH",
+          message: `Source row ${impRow.sourceRowNumber} ("${refRow.commentName}") field "${field}" expected raw value "${refRow.raw[field]}" but imported result has "${impRow.raw[field]}".`,
+          sourceRowNumber: impRow.sourceRowNumber,
+        });
+      }
     }
   }
 

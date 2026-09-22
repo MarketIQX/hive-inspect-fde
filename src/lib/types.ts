@@ -14,7 +14,7 @@ export type AnswerType =
 
 export interface DefaultPhoto {
   index: number;
-  url: string;
+  url: string | null;
   caption: string | null;
 }
 
@@ -41,11 +41,14 @@ export interface SourceComment {
   defaultUnitType: string | null;
   defaultLocation: string | null;
   defaultEstimateMin: number | null;
+  defaultEstimateMinRaw: string | null;
   defaultEstimateMax: number | null;
+  defaultEstimateMaxRaw: string | null;
   locked: string | null;
   simpleFormat: string | null;
   disablePhotos: string | null;
   usesCount: number | null;
+  usesCountRaw: string | null;
   defaultPhotos: DefaultPhoto[];
   sourceLastModified: string | null;
   unmappedSourceFields: Record<string, string>;

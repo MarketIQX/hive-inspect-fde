@@ -32,6 +32,33 @@ function parseIntOrNull(value: string): number | null {
   return Number.isFinite(n) ? n : null;
 }
 
+/**
+ * Parses a numeric field while always retaining the raw source string, and
+ * emitting a warning if a genuinely non-empty value fails to parse. Without
+ * this, an unparseable-but-populated value (e.g. "$500") would silently
+ * become null with no visible trace, violating the "skipped/unsupported
+ * content must be visible" rule for any future export where this column is
+ * populated with a non-numeric value (CS-0085).
+ */
+function parseNumericWithWarning(
+  raw: string,
+  columnLabel: string,
+  warnings: ImportWarning[],
+  rowNumber: number
+): number | null {
+  if (raw === "") return null;
+  const n = Number(raw);
+  if (Number.isFinite(n)) return n;
+  warnings.push({
+    level: "warning",
+    code: "UNPARSEABLE_NUMERIC_VALUE",
+    message: `${columnLabel} value "${raw}" is not numeric; preserved raw, not coerced.`,
+    sourceRowNumber: rowNumber,
+    column: columnLabel,
+  });
+  return null;
+}
+
 function parseCommentType(raw: string, warnings: ImportWarning[], rowNumber: number): CommentType | null {
   if (raw === "") return null;
   if ((COMMENT_TYPES as readonly string[]).includes(raw)) return raw as CommentType;
@@ -99,8 +126,12 @@ function parseDefaultPhotos(row: Record<string, string>): DefaultPhoto[] {
   for (let i = 1; i <= PHOTO_SLOTS; i++) {
     const url = row[`Default Photo ${i}`];
     const caption = row[`Default Photo ${i} Caption`];
-    if (url) {
-      photos.push({ index: i, url, caption: caption || null });
+    // Keep the slot whenever EITHER value is populated. A URL-only gate
+    // would silently drop a caption-only value in a future export
+    // (CS-0085) — not observed in Export A (both are unpopulated there),
+    // but the contract's non-exclusion rule applies regardless.
+    if (url || caption) {
+      photos.push({ index: i, url: url || null, caption: caption || null });
     }
   }
   return photos;
@@ -240,12 +271,15 @@ export async function importWorkbook(
       defaultValue2: row["Default Value 2"] || null,
       defaultUnitType: row["Default Unit Type"] || null,
       defaultLocation: row["Default Location"] || null,
-      defaultEstimateMin: parseIntOrNull(row["Default Estimate Min"] ?? ""),
-      defaultEstimateMax: parseIntOrNull(row["Default Estimate Max"] ?? ""),
+      defaultEstimateMin: parseNumericWithWarning(row["Default Estimate Min"] ?? "", "Default Estimate Min", warnings, rawRow.rowNumber),
+      defaultEstimateMinRaw: row["Default Estimate Min"] || null,
+      defaultEstimateMax: parseNumericWithWarning(row["Default Estimate Max"] ?? "", "Default Estimate Max", warnings, rawRow.rowNumber),
+      defaultEstimateMaxRaw: row["Default Estimate Max"] || null,
       locked: row["Locked"] || null,
       simpleFormat: row["Simple Format"] || null,
       disablePhotos: row["Disable Photos"] || null,
-      usesCount: parseIntOrNull(row["Uses"] ?? ""),
+      usesCount: parseNumericWithWarning(row["Uses"] ?? "", "Uses", warnings, rawRow.rowNumber),
+      usesCountRaw: row["Uses"] || null,
       defaultPhotos: parseDefaultPhotos(row),
       sourceLastModified: row["Last Modified"] || null,
       unmappedSourceFields: buildUnmapped(row),

@@ -51,7 +51,7 @@ hierarchy, identity, or ordering rule is inferred from names alone (playbook Ste
 | Section Name | `sections.name` | text | Verbatim. User-editable post-import. |
 | Item Name | `items.name` | text | Verbatim. User-editable post-import. |
 | Comment Name | `comments.name` | text | Verbatim. User-editable post-import. Duplicates allowed. |
-| Comment Text | `comments.raw_text` | text, nullable | Stored byte-for-byte as sourced, including HTML markup and characters such as U+00A0 (verified present, CS-0074/source row 21). Never mutated. Sanitized render is derived separately (see Rich content). User-editable post-import; editing replaces `raw_text` with the new plain/HTML value the editor produces — the pre-edit value is not retroactively treated as import damage (playbook rule). |
+| Comment Text | `comments.raw_text` | text, nullable | Stored as the exact decoded source-cell string (not a raw-XML-byte comparison; see CS-0084), including HTML markup and characters such as U+00A0 (verified present, CS-0074/source row 21). Never mutated. Sanitized render is derived separately (see Rich content). User-editable post-import; editing replaces `raw_text` with the new plain/HTML value the editor produces — the pre-edit value is not retroactively treated as import damage (playbook rule). |
 | Comment Type (info, limit, defect) | `comments.comment_type` | enum('info','limit','defect') | Verbatim; unknown value → import warning, row still imported with raw value preserved in `unmapped_source_fields`. |
 | Category (-1: Low, 0: Med, 1: High) | `comments.category` | enum(-1,0,1), nullable | Verbatim including blank (90 of 392 rows blank). Not remapped to Hive's own category vocabulary — that mapping is UNRESOLVED per CS-0074 and out of scope for our own schema. |
 | Multiple Choice Options | `comments.options` | text[], nullable | PROPOSED rule: split raw string on `,`, trim each part. Raw original string also retained in `options_raw`. If a resulting option contains an HTML tag or the split yields exactly one element from a string that looks list-like (heuristic only), emit an import warning for manual review rather than asserting confidence. |
@@ -64,7 +64,7 @@ hierarchy, identity, or ordering rule is inferred from names alone (playbook Ste
 | Default Unit Type | `comments.default_unit_type` | text, nullable | Verbatim passthrough. UNRESOLVED, not interpreted. |
 | Default Location | `comments.default_location` | text, nullable | Verbatim passthrough. UNRESOLVED, not interpreted. |
 | Default Estimate Min / Max | `comments.default_estimate_min` / `_max` | numeric, nullable | Verbatim. Stored faithfully even though Export A repeats the identical stock pair `10`/`1000` on all 392 rows (CS-0061). The importer does not editorialize this in the schema; any "looks like a stock default" warning is a UI/report concern, not a data-loss concern. |
-| Locked / Simple Format / Disable Photos | `comments.locked` / `simple_format` / `disable_photos` | boolean, nullable | Verbatim passthrough. Zero populated rows in A; UNRESOLVED, not interpreted as false-by-default. |
+| Locked / Simple Format / Disable Photos | `comments.locked` / `simple_format` / `disable_photos` | text, nullable | Stored as the raw source string, not coerced to boolean. Zero populated rows in A; UNRESOLVED whether populated values would be boolean-like — raw preservation is safer than guessing a type for semantics never observed. |
 | Uses | `comments.uses_count` | integer, nullable | Verbatim. All-zero in A; no semantic claim beyond the literal value. |
 | Default Photo 1–10 + captions (20 columns) | `comments.default_photos` | jsonb, nullable | Modeled as an array of `{index, url, caption}` rather than 20 rigid columns, since all are zero-populated in A and variability is unproven either way (playbook: flexible metadata only where variability warrants it). Verbatim passthrough when present. |
 | Last Modified | `comments.source_last_modified` | text | Stored as the literal source string, not parsed into a timestamp type — exact format not yet verified against a second export. |
@@ -84,6 +84,15 @@ hierarchy, identity, or ordering rule is inferred from names alone (playbook Ste
   present.
 - Non-breaking spaces and other literal Unicode content are preserved as-is; they are not
   collapsed or stripped by the importer.
+
+## Presentation vs. storage (CS-0084)
+
+Storage fidelity and display readability are separate concerns. Section/item/comment names
+containing Export A's double-escaped ampersand artifact (`&amp;amp;` on disk, decoding once to
+the literal text `&amp;`; CS-0080) are stored and evaluated exactly as sourced. User-facing
+labels apply a safe presentation-only decode (matching how Hive's own UI renders this, CS-0064)
+without mutating the stored field. The exact source value remains available for audit/evaluation
+regardless of how it is displayed.
 
 ## Non-exclusion rule
 
