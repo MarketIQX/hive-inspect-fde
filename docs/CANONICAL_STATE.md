@@ -943,3 +943,28 @@ Scope: observed account/report-preview branding behavior only.
 Interpretation: `MarketIQX` appears because Hive is using the inspection-company/account branding supplied during signup in the generated report preview. It is not being pulled from the Spectora export and is not evidence of importer mapping.
 
 Decision consequence: keep this branding distinction explicit in the final walkthrough. Source-content fidelity and Hive account branding are separate concerns. If a neutral demo brand is desired later, change Hive organization/company branding deliberately rather than treating this preview label as imported data.
+
+
+### Canonical verification record CS-0051
+
+kind: TEST_RESULT
+status: VERIFIED
+observed_at: 22 Sep 2026, 10:36 IST
+
+Claim: Hive report Preview renders all three exercised semantic paths from the sample inspection.
+
+Observed customer-facing output:
+- Information: `Covering Material` renders `Asphalt Shingles`.
+- Limitations: `Viewed from ground with binoculars` renders with its narrative text.
+- Defects/Deficiencies: `Damaged / missing shingles` renders as a recommendation card with the defect narrative and `Roofing Professional` recommendation service.
+
+The preview's Roof status overview shows one defect/deficiency for Roof Covering.
+
+Evidence: two user-provided screenshots of the Hive inspector preview in the active conversation.
+Scope: screenshot-visible preview rendering only. Estimated cost/timeline are not claimed as rendered because they are not visible in the supplied preview screenshots.
+
+What this proves: selected report data is not only persisted in the editor; it is transformed into customer-facing report output across Information, Limitation, and Defect semantic types.
+
+What this does not yet prove: published/public report availability, PDF equivalence, or behavior after final publication.
+
+Decision consequence: the assignment's sample-inspection execution has now reached preview-ready state. The next required action is publication. Return to the report editor/order flow using `Back to Reports`, then publish the generated report. Stop if Hive presents an external-send, payment, or irreversible client-distribution confirmation that is not clearly limited to publication.
