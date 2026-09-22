@@ -781,3 +781,23 @@ Scope: screenshot-visible inspection-list state only.
 Interpretation: the page was already seeded with one demo inspection before the operator-created inspection. The newly created inspection is the second row, not the demo row. The reduction from five to four reports is consistent with the new confirmed inspection consuming one trial report, but the screenshot alone does not prove Hive's exact trial-accounting rule.
 
 Correction note: any prior wording implying that the inspection list would contain only the newly created test inspection was incomplete. The seeded demo inspection must be treated as pre-existing product state, not evidence created by our test.
+
+
+### Canonical observation record CS-0043
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 09:54 IST
+
+Claim: the operator-created inspection now opens on Hive's `Inspection Order Page` and is visibly `Confirmed`. The header shows `1000 Test Property Lane` and `Sep 22, 2026 · 10:00 AM EDT`. Workflow indicators show `Agreements Pending`, `Payment Pending`, and `Reports Pending`.
+
+The visible Quick Actions include `Edit Reports`, `Preview Reports`, `Client Preview`, `Automations`, `Agreements`, `Portal Activity`, `Send Reports`, `Status`, `Reorder`, `Publish All`, and `Manual Lock Override for Reports`.
+
+Fees and Payments shows Service Total `$450.00`, Service Paid `$0.00`, and Service Due `$450.00`. The inspection still has no client attached. The selected service remains `Demo Home Inspection`, with `Demo Residential Template` and `Demo Inspection Agreement` attached.
+
+Evidence: four user-provided screenshots of the confirmed inspection order page in the active conversation.
+Scope: screenshot-visible product state only.
+
+Important observation: Hive displays the scheduled time on this order page as `10:00 AM EDT`. This is recorded exactly as observed; no assumption is made yet about account timezone configuration or intended timezone semantics.
+
+Decision consequence: the assignment requires running a sample inspection before publishing its report. The next action is therefore `Edit Reports`, not `Publish All`, `Send Reports`, `Record Payment`, or agreement actions. Enter the report editor first and observe its structure before changing report content.
