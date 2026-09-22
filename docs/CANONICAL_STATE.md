@@ -400,3 +400,17 @@ Evidence: user-provided support transcript in the active conversation.
 Scope: this records what Spectora's AI support agent stated. It is not treated as a verified human support determination that international signup is unsupported.
 
 Consequence: G0-B remains blocked. The next evidence-seeking action is to state the concrete UI failure (fixed +1 mask / inability to enter +91) and request either a supported international-number method or escalation to a human support agent.
+
+
+### Canonical observation record CS-0017
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 08:43 IST
+
+Claim: the operator has reached Spectora's authenticated trial welcome/onboarding page at `next.spectora.com/trial-boarding/v2`. The visible UI offers both `Get Started` and `Skip to dashboard`.
+
+Evidence: user-provided screenshot in the active conversation.
+Scope: screenshot-visible authenticated onboarding state only. This does not yet prove access to Templates, availability of a shareable sample template, or successful export capability.
+
+Consequence: the previous signup blocker is no longer active for this session. The next evidence-seeking action is to enter the dashboard and locate the Templates area needed for Export A.
