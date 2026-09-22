@@ -1297,3 +1297,32 @@ Claim: the small black pencil-in-a-square icon on the `Siding Material` row is c
 Evidence: user-provided screenshot in the active conversation with the pointer over that icon and the visible tooltip `Edit component`.
 
 Decision consequence: this is the exact control to open the `Siding Material` configuration for inspection. The separate subsection three-dot menu currently visible at left is unrelated to the field edit action and should not be used.
+
+
+### Canonical verification record CS-0070
+
+kind: TEST_RESULT
+status: VERIFIED
+observed_at: 22 Sep 2026, 11:54 IST
+
+Claim: Hive's `Siding Material` edit modal exposes the imported field as `Multiple Choice` with internal label `multipleChoices` and description `Select from multiple options`.
+
+Source comparison for the preserved Spectora row:
+- Comment Name: `Siding Material`
+- Comment Type: `info`
+- Answer Type: `checkbox`
+- Comment Text: blank
+- Default Value: blank
+- Multiple Choice Options: 16 values
+
+Hive evidence:
+- Field Name is `Siding Material`.
+- Description Text is blank.
+- Options contains exactly the same 16 values in the same order: `Stucco, Brick Veneer, Asphalt, Fiber Cement, Wood, Shingles, Masonry, Brick, Logs, Vinyl, Stone Veneer, Plastic, Metal, Engineered Wood, Concrete, Stone`.
+- Hive renders the options as 16 selectable chips under `Default Value` and states that multiple selections are allowed.
+- No default chip is visibly selected in the supplied screenshot, consistent with the source's blank Default Value.
+- `Auto-flag (Required comment)` is visibly unchecked.
+
+Interpretation: Spectora `checkbox` is not preserved as a literal type label; Hive maps it to its native multi-select `Multiple Choice`/`multipleChoices` component. The observed behavior preserves the source's multi-select semantics and all 16 options/order for this field.
+
+Decision consequence: close the edit modal with `Cancel` or the `X` only. Do not click the modal `Save Changes`. The next preservation check should target a defect field with non-empty Comment Text so type mapping and narrative preservation can be verified together.
