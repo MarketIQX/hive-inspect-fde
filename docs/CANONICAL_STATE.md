@@ -640,3 +640,17 @@ Evidence: three user-provided screenshots in the active conversation.
 Scope: screenshot-visible inspection-creation state only.
 
 Decision consequence: choose one future available time slot first. At 09:31 IST, select 10:00 AM rather than a near-immediate 09:30/09:45 slot. Then observe the next form state before entering address/service data. Do not confirm the inspection yet.
+
+
+### Canonical observation record CS-0036
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 09:32 IST
+
+Claim: Hive accepted Tue, Sep 22 at 10:00 AM and now displays `Scheduled: Tuesday, September 22, 2026 at 10:00 AM (Duration: 2 hours)`. The time slot is visibly selected. `Block calendar` is enabled in the observed state. The next visible required field is `Street Address *`, and the UI provides a `Can't find it? Click here` path adjacent to the address field.
+
+Evidence: user-provided screenshot in the active conversation.
+Scope: screenshot-visible inspection-creation state only.
+
+Decision consequence: do not enter a real private residence. Click the manual-address path `Click here` first so we can observe what address components Hive actually requires before choosing a synthetic test address. Do not confirm the inspection yet.
