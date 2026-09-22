@@ -1702,3 +1702,17 @@ Claim: the CS-0089 README staleness finding is fixed. README.md's Current state 
 Verification performed exactly as specified: `npm test` (28/28 passing, 7 test files), `npm run lint` (clean), `npm run build` (clean, same six routes as CS-0088), `node scripts/verify-canonical-append-only.mjs` (PASS, canonical file unchanged from HEAD before this record), `git diff --check` (no whitespace errors).
 
 Decision consequence: the CS-0089 blocker is cleared. Still STOPPED at B9 (hosted Supabase + Vercel authorization requires the operator) and B10 (walkthrough video requires the operator's own voice/camera), per CS-0078/CS-0081/CS-0089.
+
+### Canonical submission-readiness record CS-0091
+
+kind: ENVIRONMENT_FACT_AND_GATE
+status: VERIFIED
+observed_at: 22 Sep 2026, 14:53 IST
+
+Independent pre-B9 check after commit 3faf573 found one additional submission blocker not called out in the prior report: the local Git repository has zero configured remotes (`git remote` count = 0). The assignment requires a repository to be sent; therefore the current local Git history is not yet reviewer-accessible.
+
+Authentication state verified without exposing secrets: GitHub CLI is authenticated to active account `MarketIQX` with repository scope; Vercel CLI 59.25.0 is installed but logged out; Supabase CLI 2.117.0 is available but has no cloud access token / linked project. Local Supabase remains running.
+
+Decision consequence: B9 requires three external/account actions before deployment can be claimed GREEN: (1) create or choose the reviewer GitHub repository and push the existing history; (2) authenticate/link a hosted Supabase project and apply the committed migration plus seed an imported template; (3) authenticate/link Vercel and deploy with the hosted database environment variables. These are external actions and require AK authorization/account interaction.
+
+Final acceptance after those actions must be against the public URL from a fresh browser and must verify seeded template visibility, import, saved edit after reload, independent duplicate behavior, preservation report, and failure handling. README/NOTES then need one final truth update with the actual repository/live URL/access details before B10/submission.
