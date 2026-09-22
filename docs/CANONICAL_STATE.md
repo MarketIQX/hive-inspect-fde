@@ -891,3 +891,21 @@ What was missed until tested: whether a full document reload would restore the s
 What looks right but was not yet proven before this test: a blue selected state after navigation was not sufficient evidence of reload persistence.
 
 Decision consequence: the sample inspection now has one verified persisted information value. To exercise a second semantic path before publication, select the checkbox/state control for the existing limitation `Viewed from ground with binoculars`, then observe its state before making any further changes.
+
+
+### Canonical observation record CS-0049
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 10:10 IST
+
+Claim: after activating the existing limitation `Viewed from ground with binoculars`, Hive expanded that limitation item inline. The item is visibly selected, and the editor exposes additional fields for `Location Tags`, a rich-text `Field Description`, and `Field Media`.
+
+The Field Description area explicitly states `Click to edit. Changes save automatically.` The existing limitation narrative is present in that editor, and the media area reports `No media uploaded for this field yet.`
+
+Evidence: two user-provided screenshots in the active conversation.
+Scope: screenshot-visible editor state only.
+
+Interpretation: Hive's limitation object is richer than a boolean flag. A selected limitation can carry editable description text, location tags, and media. This matters directly to the Spectora importer because Export A contains comment text plus comment type values including `limit`.
+
+Decision consequence: exercise the third observed Spectora/Hive semantic class before publication. Select the checkbox/state control for the existing defect `Damaged / missing shingles`, then observe whether Hive exposes the same or different editable structure. Do not edit text, tags, or media yet.
