@@ -984,3 +984,21 @@ Reason: the earlier wording did not match the actual current UI label. Exact ope
 Evidence: user-provided screenshots in the active conversation showing the preview page with left navigation entries `Report Selection`, `Order Details`, `Reports`, `Additional Docs`, and `FAQs`.
 
 Decision consequence: click `Report Selection` next. Do not use `Order Details` or `Reports` until the report-selection state is observed.
+
+
+### Canonical correction record CS-0053
+
+kind: ENGINEERING_DECISION
+status: VERIFIED
+effective_at: 22 Sep 2026, 10:41 IST
+supersedes: CS-0052 instruction to use `Report Selection` as the return path to the internal report/order flow.
+
+Correction: clicking `Report Selection` from the preview does not return to the authenticated internal report-selection modal. It navigates to the public/client-facing `reports.hiveinspect.com` report lookup page, which asks for the email address used to book an inspection.
+
+Evidence: user-provided screenshot in the active conversation showing `reports.hiveinspect.com` with `View your inspection reports`, an Email Address field, and a Continue button.
+
+Reason: the prior instruction inferred semantics from the control label without verifying its navigation target. That was an avoidable assumption.
+
+What looked right but was not: `Report Selection` sounded like the internal report-selection modal previously seen under Edit Reports, but in this context it is a client/report-portal navigation route.
+
+Decision consequence: do not enter an email address and do not click Continue. Use the browser Back button exactly once to return to the known report preview state. Observe that restored state before choosing the next internal navigation path.
