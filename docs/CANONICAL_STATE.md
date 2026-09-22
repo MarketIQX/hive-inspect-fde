@@ -1567,3 +1567,17 @@ Evidence from Docker Desktop backend log: startup failed with `unable to get 'Pr
 Decision consequence: local Docker-backed Supabase is now genuinely available, not merely assumed available. B4 remains unblocked. No machine-wide environment variable was changed; the correction was limited to the Docker Desktop launch process.
 
 Control lesson: installed client tooling is not proof of a running service. Future environment gates must test the actual service endpoint before declaring the dependency GREEN.
+
+### Canonical precision correction record CS-0084
+
+kind: CORRECTION
+status: VERIFIED
+observed_at: 22 Sep 2026, 13:30 IST
+
+Precision correction to CS-0080: wording such as `byte-for-byte on raw Comment Text` is stronger than the evaluator actually proves. The importer and independent reference builder both parse the workbook package and compare resulting decoded cell-text strings. They do not compare the raw XML byte sequences of individual cell payloads.
+
+Defensible claim: all 392 imported Comment Text values match the independently extracted reference values exactly as decoded source-cell strings, including meaningful whitespace/control characters and HTML text. This is strong preservation evidence, but it is not a raw-XML byte-for-byte comparison.
+
+Submission consequence: use `exact decoded source-cell equality` (or equivalent) in README/video, not `byte-for-byte raw XML` unless a separate raw-byte evaluator is actually added.
+
+Additional presentation requirement: source identifiers/names that intentionally remain stored in exact decoded source form may include a literal `&amp;` artifact caused by Spectora's double escaping. Storage fidelity and presentation readability are separate concerns. Before final submission, render user-facing labels with a safe presentation decode while retaining the exact source value separately for audit/evaluation; do not mutate the preserved source field in place.
