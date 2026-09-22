@@ -1404,3 +1404,20 @@ Interpretation: Spectora's `defect` Comment Type with `boolean` Answer Type maps
 Caution for future checks: this session directly observed that Estimated Cost/Timeline placeholder text can visually resemble an entered value at normal screenshot resolution and requires zoom-level inspection (gray vs. black text) to distinguish. Earlier record CS-0050 described visually similar `$500 - $1,000` / `1-2 weeks` text for a different field (`Damaged / missing shingles`, under Roof Covering, observed before Export A's estimate-import decision existed) as a "visible value" without noting placeholder-vs-entered-value color. That field was not re-inspected in this session, so CS-0050 is not corrected here; this record only establishes the distinction as a control for future field checks and flags CS-0050's wording as unconfirmed on this specific point.
 
 Decision consequence: this satisfies CS-0071's evidence target for `Cracking - Major`. Do not click Save Changes on the still-present unexplained `You have unsaved changes` banner. Next representative-field-type target: a source row with populated HTML markup (`p`/`a`/`strong`/`div` tags per CS-0023) to check rich-content/link preservation, since neither `Siding Material` nor `Cracking - Major` carried HTML-bearing Comment Text.
+
+
+### Canonical CTO review record CS-0075
+
+kind: ENGINEERING_DECISION
+status: VERIFIED
+observed_at: 22 Sep 2026, 12:20 IST
+
+Review of commit c117351: accepted within scope. It correctly records wrong-template detection, exact Cracking - Major narrative preservation, Hive native defect mapping, unresolved source-category provenance, placeholder-vs-value distinction, and no-save discipline.
+
+Assignment consequence: product exploration has now earned enough evidence to inform implementation, but the repository still contains only docs/fixtures/scripts and no web app/backend implementation. Continuing broad Hive archaeology would now violate the assignment's priority order: get the working baseline first, then one meaningful improvement.
+
+One final exploration gate is authorized: verify one HTML-bearing source comment with an actual hyperlink, because the assignment explicitly requires explaining formatting, links, and rich-content handling. Chosen target: Exterior > Exterior Doors > Door Does Not Close or Latch. Source Comment Text contains two <p> blocks and an <a href="http://www.familyhandyman.com/doors/repair/fix-sagging-or-sticking-doors/view-all" target="_blank">Here is a DIY troubleshooting article</a> link.
+
+After that single gate, stop product exploration and begin implementation of the assignment baseline: import, edit/save, independent copy, real persistence, structured schema, visible unsupported/skipped content, preservation verification, one failure case, and deployment. Binsr remains optional and is deliberately deferred unless baseline completion leaves time.
+
+No claim of 100% assignment completion is permitted until the live deployed app, persistence/reopen proof, independent-copy proof, failure-case proof, README/NOTES, and walkthrough evidence all exist.
