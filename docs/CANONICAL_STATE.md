@@ -1002,3 +1002,23 @@ Reason: the prior instruction inferred semantics from the control label without 
 What looked right but was not: `Report Selection` sounded like the internal report-selection modal previously seen under Edit Reports, but in this context it is a client/report-portal navigation route.
 
 Decision consequence: do not enter an email address and do not click Continue. Use the browser Back button exactly once to return to the known report preview state. Observe that restored state before choosing the next internal navigation path.
+
+
+### Canonical correction record CS-0054
+
+kind: ENGINEERING_DECISION
+status: VERIFIED
+effective_at: 22 Sep 2026, 10:44 IST
+supersedes: CS-0053 expectation that one browser Back action would restore the prior preview state.
+
+Correction: after the operator clicked the browser Back button once from the public report lookup page, the browser remained on the same `reports.hiveinspect.com` email-lookup screen. Therefore browser-history recovery is not a reliable return path for this transition.
+
+Evidence: user-provided screenshot after the Back action, still showing `View your inspection reports` with Email Address and Continue controls.
+
+What was assumed: that the client-preview navigation created a usable browser-history entry back to the authenticated preview.
+What was missed: this navigation may replace history, redirect, or otherwise leave the public lookup page as the effective history state; the observed outcome, not the browser-label assumption, controls.
+
+Decision: stop using browser Back for recovery. Return using the exact authenticated report-editor URL that was previously observed working for this inspection and report:
+`https://dashboard.hiveinspect.com/dashboard/reports/edit/19ca99e5-b1ad-494c-a950-141e11ef1745/09f5fed8-fe7f-4f9c-aff7-97e87453a2d4`
+
+Reason: this route is not inferred; it is the exact authenticated editor URL previously observed during this session, and it returns directly to the report state that contains the publication control.
