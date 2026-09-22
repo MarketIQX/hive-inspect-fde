@@ -1091,3 +1091,19 @@ Evidence: user-provided screenshot in the active conversation.
 Scope: screenshot-visible dashboard state only.
 
 Assignment consequence: the required product-exploration sequence has reached the `try the template-import workflow` step. The next action is to open `Templates` and observe Hive's available template/import controls before uploading or modifying anything.
+
+
+### Canonical observation record CS-0059
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 10:59 IST
+
+Claim: the authenticated Hive `Template Editor` page is open. The page exposes three top-level template actions: `Upload`, `Template Hub`, and `Create`. A pre-existing `Demo Residential Template` is listed in the left sidebar, while the main panel states `No Template Selected` and instructs the user to select a template or use the buttons above to create or import templates.
+
+Evidence: user-provided screenshot in the active conversation.
+Scope: screenshot-visible template-management state only.
+
+Interpretation: `Upload` is the only visible control that directly corresponds to importing an external template file. `Template Hub` appears to be a library/discovery path, and `Create` is a new-template path; neither is the assignment's required external-file import path.
+
+Decision consequence: click `Upload` once and inspect the resulting modal/file requirements before selecting the preserved Spectora export. Do not choose a file yet.
