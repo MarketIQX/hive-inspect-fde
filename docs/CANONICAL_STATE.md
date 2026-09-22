@@ -1535,3 +1535,21 @@ Verification performed:
 Observed, deliberately not fixed in this slice: the "Imported structure" tree renders raw stored text as-is, so names containing the double-escaped ampersand (CS-0080) display literally as `&amp;` rather than a clean `&`. This matches the decision to store and round-trip the exact source value; a presentation-layer decode (matching how Hive's own UI renders it, CS-0064) is a legitimate later polish item, not a correctness bug, and is left for NOTES.md as a deliberate cut for now.
 
 Decision consequence: B3 is GREEN. Proceed to B4 (Supabase persistence). B4 requires a real Supabase project (URL + keys), which the operator (AK) must provide — this is the first point in the build where the CS-0078 "stop for credentials" condition is expected to apply.
+
+### Canonical CTO correction record CS-0082
+
+kind: ENGINEERING_DECISION
+status: VERIFIED
+observed_at: 22 Sep 2026, 13:24 IST
+
+Review of CS-0081 / B4 stop condition: the claim that B4 cannot proceed without a cloud Supabase project is too strong.
+
+Verified local environment facts on LAPTOP-PK6EKV3G: Docker is installed (`Docker version 29.4.3`) and `npx supabase --version` resolves successfully to Supabase CLI `2.117.0`. Therefore the persistence implementation is not blocked on cloud credentials.
+
+Decision: continue B4 locally using the Supabase CLI and Docker-backed local Supabase/Postgres. Create migrations/schema, server-side persistence adapter, import->persist->reload/reopen proof, edit/save/reopen proof, and deep-copy independence tests against the local database. Keep secrets out of the repository.
+
+Cloud credentials remain required only for the later production deployment/live-app gate. Do not stall implementation waiting for them. When deployment is reached, request only the minimum project URL/keys or authenticated CLI link necessary to provision/deploy.
+
+Reasoning: this preserves the chosen Supabase/Postgres architecture, earns real backend persistence now, minimizes idle time, and keeps the local and hosted environments on the same migration path. The assignment requires real persistence and a live deployment, but those are separate gates.
+
+Consequence: B4 is unblocked. Claude Code should initialize local Supabase, add migrations, wire persistence, run persistence/reopen tests, then continue B5/B6 locally before stopping for any cloud authorization.
