@@ -1362,3 +1362,45 @@ Correction: the prior recommendation to switch to Codex as browser operator is n
 Decision: keep Claude Code as the browser/operator and preserve the existing canonical/evidence discipline. Do not introduce a second coding agent unless Claude Code cannot complete a required browser action or evidence gate.
 
 Operator boundary: Claude Code may inspect the authenticated Hive session, read source fixtures, run deterministic comparisons, capture evidence, and append canonical verification/correction records. It must not click Save Changes, send reports, publish/unpublish, alter billing, delete/move/duplicate content, or take any destructive/irreversible action without an explicit gate.
+
+
+### Canonical correction record CS-0073
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 12:16 IST
+
+Claim: on first attempting to reopen the imported template from the Template Editor list, the first click opened the wrong template. The right pane showed `Demo Residential Template` with `4 Sections`, `8 Subsections`, `25 Fields`, not the imported `Residential Template-2026-09-21`. This was caught by checking the header/overview numbers before proceeding, not assumed from the click target alone.
+
+Correction: returned to `Back to Templates` and clicked the `Residential Template-2026-09-21` row explicitly, then verified the Template Overview showed `13 Sections`, `69 Subsections`, `392 Fields`, matching CS-0064 before continuing.
+
+Reason for recording: this is a direct instance of the project's own evidence discipline (visible UI/click target is not proof of state; the loaded content must be verified) catching a real navigation error in this session, not a hypothetical.
+
+Consequence: the correct template was confirmed open by its overview counts, and the global `You have unsaved changes` banner remained present on this correctly identified template, consistent with CS-0064/CS-0065/CS-0066. It was not saved.
+
+
+### Canonical verification record CS-0074
+
+kind: TEST_RESULT
+status: VERIFIED
+observed_at: 22 Sep 2026, 12:16 IST
+
+Claim: inspected Hive's imported `Cracking - Major` field under `Exterior > Siding, Flashing & Trim > Defects/ Deficiencies` (11 fields, matching CS-0066) using only its pencil `Edit component` control. No value was changed and the modal was closed with the `X` control, not Save.
+
+Hive evidence observed in the Edit Comment modal:
+- Header identifies the native component type as `Defect/ Deficiency` with internal type tag `recommendation`.
+- Field Name: `Cracking - Major` (exact match to source Comment Name; the input auto-selected its own text on focus, which is a UI focus behavior, not an edit).
+- Description Text renders the full source Comment Text verbatim, character for character: "Moderate to major cracking was observed at one or more points on the exterior. This can be the result of poor original compaction of soil at the time of construction or excess moisture in the underlying soil. Recommend consulting with a structural engineer and/or soil expert."
+- Defect/ Deficiency Category *: three selectable buttons `Maintenance Items`, `Recommendations` (selected), `Safety Concerns`. `Recommendations` is the selected category for this field.
+- Defect/ Deficiency Service: dropdown showing `No Recommendation`.
+- `Auto-select this comment` checkbox: unchecked.
+- Attach Images (Optional): `0/20 images`.
+- Estimated Cost (optional) and Estimated Timeline (optional): both fields show light-gray text `$500 - $1,000` and `1-2 weeks` respectively. Zoomed inspection confirms this text is the same gray placeholder color as the `Drag & drop images here, or browse` helper text, not black entered-value text. These are UNPOPULATED placeholder fields for this record, not persisted per-defect values.
+
+Independent source check (from CS-0071): Comment Name `Cracking - Major`; Comment Type `defect`; Category `0` (Med); Answer Type `boolean`; Default Value blank; Comment Text as quoted above.
+
+Interpretation: Spectora's `defect` Comment Type with `boolean` Answer Type maps to Hive's native `Defect/ Deficiency` (`recommendation`) component, distinct from the `Multiple Choice`/`multipleChoices` mapping already verified for the `info`/`checkbox` field `Siding Material` in CS-0070. Narrative text preservation is exact for this field. The source's numeric Category value `0 (Med)` is not visibly reproduced as a literal value anywhere in this Hive UI; Hive's own category taxonomy (`Maintenance Items`/`Recommendations`/`Safety Concerns`) is a different vocabulary, and `Recommendations` is shown selected. Whether that selection was derived from the source Category during import or is simply Hive's default for all imported defect rows is UNRESOLVED from this screen alone.
+
+Caution for future checks: this session directly observed that Estimated Cost/Timeline placeholder text can visually resemble an entered value at normal screenshot resolution and requires zoom-level inspection (gray vs. black text) to distinguish. Earlier record CS-0050 described visually similar `$500 - $1,000` / `1-2 weeks` text for a different field (`Damaged / missing shingles`, under Roof Covering, observed before Export A's estimate-import decision existed) as a "visible value" without noting placeholder-vs-entered-value color. That field was not re-inspected in this session, so CS-0050 is not corrected here; this record only establishes the distinction as a control for future field checks and flags CS-0050's wording as unconfirmed on this specific point.
+
+Decision consequence: this satisfies CS-0071's evidence target for `Cracking - Major`. Do not click Save Changes on the still-present unexplained `You have unsaved changes` banner. Next representative-field-type target: a source row with populated HTML markup (`p`/`a`/`strong`/`div` tags per CS-0023) to check rich-content/link preservation, since neither `Siding Material` nor `Cracking - Major` carried HTML-bearing Comment Text.
