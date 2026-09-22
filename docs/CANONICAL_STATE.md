@@ -1553,3 +1553,17 @@ Cloud credentials remain required only for the later production deployment/live-
 Reasoning: this preserves the chosen Supabase/Postgres architecture, earns real backend persistence now, minimizes idle time, and keeps the local and hosted environments on the same migration path. The assignment requires real persistence and a live deployment, but those are separate gates.
 
 Consequence: B4 is unblocked. Claude Code should initialize local Supabase, add migrations, wire persistence, run persistence/reopen tests, then continue B5/B6 locally before stopping for any cloud authorization.
+
+### Canonical environment correction record CS-0083
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 13:28 IST
+
+Precision correction to CS-0082: Docker CLI availability alone did not prove that the Docker engine was running. An immediate `docker info` check failed because Docker Desktop's backend had crashed while resolving the `ProgramData` path.
+
+Evidence from Docker Desktop backend log: startup failed with `unable to get 'ProgramData'`. The Remote Desktop Commander PowerShell environment had an empty `ProgramData` variable. Docker Desktop was restarted with process-level `ProgramData=C:\ProgramData`; after restart, `docker info --format '{{.ServerVersion}}'` returned `29.4.3`.
+
+Decision consequence: local Docker-backed Supabase is now genuinely available, not merely assumed available. B4 remains unblocked. No machine-wide environment variable was changed; the correction was limited to the Docker Desktop launch process.
+
+Control lesson: installed client tooling is not proof of a running service. Future environment gates must test the actual service endpoint before declaring the dependency GREEN.
