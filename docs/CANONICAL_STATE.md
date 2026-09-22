@@ -1467,3 +1467,20 @@ Decision: do NOT retry the Hive Door Does Not Close or Latch inspection. The exp
 Assignment reasoning: Hive product exploration is already sufficient to satisfy the required real-product-use gate. Rich-content/link handling can and must now be proven in OUR importer against the committed Spectora source fixture, including a real HTML-bearing row with a hyperlink. The assignment requires us to explain how OUR importer handles formatting, links, and rich content; it does not require reverse-engineering Hive's internal mapping for every field type.
 
 Next consequence: freeze Hive interaction and move immediately to implementation. Before coding, Claude Code must read the assignment plus canonical state and produce a minimal baseline POA with explicit exit criteria. Build order: deterministic import + independent evaluator, structured relational persistence, edit/save/reopen, deep-copy independence, visible unsupported/skipped content, rich-content preservation/render sanitization, one failure case, then deployment and deliverables. No optional Binsr exploration until the baseline and live deployment are GREEN.
+
+
+### Canonical implementation gate record CS-0079
+
+kind: ENGINEERING_DECISION
+status: VERIFIED
+effective_at: 22 Sep 2026, 12:47 IST
+
+Claim: the assignment PDF (`docs/assignment/Hive_Inspect_Template_Importer_Assignment.pdf`) was read directly in full by this operator, not only through the derived execution playbook and requirements trace. No material discrepancy was found between the PDF and those derived documents.
+
+Gate status: G0 is CLOSED. Both required tracks are satisfied: the Hive hands-on journey (sample inspection created and published, template-import workflow used, and field-level inspection across two distinct component type mappings, per CS-0033 through CS-0078) and genuine Export A with recorded provenance and checksum (CS-0018 through CS-0020). Further Hive interaction remains frozen per CS-0077/CS-0078. G1 is already satisfied for Export A per CS-0029.
+
+Decision: begin implementation now. Before the importer is written, a source contract artifact will be produced separately at `docs/SOURCE_CONTRACT.md` mapping every observed column and structural convention (per `docs/evidence/EXPORT_A_FIELD_CLASSIFICATION.md`) to an explicit disposition, satisfying G2. It is kept out of this file to avoid bloating canonical history; this record notes when it exists and is reviewed.
+
+Stack: Next.js, TypeScript, Supabase Postgres, Vercel, per the existing PROPOSED_DECISION and CS-0078. Build order follows the accepted slice sequence: B1 (independent reference manifest and evaluator, with deliberate corruption tests) before B2 (deterministic importer), keeping evaluator and importer implementations independent per the CS-0005 two-layer fidelity rule so the importer cannot grade itself.
+
+Immediate next evidence: B1 evaluator self-tests (known-good passes; dropped/duplicated/reordered/wrong-parent/changed-text/missing-header corruptions fail), committed together with the source fixture hash and reference manifest hash.
