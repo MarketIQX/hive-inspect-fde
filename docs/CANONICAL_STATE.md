@@ -909,3 +909,21 @@ Scope: screenshot-visible editor state only.
 Interpretation: Hive's limitation object is richer than a boolean flag. A selected limitation can carry editable description text, location tags, and media. This matters directly to the Spectora importer because Export A contains comment text plus comment type values including `limit`.
 
 Decision consequence: exercise the third observed Spectora/Hive semantic class before publication. Select the checkbox/state control for the existing defect `Damaged / missing shingles`, then observe whether Hive exposes the same or different editable structure. Do not edit text, tags, or media yet.
+
+
+### Canonical observation record CS-0050
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 10:28 IST
+
+Claim: after activating the existing defect `Damaged / missing shingles`, Hive expanded that defect inline and marked it selected. The defect editor exposes three severity/handling modes: `Maintenance Items`, `Recommendations`, and `Safety Concerns`; `Recommendations` is selected in the observed state.
+
+The expanded defect also exposes `Recommendation Service` with value `Roofing Professional`, `Location Tags`, a rich-text `Field Description`, optional `Estimated Cost` with visible value `$500 - $1,000`, optional `Estimated Timeline` with visible value `1-2 weeks`, and `Field Media`.
+
+Evidence: two user-provided screenshots in the active conversation.
+Scope: screenshot-visible report-editor state only.
+
+Interpretation: Hive's defect object carries materially richer semantics than a plain defect flag. It can encode recommendation classification/service, description, cost, timeline, location tags, and media. This is directly relevant to Spectora Export A fields including Comment Type, Recommendation, Default Estimate Min, Default Estimate Max, Comment Text, and photo-related columns.
+
+Decision consequence: the sample inspection has now exercised Information, Limitation, and Defect semantic paths. Before publication, use `Preview` to verify that the selected information/limitation/defect content is rendered into the customer-facing report. Do not edit additional report values first.
