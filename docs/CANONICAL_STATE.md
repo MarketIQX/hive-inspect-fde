@@ -927,3 +927,19 @@ Scope: screenshot-visible report-editor state only.
 Interpretation: Hive's defect object carries materially richer semantics than a plain defect flag. It can encode recommendation classification/service, description, cost, timeline, location tags, and media. This is directly relevant to Spectora Export A fields including Comment Type, Recommendation, Default Estimate Min, Default Estimate Max, Comment Text, and photo-related columns.
 
 Decision consequence: the sample inspection has now exercised Information, Limitation, and Defect semantic paths. Before publication, use `Preview` to verify that the selected information/limitation/defect content is rendered into the customer-facing report. Do not edit additional report values first.
+
+
+### Canonical observation record CS-0051
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 10:33 IST
+
+Claim: Hive's report preview renders `MarketIQX` branding in the left sidebar beneath the Hive report logo. Earlier Hive signup evidence shows `Inspection Company Name` was entered as `MarketIQX`.
+
+Evidence: current user-provided report preview screenshots plus the earlier signup screenshot from the same active conversation.
+Scope: observed account/report-preview branding behavior only.
+
+Interpretation: `MarketIQX` appears because Hive is using the inspection-company/account branding supplied during signup in the generated report preview. It is not being pulled from the Spectora export and is not evidence of importer mapping.
+
+Decision consequence: keep this branding distinction explicit in the final walkthrough. Source-content fidelity and Hive account branding are separate concerns. If a neutral demo brand is desired later, change Hive organization/company branding deliberately rather than treating this preview label as imported data.
