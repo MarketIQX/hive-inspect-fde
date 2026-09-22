@@ -1266,3 +1266,21 @@ What was assumed previously: that clicking the field body would expose field con
 What actually happened in the observed state: the UI is on a section-level editor for `Inspection Details`; the reason for that navigation/state change is not established from the screenshot and must not be guessed.
 
 Decision consequence: return deliberately to `Exterior > Siding, Flashing & Trim`, verify that subsection row is selected, scroll to its Information group, and then open `Siding Material` using only the field row/body. Do not use any action icon or Save Changes.
+
+
+### Canonical correction record CS-0068
+
+kind: ENGINEERING_DECISION
+status: VERIFIED
+observed_at: 22 Sep 2026, 11:43 IST
+
+Claim: returning to `Exterior > Siding, Flashing & Trim` restored the correct subsection and the `Siding Material` Information field is visible, but clicking the field row/body did not expose any field-configuration view in the supplied screenshots.
+
+Evidence: five user-provided screenshots in the active conversation showing the same subsection with `Siding Material` present and no expanded/configuration panel after the attempted row/body interaction.
+
+What was assumed previously: that the field row/body itself was an inspection-only affordance that would reveal the imported field configuration.
+Observed result: no configuration panel appeared. Therefore that interaction does not earn any claim about checkbox semantics or option preservation.
+
+UI evidence: the `Siding Material` row exposes explicit action icons on the right, including a pencil/edit control. Since passive row/body interaction did not reveal configuration, the pencil is now the smallest evidence-gathering action available.
+
+Decision consequence: click only the pencil/edit icon on the `Siding Material` row. Opening an edit/configuration panel is allowed for inspection, but do not change any value and do not click any Save/Apply/Update action. The persistent global `You have unsaved changes` banner remains unexplained and must still not be saved.
