@@ -1160,3 +1160,19 @@ Evidence: user-provided screenshot plus local read-only fixture inspection.
 Scope limitation: matching filename and displayed size strongly align the selected browser file with the preserved fixture, but the browser UI does not expose a cryptographic hash, so byte-for-byte identity of the browser-selected upload is not independently proven from the screenshot alone.
 
 Decision consequence: the source selection gate is sufficiently evidenced for the product-exploration task. Click `Import Template` once, with cost-estimate import still unchecked, then stop and inspect Hive's resulting import status before taking any further action.
+
+
+### Canonical verification record CS-0063
+
+kind: TEST_RESULT
+status: VERIFIED
+observed_at: 22 Sep 2026, 11:22 IST
+
+Claim: Hive reported `Template Imported` and `Successfully imported template: Residential Template-2026-09-21`. A new template entry named `Residential Template-2026-09-21` now appears in the Template Editor sidebar above the pre-existing `Demo Residential Template`.
+
+Evidence: user-provided screenshot in the active conversation.
+Acceptance result: Hive accepted the Spectora workbook and created a template record.
+
+Critical scope limitation: import acceptance is NOT equivalent to faithful preservation. The current screen does not prove section/item/comment counts, hierarchy, ordering, rich text, links, unsupported/skipped content, or copy/edit persistence. No import summary or loss report is visible in the supplied post-import state.
+
+Decision consequence: click the newly imported `Residential Template-2026-09-21` entry only. Do not edit, rename, duplicate, or delete anything yet. The next gate is structural inspection of Hive's imported result before any mutation.
