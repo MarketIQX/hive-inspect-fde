@@ -668,3 +668,17 @@ Evidence: user-provided screenshot in the active conversation.
 Scope: screenshot-visible form labels/required markers only. Visible example/default-looking values such as Pittsburgh / PA / 15217 / US are not treated as submitted facts because the screenshot alone does not establish whether they are placeholders, defaults, or current field values.
 
 Decision consequence: enter only a clearly synthetic Street Address first and leave all other optional-looking fields untouched. This tests Hive's true minimum requirement without fabricating unnecessary data.
+
+
+### Canonical observation record CS-0038
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 09:35 IST
+
+Claim: the synthetic Street Address value `1000 Test Property Lane` is now present in Hive's inspection form while the previously selected schedule remains Tue, Sep 22, 2026 at 10:00 AM for a 2-hour duration. City, State, ZIP, Country, Unit/Apt, property details, contacts, and image controls remain visible without new required-field markers in the screenshot.
+
+Evidence: user-provided screenshot in the active conversation.
+Scope: screenshot-visible form state only.
+
+Decision consequence: the next evidence-seeking action is to submit the form with the minimum observed required data rather than fabricating optional fields. Click `Confirm Inspection` once. If Hive rejects the submission, record the resulting validation errors and satisfy only the fields it proves are mandatory. If it accepts, that proves the minimum creation path for this trial state.
