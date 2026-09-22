@@ -612,3 +612,17 @@ Evidence: user-provided screenshot in the active conversation.
 Scope: screenshot-visible dashboard state only.
 
 Decision consequence: do not enter the template-import workflow yet. The assignment explicitly orders the required hands-on journey as: run a sample inspection, publish a report, then try the template-import workflow. The next action is therefore `New Inspection`. The optional business-profile card may be deferred with `Maybe later` because it is not evidence required for G0.
+
+
+### Canonical observation record CS-0034
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 09:27 IST
+
+Claim: the operator is on Hive's `Create New Inspection` screen. `Schedule now` is selected, the current month calendar is visible, and the `Available Times` panel explicitly instructs the operator to select a date before time slots appear. `Confirm Inspection` is visible but should not yet be used because no date/time evidence has been selected.
+
+Evidence: user-provided screenshot in the active conversation.
+Scope: screenshot-visible inspection-creation state only.
+
+Decision consequence: the next smallest evidence-seeking action is to select a calendar date first, then inspect the time-slot choices produced by Hive. Do not confirm the inspection before the date and time state is observed.
