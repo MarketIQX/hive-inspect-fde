@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getTemplate } from "@/lib/db/get-template";
+import { EditableTemplateView } from "./EditableTemplateView";
 
 export const dynamic = "force-dynamic";
 
@@ -33,33 +34,7 @@ export default async function TemplateDetailPage({
         </p>
       </div>
 
-      <div className="border rounded divide-y">
-        {template.sections.map((section) => (
-          <details key={section.id} className="px-3 py-2">
-            <summary className="cursor-pointer font-medium">
-              {section.name}{" "}
-              <span className="text-slate-400 font-normal">({section.items.length} items)</span>
-            </summary>
-            <ul className="mt-2 ml-4 space-y-2">
-              {section.items.map((item) => (
-                <li key={item.id}>
-                  <div className="font-medium text-sm">
-                    {item.name}{" "}
-                    <span className="text-slate-400 font-normal">
-                      ({item.comments.length} comments)
-                    </span>
-                  </div>
-                  <ul className="ml-4 text-sm text-slate-600 list-disc">
-                    {item.comments.map((c) => (
-                      <li key={c.id}>{c.name}</li>
-                    ))}
-                  </ul>
-                </li>
-              ))}
-            </ul>
-          </details>
-        ))}
-      </div>
+      <EditableTemplateView template={template} />
     </main>
   );
 }
