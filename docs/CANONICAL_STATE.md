@@ -1716,3 +1716,18 @@ Authentication state verified without exposing secrets: GitHub CLI is authentica
 Decision consequence: B9 requires three external/account actions before deployment can be claimed GREEN: (1) create or choose the reviewer GitHub repository and push the existing history; (2) authenticate/link a hosted Supabase project and apply the committed migration plus seed an imported template; (3) authenticate/link Vercel and deploy with the hosted database environment variables. These are external actions and require AK authorization/account interaction.
 
 Final acceptance after those actions must be against the public URL from a fresh browser and must verify seeded template visibility, import, saved edit after reload, independent duplicate behavior, preservation report, and failure handling. README/NOTES then need one final truth update with the actual repository/live URL/access details before B10/submission.
+### Canonical pre-push audit record CS-0092
+
+kind: SECURITY_AND_SUBMISSION_GATE
+status: VERIFIED
+observed_at: 22 Sep 2026, 14:58 IST
+
+Before creating any remote repository, the full local Git state was re-audited against the assignment's repository requirement and the explicit requirement to keep credentials out of the repo.
+
+Verified: working tree clean; only `.env.example` is tracked among environment/secret-like filenames; `.env`, `.env.*` (except `.env.example`), and `.vercel/` are gitignored; `.env.example` contains empty placeholders only; no tracked file larger than 10 MB; current-tree and full-history filename/content heuristics found no GitHub tokens, Supabase secret keys, Vercel tokens, database URLs with credentials, or private-key blocks.
+
+The committed Spectora fixture was also scanned heuristically for obvious email addresses and phone-number patterns in shared strings: zero email addresses and zero phone-like values were found. This does not mathematically prove absence of all personal data, but it adds a concrete pre-push privacy check to the prior provenance evidence that the fixture is Spectora stock/sample material.
+
+Assignment PDF re-check: a private repository is explicitly allowed if reviewer access is provided; the repo must include meaningful development history, the Spectora export used, README setup/database/environment instructions, and no credentials. Current local repository satisfies those pre-push conditions, subject to later adding reviewer access.
+
+Decision consequence: creating a private `MarketIQX/hive-inspect-fde` GitHub repository and pushing the existing history is authorized by AK and passes the pre-push security gate. Reviewer access remains a later submission action once Hive's GitHub identity is known.
