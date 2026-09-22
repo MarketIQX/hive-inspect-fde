@@ -968,3 +968,19 @@ What this proves: selected report data is not only persisted in the editor; it i
 What this does not yet prove: published/public report availability, PDF equivalence, or behavior after final publication.
 
 Decision consequence: the assignment's sample-inspection execution has now reached preview-ready state. The next required action is publication. Return to the report editor/order flow using `Back to Reports`, then publish the generated report. Stop if Hive presents an external-send, payment, or irreversible client-distribution confirmation that is not clearly limited to publication.
+
+
+### Canonical correction record CS-0052
+
+kind: ENGINEERING_DECISION
+status: VERIFIED
+effective_at: 22 Sep 2026, 10:39 IST
+supersedes: the earlier instruction to click `Back to Reports` in the preview UI.
+
+Correction: in the currently observed Hive preview UI, the left navigation control is labeled `Report Selection`, not `Back to Reports`.
+
+Reason: the earlier wording did not match the actual current UI label. Exact operator guidance must use the control text visible on the active screen.
+
+Evidence: user-provided screenshots in the active conversation showing the preview page with left navigation entries `Report Selection`, `Order Details`, `Reports`, `Additional Docs`, and `FAQs`.
+
+Decision consequence: click `Report Selection` next. Do not use `Order Details` or `Reports` until the report-selection state is observed.
