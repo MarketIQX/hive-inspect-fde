@@ -1037,3 +1037,25 @@ Evidence: user-provided screenshot in the active conversation showing the authen
 What this proves: the exact authenticated editor URL is a valid recovery path for this report in the current session, and previously saved report state survives leaving the preview/client domain and returning to the editor.
 
 Decision consequence: the sample report has been generated, edited, persisted, previewed, and recovered. The next assignment-required step is publication. Click the top `Publish` button once and observe the resulting confirmation or modal before taking any further action.
+
+
+### Canonical pre-publication review record CS-0056
+
+kind: ENGINEERING_DECISION
+status: VERIFIED
+effective_at: 22 Sep 2026, 10:50 IST
+
+Claim: the Hive assignment was re-read before final publication. It explicitly requires, before building, that the candidate use Hive, run a sample inspection through, publish a report, and then try the template-import workflow. It separately states that homeowner-facing reports/portals are out of scope for the app being built; that does not remove the product-exploration requirement to publish the sample Hive report.
+
+Current publication state: Hive shows a `Publish Inspection Report` confirmation modal stating that once published, the inspection report will be visible to clients and warning the operator to ensure inspection data is accurate.
+
+Safety/evidence check before publication:
+- the inspection uses synthetic address `1000 Test Property Lane`;
+- no client is attached to the inspection;
+- no buyer agent is attached;
+- the report contains deliberate sample selections only;
+- Hive previously exposed `Send Reports` as a separate action from publication.
+
+Decision: proceed with `Publish Report` in this modal, then stop and inspect the resulting state. Do not use any separate send/report-distribution action.
+
+Reason: publication is an explicit assignment requirement, and the current synthetic/no-client state minimizes external impact while preserving real-product evidence. The exact post-publish notification/distribution behavior remains unclaimed until observed.
