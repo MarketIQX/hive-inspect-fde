@@ -716,3 +716,19 @@ Evidence: user-provided screenshot in the active conversation.
 Scope: screenshot-visible dropdown state only. The displayed $450 amount is service pricing; this screenshot does not prove that selecting the service will charge the operator or that payment is required at this step.
 
 Decision consequence: select `Demo Home Inspection` because it is the only observed service option and is explicitly a demo service. After selection, inspect the Pricing Summary and any newly revealed controls before clicking `Confirm Inspection`. Do not assume the displayed price causes a charge.
+
+
+### Canonical observation record CS-0041
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 09:42 IST
+
+Claim: after selecting `Demo Home Inspection`, Hive automatically attached `Demo Residential Template` and `Demo Inspection Agreement`. The Pricing Summary shows `Demo Home Inspection`, duration `2 hrs`, total `$450.00`, and an `Edit Price or Duration` control. The `Confirm Inspection` button is available.
+
+Evidence: user-provided screenshot in the active conversation.
+Scope: screenshot-visible inspection configuration state only.
+
+Interpretation: service selection in Hive is not only pricing metadata; in this demo configuration it also binds at least one inspection template and one agreement to the inspection.
+
+Decision consequence: do not edit the demo price/duration because that would alter observed default product behavior without a requirement. Proceed with `Confirm Inspection` once. No payment method, charge authorization control, or client recipient is visible in the observed state, so this action is treated as creating the demo inspection record, not as evidence of payment capture. If Hive presents any payment/charge confirmation, stop before authorizing it.
