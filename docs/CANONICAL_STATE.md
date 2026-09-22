@@ -1022,3 +1022,18 @@ Decision: stop using browser Back for recovery. Return using the exact authentic
 `https://dashboard.hiveinspect.com/dashboard/reports/edit/19ca99e5-b1ad-494c-a950-141e11ef1745/09f5fed8-fe7f-4f9c-aff7-97e87453a2d4`
 
 Reason: this route is not inferred; it is the exact authenticated editor URL previously observed during this session, and it returns directly to the report state that contains the publication control.
+
+
+### Canonical verification record CS-0055
+
+kind: TEST_RESULT
+status: VERIFIED
+observed_at: 22 Sep 2026, 10:48 IST
+
+Claim: navigating directly to the previously observed authenticated Hive report-editor URL successfully restored the editable `Demo Residential Template` report. The previously selected `Asphalt Shingles` information value and `Viewed from ground with binoculars` limitation remain visibly selected after this recovery.
+
+Evidence: user-provided screenshot in the active conversation showing the authenticated editor at the exact previously observed `dashboard.hiveinspect.com/dashboard/reports/edit/...` route.
+
+What this proves: the exact authenticated editor URL is a valid recovery path for this report in the current session, and previously saved report state survives leaving the preview/client domain and returning to the editor.
+
+Decision consequence: the sample report has been generated, edited, persisted, previewed, and recovered. The next assignment-required step is publication. Click the top `Publish` button once and observe the resulting confirmation or modal before taking any further action.
