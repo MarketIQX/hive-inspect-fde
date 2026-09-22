@@ -1077,3 +1077,17 @@ Scope limitation: this proves Hive now considers the report published in the aut
 Assignment consequence: the mandatory Hive product-exploration sequence has now completed the `run a sample inspection through and publish a report` portion. The next required step is to try Hive's template-import workflow.
 
 Decision consequence: leave the report editor without using `Unpublish`. Return to the authenticated Hive dashboard using the previously verified dashboard route, then enter `Templates` and inspect the available import workflow before uploading anything.
+
+
+### Canonical observation record CS-0058
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 10:56 IST
+
+Claim: the operator has returned to the authenticated Hive dashboard after publishing the sample report. The dashboard shows one inspection scheduled for today and exposes a `Templates` entry both in the left navigation and as a dashboard action button.
+
+Evidence: user-provided screenshot in the active conversation.
+Scope: screenshot-visible dashboard state only.
+
+Assignment consequence: the required product-exploration sequence has reached the `try the template-import workflow` step. The next action is to open `Templates` and observe Hive's available template/import controls before uploading or modifying anything.
