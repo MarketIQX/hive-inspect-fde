@@ -9,6 +9,7 @@
     "lint": "eslint",
     "test": "vitest run",
     "test:watch": "vitest",
+    "seed:review": "tsx scripts/seed-review-template.ts",
     "reference:build": "tsx scripts/build-reference-manifest.ts \"fixtures/source/Residential Template-2026-09-21.xls\" \"fixtures/reference/residential-template-2026-09-21.manifest.json\""
   },
   "dependencies": {

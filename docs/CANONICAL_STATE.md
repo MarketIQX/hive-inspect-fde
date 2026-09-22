@@ -1757,3 +1757,18 @@ Change: root `/` is now dynamic. It queries the latest successful/completed impo
 Verification: after the change `npm test` passed 28/28, `npm run lint` passed, `npm run build` passed, canonical append-only verification remained GREEN, and `git diff --check` passed. This is only local verification; the production/public URL landing behavior remains UNVERIFIED until B9 deployment and seeding are complete.
 
 Decision consequence: keep this small requirement-shaped change; do not add a separate seed-at-startup mechanism that could overwrite reviewer edits. Production seeding should occur once through the real importer against the hosted database, after which `/` opens that persisted import.
+### Canonical hosted-seed preparation record CS-0095
+
+kind: IMPLEMENTATION_AND_TEST_RESULT
+status: VERIFIED_LOCAL
+observed_at: 22 Sep 2026, 15:24 IST
+
+Pre-deployment environment review found the application only consumes server-side `DATABASE_URL`; the previously documented browser-side Supabase URL/anon/service-role variables were unused by the code. `.env.example` and README were simplified to the single actually required runtime variable so deployment instructions match reality and unnecessary secret handling is avoided.
+
+A one-time reviewer seed command (`npm run seed:review`) was added. It imports the committed real Spectora fixture through the same deterministic importer and transactional persistence path used by the application, verifies the reopened persisted graph is 13 sections / 69 items / 392 comments, and is idempotent by source SHA-256 so rerunning it does not overwrite reviewer edits or create duplicate seed imports.
+
+First execution exposed a real pre-commit script compatibility defect: top-level await was rejected by the repo's CommonJS tsx output mode. The seed script was corrected to an explicit async `main()` before any commit. After correction, two consecutive seed runs both reopened the same existing imported template id and reported 13/69/392, proving the idempotency path locally.
+
+Post-correction verification: `npm test` 28/28 GREEN, `npm run lint` GREEN, `npm run build` GREEN, canonical append-only verification GREEN, and `git diff --check` GREEN.
+
+Decision consequence: hosted B9 can now use one database credential (`DATABASE_URL`), apply the committed migration, run `npm run seed:review` once, then deploy. Production Supabase/Vercel authorization and the public-URL acceptance test remain OPEN.

@@ -84,23 +84,34 @@ Requires Docker (for local Supabase) and Node 20+.
 
 ```bash
 npm install
-npx supabase start        # starts local Postgres/Studio, applies supabase/migrations/*.sql, prints local keys/URL
-cp .env.example .env.local  # then paste in the values `supabase start` printed
+npx supabase start          # starts local Postgres and applies supabase/migrations/*.sql
+cp .env.example .env.local  # set DATABASE_URL to the DB_URL printed by Supabase
 npm run test                # importer + evaluator + persistence test suite
 npm run dev                 # http://localhost:3000
 ```
 
-`npx supabase start` prints fixed, publicly-documented local-dev demo keys
-(safe — they only work against `127.0.0.1`); paste `API_URL`/`ANON_KEY` into
-`NEXT_PUBLIC_SUPABASE_URL`/`NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SERVICE_ROLE_KEY`
-into `SUPABASE_SERVICE_ROLE_KEY`, and `DB_URL` into `DATABASE_URL`. To reset
-the local database to a clean schema: `npx supabase db reset`.
+The application talks to Postgres server-side through `DATABASE_URL`; it
+does not require browser-side Supabase keys. For local development, use the
+`DB_URL` shown by `npx supabase status`. To reset the local database to a
+clean schema: `npx supabase db reset`.
 
-For a hosted Supabase project (used for the deployed app), create a project
-at supabase.com, run the same migration against it (`npx supabase db push`
-or paste `supabase/migrations/*.sql` into its SQL editor), and use that
-project's own dashboard values in `.env.local` / your Vercel project's
-environment variables instead. No credentials are committed to this repo.
+For a hosted Supabase project, apply
+`supabase/migrations/20260922080000_initial_schema.sql` to the hosted
+database and set that project's Postgres connection string as
+`DATABASE_URL` in Vercel. No credentials are committed to this repo.
+
+To seed the reviewer environment once through the same deterministic importer
+used by the UI:
+
+```bash
+npm run seed:review
+```
+
+The seed command is idempotent by source SHA-256: if that exact Spectora
+fixture has already been imported, it reopens and reports the existing
+template instead of inserting another copy. The live root route then opens
+the most recent genuine import directly; an empty database falls back to
+`/import`.
 
 ## Source material
 
