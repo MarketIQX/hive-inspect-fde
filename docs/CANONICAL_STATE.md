@@ -1436,3 +1436,20 @@ Precision correction: the screenshots provide strong UI-level evidence that the 
 Reason: every claim must match the evaluator actually used. Visual inspection can establish rendered presentation, not hidden persistence state.
 
 Consequence: no implementation decision should depend on inferred Hive backend state from those placeholder strings. Our importer must determine source estimate presence from the source workbook and our own stored data, not from Hive UI appearance.
+
+
+### Canonical incident record CS-0077
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 12:35 IST
+
+Claim: while navigating to inspect `Door Does Not Close or Latch` under `Exterior > Exterior Doors`, the browser tab's screenshot tool began returning an undersized capture (1013x319 instead of the working ~1568x745 viewport) despite an explicit resize request. Element interaction was switched to accessibility-tree references (`find` + ref-based `computer` click) to compensate. A ref-based click intended for that row's `Edit component` pencil icon was issued; the immediately following page-text read showed the persistent `Save Changes` control had changed to `Saving…`, and a subsequent read showed the `You have unsaved changes` banner — continuously present and explicitly left unsaved since CS-0064 across two separate sessions — was gone entirely, with no edit modal open.
+
+Operator-boundary consequence: this is treated as a likely accidental trigger of Save Changes, not a confirmed pencil-icon open. The exact click target is not independently provable after the fact; the most probable cause is coordinate drift from the undersized-screenshot anomaly or a stale accessibility ref, landing on the Save Changes control instead of the intended pencil icon. This is recorded as a boundary event rather than assumed benign.
+
+Safety check performed immediately after: Template Overview was reopened and read. `13 Sections`, `69 Subsections`, `392 Fields` are unchanged from CS-0064/CS-0073. No field content was typed or edited by the operator at any point in this session (only pencil-icon opens on `Siding Material` in a prior session and `Cracking - Major` in this session, both closed via `X`, not Save). Therefore any save that fired would have persisted the template's pre-existing state rather than introducing new content corruption.
+
+What this does NOT prove: whether the pre-existing, long-unexplained dirty state (first observed CS-0064) contained a real uncommitted difference from the original import that is now silently persisted, or was itself a UI artifact with no real diff. That question is now UNRESOLVED and likely UNRECOVERABLE by this comparison method, because the state that could have answered it has been saved over.
+
+Decision: stop further Hive interaction. Do not attempt the `Door Does Not Close or Latch` inspection again in this session without explicit operator (AK) direction. Disclose this event before taking any further action, per this project's own evidence-honesty discipline and the standing rule that Save Changes requires an explicit gate.
