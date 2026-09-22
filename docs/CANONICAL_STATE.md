@@ -1123,3 +1123,20 @@ Scope: screenshot-visible import-source selector only.
 Interpretation: Spectora is a first-class supported import source in Hive's current product UI. This is stronger evidence than merely seeing a generic Upload button.
 
 Decision consequence: select the `Spectora` radio option only. Do not click `Import Template` yet. Observe whether source-specific instructions, file requirements, or warnings appear before choosing any file.
+
+
+### Canonical observation and decision record CS-0061
+
+kind: ENGINEERING_DECISION
+status: VERIFIED
+observed_at: 22 Sep 2026, 11:15 IST
+
+Claim: after selecting `Spectora`, Hive reveals a source-specific upload control that accepts `Excel files only (.xls, .xlsx)`. Hive also exposes an optional checkbox `Import cost estimates` with the explanation that it carries each defect's Spectora estimate range into the recommendation's Estimated Cost and warns that stock Spectora templates may put the same default range on every comment.
+
+Independent source check: in the preserved Export A, `Default Estimate Min` is `10` on all 392 data rows and `Default Estimate Max` is `1000` on all 392 data rows; there is exactly one observed estimate pair, `10 / 1000`, repeated 392 times.
+
+Interpretation: the estimate range in this source has no row-level variation and matches the exact failure pattern Hive warns about: a repeated stock/default range on every comment. Treating it as meaningful per-defect cost would create misleading semantics.
+
+Decision: leave `Import cost estimates` UNCHECKED for this Hive product-exploration import. This is a deliberate semantic-preservation decision, not silent data loss: the source values remain preserved in our committed fixture/evidence, but we will not project a uniform default range into Hive recommendations as if it were defect-specific cost evidence.
+
+Next action: use `Select File` and choose the exact preserved/downloaded Spectora export `Residential Template-2026-09-21.xls`. Do not click `Import Template` until Hive shows the selected-file state and any additional validation.
