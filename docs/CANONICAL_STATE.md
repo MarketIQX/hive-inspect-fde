@@ -598,3 +598,17 @@ Evidence: user-provided screenshot in the active conversation.
 Scope: screenshot-visible post-signup verification state only. This does not yet prove that the verification email was received, the verification link was successfully consumed, or dashboard access was granted.
 
 Consequence: the next action is to open the Hive verification email and click its verification link. Do not use `Back to sign in` unless verification fails, and use resend only if the email is genuinely missing.
+
+
+### Canonical observation record CS-0033
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 09:25 IST
+
+Claim: the operator has successfully reached the authenticated Hive dashboard. The visible account is on the Free Trial with five reports remaining. The dashboard exposes `New Inspection`, `Inspections`, and `Templates` navigation. A business-profile card is present but offers `Maybe later`.
+
+Evidence: user-provided screenshot in the active conversation.
+Scope: screenshot-visible dashboard state only.
+
+Decision consequence: do not enter the template-import workflow yet. The assignment explicitly orders the required hands-on journey as: run a sample inspection, publish a report, then try the template-import workflow. The next action is therefore `New Inspection`. The optional business-profile card may be deferred with `Maybe later` because it is not evidence required for G0.
