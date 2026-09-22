@@ -1284,3 +1284,16 @@ Observed result: no configuration panel appeared. Therefore that interaction doe
 UI evidence: the `Siding Material` row exposes explicit action icons on the right, including a pencil/edit control. Since passive row/body interaction did not reveal configuration, the pencil is now the smallest evidence-gathering action available.
 
 Decision consequence: click only the pencil/edit icon on the `Siding Material` row. Opening an edit/configuration panel is allowed for inspection, but do not change any value and do not click any Save/Apply/Update action. The persistent global `You have unsaved changes` banner remains unexplained and must still not be saved.
+
+
+### Canonical verification record CS-0069
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 11:50 IST
+
+Claim: the small black pencil-in-a-square icon on the `Siding Material` row is confirmed by Hive's tooltip as `Edit component`.
+
+Evidence: user-provided screenshot in the active conversation with the pointer over that icon and the visible tooltip `Edit component`.
+
+Decision consequence: this is the exact control to open the `Siding Material` configuration for inspection. The separate subsection three-dot menu currently visible at left is unrelated to the field edit action and should not be used.
