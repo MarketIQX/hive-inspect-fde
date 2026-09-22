@@ -1326,3 +1326,22 @@ Hive evidence:
 Interpretation: Spectora `checkbox` is not preserved as a literal type label; Hive maps it to its native multi-select `Multiple Choice`/`multipleChoices` component. The observed behavior preserves the source's multi-select semantics and all 16 options/order for this field.
 
 Decision consequence: close the edit modal with `Cancel` or the `X` only. Do not click the modal `Save Changes`. The next preservation check should target a defect field with non-empty Comment Text so type mapping and narrative preservation can be verified together.
+
+
+### Canonical evidence target record CS-0071
+
+kind: ENGINEERING_DECISION
+status: VERIFIED
+observed_at: 22 Sep 2026, 11:55 IST
+
+Independent source check for next field:
+- Section: `Exterior`
+- Item: `Siding, Flashing & Trim`
+- Comment: `Cracking - Major`
+- Comment Type: `defect`
+- Category: `0` (Med)
+- Answer Type: `boolean`
+- Default Value: blank
+- Comment Text: `Moderate to major cracking was observed at one or more points on the exterior. This can be the result of poor original compaction of soil at the time of construction or excess moisture in the underlying soil. Recommend consulting with a structural engineer and/or soil expert.`
+
+Decision consequence: inspect Hive's `Cracking - Major` component through its pencil/edit control only. Do not change or save anything. Compare Hive's native component type, defect classification, narrative text, and any recommendation/severity mapping against the source facts above.
