@@ -817,3 +817,23 @@ Scope: screenshot-visible report-selection state only.
 Interpretation: the attached template is not yet an editable/generated inspection report. Therefore `Edit Reports` does not directly open report contents until Hive first materializes a report from the template.
 
 Decision consequence: click `Generate Report` for `Demo Residential Template`. Do not use `Publish All` or `Add Report` before generation, because the assignment requires running the sample inspection/report before publication and there is already one attached template.
+
+
+### Canonical observation record CS-0045
+
+kind: ENVIRONMENT_FACT
+status: VERIFIED
+observed_at: 22 Sep 2026, 10:00 IST
+
+Claim: after `Generate Report`, Hive opened the editable `Demo Residential Template` report. The left navigation visibly contains sections `Roof`, `Exterior`, `Plumbing`, and `Electrical`; the current section is `Roof`, with subsections `Roof Covering` and `Gutters & Downspouts`.
+
+Within `Roof Covering`, the report editor visibly groups content under `Information`, `Limitations`, and `Defects/Deficiencies`. Observed information controls include `Covering Material` with choices such as `Asphalt Shingles`, `Metal`, `Tile`, `Flat / Rolled`; `Approximate Age` with `0-5 years`, `5-15 years`, `15+ years`; and `Notes`. A limitation item `Viewed from ground with binoculars` and a defect item `Damaged / missing shingles` are also visible.
+
+The editor exposes top-level actions including `Preview`, `Publish`, and `PDF`.
+
+Evidence: two user-provided screenshots in the active conversation.
+Scope: screenshot-visible report-editor state only.
+
+Interpretation: Hive's editable report model visibly distinguishes section, subsection, and typed comment/category groupings, and supports selectable answer/options plus limitation/defect items. This product evidence is materially relevant to the later destination model for the Spectora importer.
+
+Decision consequence: make one minimal synthetic observation first rather than bulk-editing the report. Select `Asphalt Shingles` under `Covering Material`, then observe the resulting save/selection state before changing anything else.
